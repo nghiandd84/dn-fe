@@ -68,6 +68,7 @@ const en_US: BaseTranslation = {
 			clients: 'Clients',
 			roles: 'Roles',
 			permissions: 'Permissions',
+			field_permissions: 'Field Permissions',
 			scopes: 'Scopes',
 			users: 'Users',
 			auth_codes: 'Auth Codes',
@@ -126,6 +127,58 @@ const en_US: BaseTranslation = {
 		title: 'Permissions',
 		mask_label: 'Mask',
 		mask_value: 'mask = {value:number}'
+	},
+	field_permissions_page: {
+		title: 'Field Permissions',
+		col_role: 'Role',
+		col_resource: 'Resource',
+		col_action: 'Action',
+		col_fields: 'Fields',
+		no_fields: 'No fields',
+		fields_placeholder: 'field name, Enter to add',
+		created_at: 'Created',
+		updated_at: 'Updated'
+	},
+	dashboard: {
+		title: 'Dashboard',
+		badge: 'Auth Admin',
+		quick_ref_title: 'Quick Reference',
+		action_values_title: 'Action Values',
+		field_action_values_title: 'Field Permission Actions',
+		col_action: 'Action',
+		col_bit: 'Bit',
+		col_value: 'Value',
+		col_description: 'Description',
+		mask_note: 'Masks are bitmasks — combine by adding values. E.g. READ + UPDATE = {example:string}',
+		resources: {
+			users: 'Users',
+			roles: 'Roles',
+			permissions: 'Permissions',
+			field_permissions: 'Field Permissions',
+			clients: 'Clients',
+			scopes: 'Scopes',
+			tokens: 'Tokens',
+			auth_codes: 'Auth Codes',
+		},
+		resource_desc: {
+			users: 'registered accounts',
+			roles: 'group permissions and assign to users',
+			permissions: 'resource-level access masks (READ / CREATE / UPDATE / DELETE)',
+			field_permissions: 'fine-grained field-level access per role and resource',
+			clients: 'OAuth2 applications that use this auth server',
+			scopes: 'OAuth2 scopes granted to clients',
+			tokens: 'active access and refresh tokens',
+			auth_codes: 'one-time authorization codes',
+		},
+		action_desc: {
+			read: 'View records',
+			create: 'Create new records',
+			update: 'Modify existing records',
+			delete: 'Remove records',
+			admin: 'Full administrative access',
+			field_read: 'Filter GET response fields',
+			field_update: 'Restrict PATCH request fields',
+		}
 	}
 };
 

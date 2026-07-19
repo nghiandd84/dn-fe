@@ -3,6 +3,7 @@
 	import { fingerprint } from '$lib/fingerprint';
 	import { get } from 'svelte/store';
 	import { LL } from '$i18n/i18n-util';
+	import ConfirmModal from './ConfirmModal.svelte';
 
 	let {
 		resource,
@@ -106,13 +107,31 @@
 		await fetchData();
 	}
 
-	async function handleDelete(id: string) {
-		if (!confirm($LL.crud_table.delete_confirm())) return;
+	// ── Delete confirm modal ─────────────────────────────────────────────────
+	let confirmDeleteOpen = $state(false);
+	let deletingId = $state<string | null>(null);
+
+	function requestDelete(id: string) {
+		deletingId = id;
+		confirmDeleteOpen = true;
+	}
+
+	async function confirmDelete() {
+		confirmDeleteOpen = false;
+		if (!deletingId) return;
+		const id = deletingId;
+		// keep deletingId set so the row stays highlighted during the request
 		await fetch(`/api/admin/${resource}/${id}`, {
 			method: 'DELETE',
 			headers: { 'X-Client-Fingerprint': get(fingerprint) }
 		});
+		deletingId = null;
 		await fetchData();
+	}
+
+	function cancelDelete() {
+		confirmDeleteOpen = false;
+		deletingId = null;
 	}
 
 	function openCreate() {
@@ -246,7 +265,7 @@
 				<tr><td colspan={columns.length + 1}>{$LL.crud_table.no_data()}</td></tr>
 			{:else}
 				{#each items as item}
-					<tr>
+					<tr class:row-deleting={deletingId === item.id}>
 						{#each columns as col}
 							<td>{#if col.format}<span class="cell-formatted">{@html col.format(item[col.key], item)}</span>{:else}{col.displayKey ? (getNestedValue(item, col.displayKey) ?? item[col.key] ?? '') : (item[col.key] ?? '')}{/if}</td>
 						{/each}
@@ -259,7 +278,7 @@
 									<button class="btn btn-sm" onclick={() => openEdit(item)}>{$LL.crud_table.edit()}</button>
 								{/if}
 								{#if actions.delete}
-									<button class="btn btn-sm btn-danger" onclick={() => handleDelete(item.id)}>{$LL.crud_table.delete()}</button>
+									<button class="btn btn-sm btn-danger" onclick={() => requestDelete(item.id)}>{$LL.crud_table.delete()}</button>
 								{/if}
 							</td>
 						{/if}
@@ -409,4 +428,14 @@
 	dt { font-weight: 600; font-size: 0.85rem; color: #555; }
 	dd { font-size: 0.9rem; color: #111; word-break: break-all; margin: 0; }
 	.btn-info { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
+	.row-deleting { background: #fee2e2 !important; opacity: 0.6; transition: background 0.2s, opacity 0.2s; }
+	.row-deleting td { color: #b91c1c; }
 </style>
+
+{#if confirmDeleteOpen}
+	<ConfirmModal
+		message={$LL.crud_table.delete_confirm()}
+		onconfirm={confirmDelete}
+		oncancel={cancelDelete}
+	/>
+{/if}

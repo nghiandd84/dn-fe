@@ -73,12 +73,54 @@ export type Translation = {
 			clients: string;
 			roles: string;
 			permissions: string;
+			field_permissions: string;
 			scopes: string;
 			users: string;
 			auth_codes: string;
 			tokens: string;
 		};
 		logout: string;
+	};
+	dashboard: {
+		title: string;
+		badge: string;
+		quick_ref_title: string;
+		action_values_title: string;
+		field_action_values_title: string;
+		col_action: string;
+		col_bit: string;
+		col_value: string;
+		col_description: string;
+		mask_note: RequiredParams<'example'>;
+		resources: {
+			users: string;
+			roles: string;
+			permissions: string;
+			field_permissions: string;
+			clients: string;
+			scopes: string;
+			tokens: string;
+			auth_codes: string;
+		};
+		resource_desc: {
+			users: string;
+			roles: string;
+			permissions: string;
+			field_permissions: string;
+			clients: string;
+			scopes: string;
+			tokens: string;
+			auth_codes: string;
+		};
+		action_desc: {
+			read: string;
+			create: string;
+			update: string;
+			delete: string;
+			admin: string;
+			field_read: string;
+			field_update: string;
+		};
 	};
 };
 
@@ -150,12 +192,54 @@ export type TranslationFunctions = {
 			clients: () => LocalizedString;
 			roles: () => LocalizedString;
 			permissions: () => LocalizedString;
+			field_permissions: () => LocalizedString;
 			scopes: () => LocalizedString;
 			users: () => LocalizedString;
 			auth_codes: () => LocalizedString;
 			tokens: () => LocalizedString;
 		};
 		logout: () => LocalizedString;
+	};
+	dashboard: {
+		title: () => LocalizedString;
+		badge: () => LocalizedString;
+		quick_ref_title: () => LocalizedString;
+		action_values_title: () => LocalizedString;
+		field_action_values_title: () => LocalizedString;
+		col_action: () => LocalizedString;
+		col_bit: () => LocalizedString;
+		col_value: () => LocalizedString;
+		col_description: () => LocalizedString;
+		mask_note: (arg: { example: string }) => LocalizedString;
+		resources: {
+			users: () => LocalizedString;
+			roles: () => LocalizedString;
+			permissions: () => LocalizedString;
+			field_permissions: () => LocalizedString;
+			clients: () => LocalizedString;
+			scopes: () => LocalizedString;
+			tokens: () => LocalizedString;
+			auth_codes: () => LocalizedString;
+		};
+		resource_desc: {
+			users: () => LocalizedString;
+			roles: () => LocalizedString;
+			permissions: () => LocalizedString;
+			field_permissions: () => LocalizedString;
+			clients: () => LocalizedString;
+			scopes: () => LocalizedString;
+			tokens: () => LocalizedString;
+			auth_codes: () => LocalizedString;
+		};
+		action_desc: {
+			read: () => LocalizedString;
+			create: () => LocalizedString;
+			update: () => LocalizedString;
+			delete: () => LocalizedString;
+			admin: () => LocalizedString;
+			field_read: () => LocalizedString;
+			field_update: () => LocalizedString;
+		};
 	};
 };
 

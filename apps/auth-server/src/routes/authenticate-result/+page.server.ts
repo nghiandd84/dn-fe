@@ -7,6 +7,7 @@ const AUTH_RESOURCE_MAP: Record<string, string> = {
 	'AUTH:USER': 'users',
 	'AUTH:ROLE': 'roles',
 	'AUTH:PERMISSION': 'permissions',
+	'AUTH:FIELD_PERMISSION': 'field-permissions',
 	'AUTH:SCOPE': 'scopes',
 	'AUTH:CLIENT': 'clients',
 	'AUTH:TOKEN': 'tokens',
@@ -29,10 +30,10 @@ async function fetchPermissions(access_token: string, origin: string) {
 		token: access_token,
 		origin
 	});
-
+	console.log('rolesRes', rolesRes);
 	if (rolesRes.status !== 200) return [];
 
-	const roles = rolesRes.data?.data?.result ?? [];
+	const roles = rolesRes.data.data?.result ?? [];
 	const seen = new Set<string>();
 	const permissions: { id: string; resource: string; description: string; mask: number }[] = [];
 
@@ -53,7 +54,7 @@ function redirectIfAdmin(permissions: { resource: string }[], cookies: Cookies, 
 		.filter((p) => p.resource.startsWith('AUTH:'))
 		.map((p) => AUTH_RESOURCE_MAP[p.resource])
 		.filter(Boolean);
-
+	console.log(authResources);
 	if (authResources.length > 0) {
 		// Persist resolved nav keys so the admin layout can read them after redirect
 		cookies.set('auth_resources', JSON.stringify(authResources), {
@@ -77,10 +78,42 @@ function redirectIfAdmin(permissions: { resource: string }[], cookies: Cookies, 
 	}
 }
 
+function saveTokens(cookies: Cookies, access_token: string, refresh_token: string) {
+	setToken(cookies, access_token);
+	cookies.set('refresh_token', refresh_token, {
+		path: '/',
+		httpOnly: true,
+		sameSite: 'lax',
+		secure: false,
+		maxAge: 60 * 60 * 24 * 30
+	});
+}
+
 export async function load({ url, cookies }) {
 	const clientId = url.searchParams.get('client_id') || '';
+	const authCode = url.searchParams.get('auth_code');
 
-	// 1. Already have a valid access token — skip auth_code entirely
+	// 1. auth_code present in URL — exchange it for tokens (one-time use, highest priority)
+	if (authCode) {
+		const res = await api('/public/tokens/oauth', {
+			method: 'POST',
+			body: { client_id: clientId, code: authCode, grant_type: 'authorization_code' },
+			origin: url.origin
+		});
+
+		if (res.status !== 200) {
+			return { error: res.data?.data?.error_type || 'token_failed', access_token: null, refresh_token: null, permissions: [] };
+		}
+
+		const { access_token, refresh_token } = res.data.data;
+		saveTokens(cookies, access_token, refresh_token);
+
+		const permissions = await fetchPermissions(access_token, url.origin);
+		redirectIfAdmin(permissions, cookies, clientId);
+		return { error: null, access_token, refresh_token, permissions };
+	}
+
+	// 2. No auth_code — check for existing access token in cookies
 	const existingAccessToken = getToken(cookies);
 	const existingRefreshToken = cookies.get('refresh_token');
 
@@ -90,7 +123,7 @@ export async function load({ url, cookies }) {
 		return { error: null, access_token: existingAccessToken, refresh_token: existingRefreshToken ?? null, permissions };
 	}
 
-	// 2. Have a refresh token but no access token — use it to get new tokens
+	// 3. No access token — try refresh token
 	if (existingRefreshToken) {
 		const res = await api('/public/tokens/oauth', {
 			method: 'POST',
@@ -100,51 +133,16 @@ export async function load({ url, cookies }) {
 
 		if (res.status === 200) {
 			const { access_token, refresh_token } = res.data.data;
-			setToken(cookies, access_token);
-			cookies.set('refresh_token', refresh_token, {
-				path: '/',
-				httpOnly: true,
-				sameSite: 'lax',
-				secure: false,
-				maxAge: 60 * 60 * 24 * 30
-			});
+			saveTokens(cookies, access_token, refresh_token);
 			const permissions = await fetchPermissions(access_token, url.origin);
 			redirectIfAdmin(permissions, cookies, clientId);
 			return { error: null, access_token, refresh_token, permissions };
 		}
 
-		// Refresh token is expired/invalid — clear it and fall through to auth_code
+		// Refresh token expired/invalid — clear it
 		cookies.delete('refresh_token', { path: '/' });
 	}
 
-	// 3. No tokens saved — require auth_code
-	const authCode = url.searchParams.get('auth_code');
-
-	if (!authCode) {
-		return { error: 'missing_auth_code', access_token: null, refresh_token: null, permissions: [] };
-	}
-
-	const res = await api('/public/tokens/oauth', {
-		method: 'POST',
-		body: { client_id: clientId, code: authCode, grant_type: 'authorization_code' },
-		origin: url.origin
-	});
-
-	if (res.status !== 200) {
-		return { error: res.data?.data?.error_type || 'token_failed', access_token: null, refresh_token: null, permissions: [] };
-	}
-
-	const { access_token, refresh_token } = res.data.data;
-	setToken(cookies, access_token);
-	cookies.set('refresh_token', refresh_token, {
-		path: '/',
-		httpOnly: true,
-		sameSite: 'lax',
-		secure: false,
-		maxAge: 60 * 60 * 24 * 30
-	});
-
-	const permissions = await fetchPermissions(access_token, url.origin);
-	redirectIfAdmin(permissions, cookies, clientId);
-	return { error: null, access_token, refresh_token, permissions };
+	// 4. No tokens and no auth_code — cannot proceed
+	return { error: 'missing_auth_code', access_token: null, refresh_token: null, permissions: [] };
 }

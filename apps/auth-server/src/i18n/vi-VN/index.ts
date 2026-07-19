@@ -68,6 +68,7 @@ const vi_VN: Translation = {
 			clients: 'Clients',
 			roles: 'Vai trò',
 			permissions: 'Quyền hạn',
+			field_permissions: 'Quyền trường dữ liệu',
 			scopes: 'Phạm vi',
 			users: 'Người dùng',
 			auth_codes: 'Mã xác thực',
@@ -126,6 +127,58 @@ const vi_VN: Translation = {
 		title: 'Quyền hạn',
 		mask_label: 'Mặt nạ',
 		mask_value: 'mặt nạ = {value:number}'
+	},
+	field_permissions_page: {
+		title: 'Quyền trường dữ liệu',
+		col_role: 'Vai trò',
+		col_resource: 'Tài nguyên',
+		col_action: 'Hành động',
+		col_fields: 'Các trường',
+		no_fields: 'Chưa có trường nào',
+		fields_placeholder: 'tên trường, Enter để thêm',
+		created_at: 'Ngày tạo',
+		updated_at: 'Cập nhật'
+	},
+	dashboard: {
+		title: 'Tổng quan',
+		badge: 'Quản trị Auth',
+		quick_ref_title: 'Tham khảo nhanh',
+		action_values_title: 'Giá trị hành động',
+		field_action_values_title: 'Hành động quyền trường',
+		col_action: 'Hành động',
+		col_bit: 'Bit',
+		col_value: 'Giá trị',
+		col_description: 'Mô tả',
+		mask_note: 'Mask là bitmask — kết hợp bằng cách cộng giá trị. Ví dụ: READ + UPDATE = {example:string}',
+		resources: {
+			users: 'Người dùng',
+			roles: 'Vai trò',
+			permissions: 'Quyền hạn',
+			field_permissions: 'Quyền trường dữ liệu',
+			clients: 'Clients',
+			scopes: 'Phạm vi',
+			tokens: 'Tokens',
+			auth_codes: 'Mã xác thực',
+		},
+		resource_desc: {
+			users: 'tài khoản đã đăng ký',
+			roles: 'nhóm quyền hạn và gán cho người dùng',
+			permissions: 'mask truy cập cấp tài nguyên (READ / CREATE / UPDATE / DELETE)',
+			field_permissions: 'kiểm soát truy cập cấp trường chi tiết theo vai trò và tài nguyên',
+			clients: 'ứng dụng OAuth2 sử dụng auth server này',
+			scopes: 'phạm vi OAuth2 cấp cho clients',
+			tokens: 'access token và refresh token đang hoạt động',
+			auth_codes: 'mã xác thực dùng một lần',
+		},
+		action_desc: {
+			read: 'Xem bản ghi',
+			create: 'Tạo bản ghi mới',
+			update: 'Chỉnh sửa bản ghi',
+			delete: 'Xóa bản ghi',
+			admin: 'Toàn quyền quản trị',
+			field_read: 'Lọc trường trong phản hồi GET',
+			field_update: 'Giới hạn trường trong yêu cầu PATCH',
+		}
 	}
 };
 

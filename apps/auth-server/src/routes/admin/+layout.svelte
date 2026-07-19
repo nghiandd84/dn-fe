@@ -13,6 +13,7 @@
 		{ href: '/admin/clients', label: $LL.admin_panel.nav.clients(), resource: 'clients' },
 		{ href: '/admin/roles', label: $LL.admin_panel.nav.roles(), resource: 'roles' },
 		{ href: '/admin/permissions', label: $LL.admin_panel.nav.permissions(), resource: 'permissions' },
+		{ href: '/admin/field-permissions', label: $LL.admin_panel.nav.field_permissions(), resource: 'field-permissions' },
 		{ href: '/admin/scopes', label: $LL.admin_panel.nav.scopes(), resource: 'scopes' },
 		{ href: '/admin/users', label: $LL.admin_panel.nav.users(), resource: 'users' },
 		{ href: '/admin/auth-codes', label: $LL.admin_panel.nav.auth_codes(), resource: 'auth-codes' },
