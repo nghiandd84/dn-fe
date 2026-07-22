@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CrudTable from '$lib/components/CrudTable.svelte';
+	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 </script>
 
 <h1>Tokens</h1>

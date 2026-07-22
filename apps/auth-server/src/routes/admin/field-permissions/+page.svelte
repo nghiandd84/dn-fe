@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CrudTable from '$lib/components/CrudTable.svelte';
+	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import { fingerprint } from '$lib/fingerprint';
 	import { get } from 'svelte/store';
 	import { LL } from '$i18n/i18n-util';

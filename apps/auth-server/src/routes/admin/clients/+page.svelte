@@ -1,11 +1,12 @@
 <script lang="ts">
-	import CrudTable from '$lib/components/CrudTable.svelte';
+	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 </script>
 
 <h1>Clients</h1>
 <CrudTable
 	resource="clients"
 	columns={[
+		{ key: 'id', label: 'ID', hideInTable: true },
 		{ key: 'name', label: 'Name', sortable: true, filterable: true, operators: ['li', 'eq', 'sw'] },
 		{ key: 'email', label: 'Email', sortable: true, filterable: true, operators: ['eq', 'li'] },
 		{ key: 'client_key', label: 'Client Key' },

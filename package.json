@@ -3,11 +3,14 @@
 	"private": true,
 	"version": "0.0.1",
 	"workspaces": [
-		"apps/*"
+		"apps/*",
+		"packages/*"
 	],
 	"scripts": {
 		"dev:auth": "npm run dev --workspace=apps/auth-server",
 		"build:auth": "npm run build --workspace=apps/auth-server",
+		"dev:lookup": "npm run dev --workspace=apps/lookup-admin",
+		"build:lookup": "npm run build --workspace=apps/lookup-admin",
 		"dev:all": "npm run dev --workspaces --if-present",
 		"build:all": "npm run build --workspaces --if-present",
 		"check:all": "npm run check --workspaces --if-present"

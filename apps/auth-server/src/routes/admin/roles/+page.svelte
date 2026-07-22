@@ -1,6 +1,6 @@
 <script lang="ts">
-	import CrudTable from '$lib/components/CrudTable.svelte';
-	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
+	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
+	import ConfirmModal from '@dn-fe/ui/ConfirmModal.svelte';
 	import CreatePermissionModal from '$lib/components/CreatePermissionModal.svelte';
 	import { MASK_BITS, maskToActions } from '$lib/components/types';
 	import { fingerprint } from '$lib/fingerprint';

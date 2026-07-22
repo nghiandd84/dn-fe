@@ -1,0 +1,20 @@
+{
+	"name": "@dn-fe/ui",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"exports": {
+		"./CrudTable.svelte": "./src/lib/CrudTable.svelte",
+		"./ConfirmModal.svelte": "./src/lib/ConfirmModal.svelte",
+		"./types": "./src/lib/types.ts",
+		"./fingerprint": "./src/lib/fingerprint.ts",
+		"./session": "./src/lib/session.ts",
+		"./api": "./src/lib/api.ts",
+		"./auth-result": "./src/lib/auth-result.ts"
+	},
+	"svelte": "./src/lib/index.ts",
+	"peerDependencies": {
+		"@fingerprintjs/fingerprintjs": "^5.2.0",
+		"svelte": "^5.0.0"
+	}
+}

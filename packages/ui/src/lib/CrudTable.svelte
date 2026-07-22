@@ -1,12 +1,13 @@
 <script lang="ts">
-	import type { Column, FormField, CrudActions } from './types';
-	import { fingerprint } from '$lib/fingerprint';
+	import type { Column, FormField, CrudActions } from './types.js';
+	import { fingerprint } from './fingerprint.js';
 	import { get } from 'svelte/store';
 	import { LL } from '$i18n/i18n-util';
 	import ConfirmModal from './ConfirmModal.svelte';
 
 	let {
 		resource,
+		apiPrefix = '/api/admin',
 		columns,
 		formFields = [],
 		actions = { create: false, edit: false, delete: false },
@@ -18,6 +19,8 @@
 		onCreateOpen
 	}: {
 		resource: string;
+		/** API route prefix, e.g. '/api/admin' or '/api/lookup'. Default: '/api/admin' */
+		apiPrefix?: string;
 		columns: Column[];
 		formFields?: FormField[];
 		actions?: CrudActions;
@@ -83,7 +86,7 @@
 		for (const [k, v] of Object.entries(extraParams)) {
 			params.set(k, v);
 		}
-		const res = await fetch(`/api/admin/${resource}?${params}`, {
+		const res = await fetch(`${apiPrefix}/${resource}?${params}`, {
 			headers: { 'X-Client-Fingerprint': get(fingerprint) }
 		});
 		const json = await res.json();
@@ -94,7 +97,9 @@
 
 	async function handleSave() {
 		const fp = get(fingerprint);
-		const url = editingItem ? `/api/admin/${resource}/${editingItem.id}` : `/api/admin/${resource}`;
+		const url = editingItem
+			? `${apiPrefix}/${resource}/${editingItem.id}`
+			: `${apiPrefix}/${resource}`;
 		const method = editingItem ? 'PATCH' : 'POST';
 		await fetch(url, {
 			method,
@@ -121,7 +126,7 @@
 		if (!deletingId) return;
 		const id = deletingId;
 		// keep deletingId set so the row stays highlighted during the request
-		await fetch(`/api/admin/${resource}/${id}`, {
+		await fetch(`${apiPrefix}/${resource}/${id}`, {
 			method: 'DELETE',
 			headers: { 'X-Client-Fingerprint': get(fingerprint) }
 		});
@@ -195,6 +200,8 @@
 	$effect(() => {
 		fetchData();
 	});
+
+	const tableColumns = $derived(columns.filter(c => !c.hideInTable));
 </script>
 
 <div class="crud-table">
@@ -203,7 +210,7 @@
 			<button class="btn btn-primary" onclick={openCreate}>{$LL.crud_table.create()}</button>
 		{/if}
 		<div class="filter-bar">
-			{#each columns.filter(c => c.filterable) as col}
+			{#each tableColumns.filter(c => c.filterable) as col}
 				<div class="filter-field">
 					<span class="filter-label">{col.label}</span>
 					<select
@@ -228,7 +235,7 @@
 					/>
 				</div>
 			{/each}
-			{#if columns.some(c => c.filterable)}
+			{#if tableColumns.some(c => c.filterable)}
 				<select class="filter-condition" bind:value={filterCondition}>
 					<option value="and">{$LL.crud_table.and()}</option>
 					<option value="or">{$LL.crud_table.or()}</option>
@@ -242,7 +249,7 @@
 	<table>
 		<thead>
 			<tr>
-				{#each columns as col}
+				{#each tableColumns as col}
 					<th>
 						{#if col.sortable}
 							<button class="sort-btn" onclick={() => sort(col.key)}>
@@ -260,13 +267,13 @@
 		</thead>
 		<tbody>
 			{#if loading}
-				<tr><td colspan={columns.length + 1}>{$LL.crud_table.loading()}</td></tr>
+				<tr><td colspan={tableColumns.length + 1}>{$LL.crud_table.loading()}</td></tr>
 			{:else if items.length === 0}
-				<tr><td colspan={columns.length + 1}>{$LL.crud_table.no_data()}</td></tr>
+				<tr><td colspan={tableColumns.length + 1}>{$LL.crud_table.no_data()}</td></tr>
 			{:else}
 				{#each items as item}
 					<tr class:row-deleting={deletingId === item.id}>
-						{#each columns as col}
+						{#each tableColumns as col}
 							<td>{#if col.format}<span class="cell-formatted">{@html col.format(item[col.key], item)}</span>{:else}{col.displayKey ? (getNestedValue(item, col.displayKey) ?? item[col.key] ?? '') : (item[col.key] ?? '')}{/if}</td>
 						{/each}
 						{#if actions.edit || actions.delete || actions.detail}
