@@ -311,30 +311,10 @@
 		vertical-align: middle;
 	}
 	.ref-table tr:last-child td { border-bottom: none; }
-	.mono {
-		font-family: monospace;
-		font-size: 0.82rem;
-		color: #6b7280;
-	}
+
 	.ref-note {
 		margin: 0.6rem 0 0;
 		font-size: 0.78rem;
 		color: #9ca3af;
 	}
-
-	/* Action badges */
-	.action-badge {
-		display: inline-block;
-		font-size: 0.65rem;
-		font-weight: 700;
-		border-radius: 3px;
-		padding: 0.05rem 0.45rem;
-		text-transform: uppercase;
-		letter-spacing: 0.03em;
-	}
-	.action-badge.read   { background: #dbeafe; color: #1d4ed8; }
-	.action-badge.create { background: #dcfce7; color: #15803d; }
-	.action-badge.update { background: #fef9c3; color: #a16207; }
-	.action-badge.delete { background: #fee2e2; color: #b91c1c; }
-	.action-badge.admin  { background: #f3e8ff; color: #7e22ce; }
 </style>

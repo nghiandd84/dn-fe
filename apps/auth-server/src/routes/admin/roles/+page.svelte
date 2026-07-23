@@ -291,53 +291,11 @@
 	/>
 {/if}
 
+
+
+
 <style>
+	/* Page-specific layout */
 	.role-detail { display: flex; flex-direction: column; gap: 0.75rem; min-width: 560px; max-width: 720px; }
-
-	/* Meta */
 	.role-meta { display: grid; gap: 0.3rem; }
-	.meta-row { display: grid; grid-template-columns: 110px 1fr; gap: 0.5rem; font-size: 0.875rem; align-items: center; }
-	.meta-label { font-weight: 600; color: #555; }
-	.bool-badge { display: inline-flex; align-items: center; gap: 0.25rem; border-radius: 99px; padding: 0.15rem 0.6rem; font-size: 0.75rem; font-weight: 600; }
-	.bool-yes { background: #dcfce7; color: #15803d; }
-	.bool-no  { background: #f3f4f6; color: #9ca3af; }
-
-	hr { border: none; border-top: 1px solid #e5e7eb; margin: 0; }
-
-	.section-title { margin: 0; font-size: 0.95rem; font-weight: 700; color: #111; }
-	.loading-msg { font-size: 0.85rem; color: #888; }
-
-	/* Panels */
-	.perm-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-	.perm-panel { border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; }
-	.panel-header { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.5rem 0.6rem; background: #f8f9fa; border-bottom: 1px solid #e5e7eb; }
-	.panel-title { font-size: 0.8rem; font-weight: 600; color: #374151; white-space: nowrap; }
-	.badge { display: inline-flex; align-items: center; justify-content: center; background: #e5e7eb; color: #374151; border-radius: 99px; font-size: 0.7rem; padding: 0 0.4rem; min-width: 1.2rem; height: 1.2rem; margin-left: 0.25rem; }
-	.search-input { flex: 1; padding: 0.25rem 0.4rem; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.78rem; outline: none; min-width: 0; }
-
-	/* Permission list */
-	.perm-list { list-style: none; margin: 0; padding: 0; max-height: 240px; overflow-y: auto; }
-	.perm-item { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.35rem 0.6rem; border-bottom: 1px solid #f3f4f6; }
-	.perm-item:last-child { border-bottom: none; }
-	.perm-item:hover { background: #f9fafb; }
-	.perm-info { display: flex; flex-direction: column; min-width: 0; }
-	.perm-resource { font-size: 0.82rem; font-weight: 500; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-	.perm-resource-row { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
-	.perm-desc { font-size: 0.72rem; color: #6b7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-	.perm-mask { font-size: 0.7rem; color: #9ca3af; background: #f3f4f6; border-radius: 3px; padding: 0 0.3rem; font-family: monospace; white-space: nowrap; }
-	.perm-action { font-size: 0.65rem; font-weight: 600; border-radius: 3px; padding: 0.05rem 0.35rem; white-space: nowrap; }
-	.perm-action--read   { background: #dbeafe; color: #1d4ed8; }
-	.perm-action--create { background: #dcfce7; color: #15803d; }
-	.perm-action--update { background: #fef9c3; color: #a16207; }
-	.perm-action--delete { background: #fee2e2; color: #b91c1c; }
-	.perm-action--admin  { background: #f3e8ff; color: #7e22ce; }
-	.perm-empty { padding: 0.6rem; font-size: 0.82rem; color: #9ca3af; text-align: center; }
-
-	/* Buttons */
-	.btn-unassign { flex-shrink: 0; background: none; border: 1px solid #fca5a5; color: #dc2626; border-radius: 4px; width: 1.5rem; height: 1.5rem; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; padding: 0; }
-	.btn-unassign:hover { background: #fee2e2; }
-	.btn-assign { flex-shrink: 0; background: none; border: 1px solid #6ee7b7; color: #059669; border-radius: 4px; width: 1.5rem; height: 1.5rem; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; padding: 0; }
-	.btn-assign:hover { background: #d1fae5; }
-	.btn-new-perm { flex-shrink: 0; background: #4f46e5; border: none; color: #fff; border-radius: 4px; width: 1.5rem; height: 1.5rem; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; padding: 0; }
-	.btn-new-perm:hover { background: #4338ca; }
 </style>

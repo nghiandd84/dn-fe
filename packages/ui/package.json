@@ -12,7 +12,13 @@
 		"./fingerprint": "./src/lib/fingerprint.ts",
 		"./session": "./src/lib/session.ts",
 		"./api": "./src/lib/api.ts",
-		"./auth-result": "./src/lib/auth-result.ts"
+		"./auth-result": "./src/lib/auth-result.ts",
+		"./styles/global.css": "./src/lib/styles/global.css",
+		"./styles/admin-layout.css": "./src/lib/styles/admin-layout.css",
+		"./styles/auth-page.css": "./src/lib/styles/auth-page.css",
+		"./styles/meta-detail.css": "./src/lib/styles/meta-detail.css",
+		"./styles/action-badges.css": "./src/lib/styles/action-badges.css",
+		"./styles/search-bar.css": "./src/lib/styles/search-bar.css"
 	},
 	"svelte": "./src/lib/index.ts",
 	"peerDependencies": {

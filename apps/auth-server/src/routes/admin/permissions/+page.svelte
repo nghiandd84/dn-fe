@@ -95,7 +95,7 @@
 </CrudTable>
 
 <style>
-	/* Mask checkbox editor */
+	/* Mask checkbox editor (unique to permissions page) */
 	.mask-editor { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
 	.mask-label { font-size: 0.85rem; font-weight: 600; color: #374151; min-width: 70px; }
 	.mask-bits { display: flex; gap: 0.4rem; flex-wrap: wrap; }
@@ -106,14 +106,6 @@
 
 	/* Detail view */
 	.perm-detail { display: flex; flex-direction: column; gap: 0.5rem; min-width: 340px; }
-	.meta-row { display: grid; grid-template-columns: 110px 1fr; gap: 0.5rem; font-size: 0.875rem; align-items: center; }
-	.meta-label { font-weight: 600; color: #555; }
 	.actions-wrap { display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: center; }
 	.mask-raw { font-size: 0.72rem; color: #9ca3af; font-family: monospace; }
-	.perm-action { font-size: 0.65rem; font-weight: 600; border-radius: 3px; padding: 0.05rem 0.35rem; white-space: nowrap; }
-	.perm-action--read   { background: #dbeafe; color: #1d4ed8; }
-	.perm-action--create { background: #dcfce7; color: #15803d; }
-	.perm-action--update { background: #fef9c3; color: #a16207; }
-	.perm-action--delete { background: #fee2e2; color: #b91c1c; }
-	.perm-action--admin  { background: #f3e8ff; color: #7e22ce; }
 </style>

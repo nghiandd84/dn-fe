@@ -392,27 +392,11 @@
 {/if}
 
 <style>
-	h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; }
-	.search-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 1.25rem; padding: 0.75rem 1rem; background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 8px; }
-	.filter-field { display: flex; align-items: center; gap: 0.25rem; background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 0.2rem 0.4rem; }
-	.filter-label { font-size: 0.78rem; color: #555; white-space: nowrap; font-weight: 600; }
-	.filter-op { padding: 0.2rem 0.3rem; border: none; background: transparent; font-size: 0.82rem; cursor: pointer; }
-	.filter-val { padding: 0.2rem 0.3rem; border: none; border-left: 1px solid #ddd; background: transparent; font-size: 0.82rem; width: 120px; outline: none; }
+	/* Page-specific badge and filter styles */
 	.type-select { padding: 0.2rem 0.4rem; border: none; border-left: 1px solid #ddd; background: transparent; font-size: 0.82rem; cursor: pointer; max-width: 220px; }
-	table { width: 100%; border-collapse: collapse; }
-	th, td { padding: 0.6rem; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-	th { background: #f8f9fa; font-weight: 600; }
-	tr:hover { background: #f5f5f5; }
 	.actions { display: flex; gap: 0.3rem; flex-wrap: wrap; }
-	.pagination { display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 1rem; }
-	.btn { padding: 0.4rem 0.8rem; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; background: #fff; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; }
-	.btn-primary { background: #4f46e5; color: #fff; border-color: #4f46e5; }
-	.btn-danger { background: #dc2626; color: #fff; border-color: #dc2626; }
-	.btn-secondary { background: #f8f9fa; color: #374151; border-color: #d1d5db; }
 	.btn-info { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
-	.btn-sm { padding: 0.2rem 0.5rem; font-size: 0.78rem; }
 	.type-badge { background: #ede9fe; color: #5b21b6; font-family: monospace; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 4px; border: 1px solid #ddd6fe; font-size: 0.82rem; }
-	.code-badge { background: #f0f9ff; color: #0369a1; font-family: monospace; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 4px; border: 1px solid #bae6fd; font-size: 0.82rem; }
 	.row-deleting { background: #fee2e2 !important; opacity: 0.6; }
 	.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
 	.modal { background: #fff; border-radius: 8px; max-width: 90vw; }
@@ -467,7 +451,6 @@
 	.full-width { grid-column: 1 / -1; }
 	.cell-label { font-size: 0.7rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; }
 	.cell-value { font-size: 0.85rem; color: #111827; word-break: break-all; }
-	.mono { font-family: monospace; font-size: 0.8rem; }
 	.translations-section { border-top: 1px solid #e5e7eb; padding-top: 0.75rem; }
 	.trans-list { display: flex; flex-direction: column; gap: 0.3rem; }
 	.trans-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.6rem; background: #f9fafb; border: 1px solid #f3f4f6; border-radius: 6px; }

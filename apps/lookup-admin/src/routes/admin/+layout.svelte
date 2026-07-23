@@ -2,6 +2,10 @@
 	import { LL, setLocale, locale } from '$i18n/i18n-util';
 	import type { Locales } from '$i18n/i18n-util';
 	import { SidebarFooter } from '@dn-fe/ui';
+	import '@dn-fe/ui/styles/admin-layout.css';
+	import '@dn-fe/ui/styles/meta-detail.css';
+	import '@dn-fe/ui/styles/action-badges.css';
+	import '@dn-fe/ui/styles/search-bar.css';
 
 	let { children, data } = $props();
 
@@ -45,12 +49,3 @@
 	</main>
 </div>
 
-<style>
-	.admin-layout { display: flex; min-height: 100vh; }
-	.sidebar { width: 220px; background: #1e1b4b; color: #fff; padding: 1.5rem 1rem; display: flex; flex-direction: column; }
-	.sidebar h2 { font-size: 1.1rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid #3730a3; }
-	.sidebar nav { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; }
-	.sidebar nav a { color: #c7d2fe; padding: 0.5rem 0.7rem; border-radius: 4px; font-size: 0.9rem; }
-	.sidebar nav a:hover { background: #3730a3; color: #fff; text-decoration: none; }
-	.content { flex: 1; padding: 2rem; overflow-x: auto; }
-</style>

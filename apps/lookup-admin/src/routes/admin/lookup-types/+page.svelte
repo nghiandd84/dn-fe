@@ -48,11 +48,6 @@
 </CrudTable>
 
 <style>
-	h1 { margin-bottom: 1.5rem; font-size: 1.4rem; font-weight: 700; }
+	/* Page-specific layout */
 	.type-detail { display: flex; flex-direction: column; gap: 0.5rem; min-width: 340px; }
-	.meta-row { display: grid; grid-template-columns: 110px 1fr; gap: 0.5rem; font-size: 0.875rem; align-items: center; }
-	.meta-label { font-weight: 600; color: #555; }
-	.mono { font-family: monospace; font-size: 0.8rem; color: #374151; word-break: break-all; }
-	.code-badge { background: #f0f9ff; color: #0369a1; font-family: monospace; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 4px; border: 1px solid #bae6fd; font-size: 0.82rem; }
-	.btn-link { color: #4f46e5; font-weight: 600; font-size: 0.85rem; }
 </style>
