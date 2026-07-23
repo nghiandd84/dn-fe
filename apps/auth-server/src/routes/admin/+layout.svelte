@@ -3,6 +3,7 @@
 	import { get } from 'svelte/store';
 	import { LL, setLocale, locale } from '$i18n/i18n-util';
 	import type { Locales } from '$i18n/i18n-util';
+	import { SidebarFooter } from '@dn-fe/ui';
 
 	let { data, children } = $props();
 
@@ -24,13 +25,13 @@
 		allNavItems.filter((item) => !item.resource || authResources.includes(item.resource))
 	);
 
-	async function logout() {
+	async function handleLogout() {
 		const res = await fetch('/api/auth/logout', {
 			method: 'POST',
 			headers: { 'X-Client-Fingerprint': get(fingerprint) }
 		});
-		const data = await res.json();
-		window.location.href = data?.data?.redirect || '/authenticate';
+		const body = await res.json();
+		window.location.href = body?.data?.redirect || '/authenticate';
 	}
 </script>
 
@@ -42,11 +43,12 @@
 				<a href={item.href}>{item.label}</a>
 			{/each}
 		</nav>
-		<button class="logout-btn" onclick={logout}>{$LL.admin_panel.logout()}</button>
-		<div class="lang-switcher">
-			<button class:active={$locale === 'en-US'} onclick={() => setLocale('en-US' as Locales)}>EN</button>
-			<button class:active={$locale === 'vi-VN'} onclick={() => setLocale('vi-VN' as Locales)}>VI</button>
-		</div>
+		<SidebarFooter
+			logoutLabel={$LL.admin_panel.logout()}
+			onLogout={handleLogout}
+			locale={$locale}
+			onLocaleChange={(loc) => setLocale(loc as Locales)}
+		/>
 	</aside>
 	<main class="content">
 		{@render children()}
@@ -60,11 +62,5 @@
 	.sidebar nav { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; }
 	.sidebar nav a { color: #c7d2fe; padding: 0.5rem 0.7rem; border-radius: 4px; font-size: 0.9rem; }
 	.sidebar nav a:hover { background: #3730a3; color: #fff; text-decoration: none; }
-	.logout-btn { background: none; border: 1px solid #6366f1; color: #c7d2fe; padding: 0.5rem; border-radius: 4px; cursor: pointer; margin-top: 1rem; }
-	.logout-btn:hover { background: #3730a3; }
-	.lang-switcher { display: flex; gap: 0.4rem; margin-top: 0.75rem; }
-	.lang-switcher button { flex: 1; padding: 0.3rem 0; border: 1px solid #4338ca; border-radius: 4px; background: none; color: #a5b4fc; cursor: pointer; font-size: 0.75rem; font-weight: 600; }
-	.lang-switcher button:hover { background: #3730a3; color: #fff; }
-	.lang-switcher button.active { background: #4f46e5; color: #fff; border-color: #4f46e5; }
 	.content { flex: 1; padding: 2rem; overflow-x: auto; }
 </style>

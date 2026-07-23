@@ -17,7 +17,9 @@ const vi_VN: Translation = {
 		title: 'Quản trị Lookup',
 		nav: {
 			dashboard: 'Bảng điều khiển',
-			lookup_types: 'Loại Lookup'
+			lookup_types: 'Loại Lookup',
+			lookup_items: 'Mục',
+			lookup_item_translations: 'Bản dịch'
 		},
 		logout: 'Đăng xuất'
 	},

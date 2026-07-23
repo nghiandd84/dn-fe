@@ -17,7 +17,9 @@ const en_US: BaseTranslation = {
 		title: 'Lookup Admin',
 		nav: {
 			dashboard: 'Dashboard',
-			lookup_types: 'Lookup Types'
+			lookup_types: 'Lookup Types',
+			lookup_items: 'Items',
+			lookup_item_translations: 'Translations'
 		},
 		logout: 'Logout'
 	},

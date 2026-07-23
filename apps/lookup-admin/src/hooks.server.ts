@@ -1,8 +1,11 @@
 import type { Handle } from '@sveltejs/kit';
 import { json, redirect } from '@sveltejs/kit';
-import { AUTH_SERVER_URL, AUTH_CLIENT_ID, AUTH_CALLBACK_URL } from '$env/static/private';
+import { AUTH_CLIENT_ID, AUTH_CALLBACK_URL, AUTH_API_URL } from '$env/static/private';
 import { getToken } from '$lib/session';
 import { getCachedUser, setCachedUser, evictCachedUser } from '$lib/verify-cache';
+import { createApi } from '@dn-fe/ui/api';
+
+const authApi = createApi(AUTH_API_URL);
 
 const SUPPORTED_LOCALES = ['en-US', 'vi-VN'];
 const DEFAULT_LOCALE = 'en-US';
@@ -28,15 +31,13 @@ async function verifyUser(event: Parameters<Handle>[0]['event']) {
 	if (cached) return cached;
 
 	const fingerprint = event.request.headers.get('x-client-fingerprint') || undefined;
-	const url = AUTH_SERVER_URL.replace(/\/$/, '') + '/public/tokens/verify';
-	const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-	if (fingerprint) headers['X-Client-Fingerprint'] = fingerprint;
 
 	try {
-		const res = await fetch(url, {
+		const res = await authApi('/public/tokens/verify', {
 			method: 'POST',
-			headers,
-			body: JSON.stringify({ token })
+			body: { token },
+			fingerprint,
+			origin: event.url.origin
 		});
 
 		if (res.status !== 200) {
@@ -44,11 +45,10 @@ async function verifyUser(event: Parameters<Handle>[0]['event']) {
 			return null;
 		}
 
-		const body = await res.json();
 		const user = {
-			user_id: body.data.user_id,
-			client_id: body.data.client_id,
-			accesses: body.data.accesses || []
+			user_id: res.data.data.user_id,
+			client_id: res.data.data.client_id,
+			accesses: res.data.data.accesses || []
 		};
 
 		setCachedUser(token, user);

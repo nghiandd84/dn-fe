@@ -62,8 +62,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 			if (isAdminApi) {
 				return json({ status: 401, data: { error_type: 'unauthorized' } }, { status: 401 });
 			}
-			console.log('Redirect to authenticate');
-			throw redirect(302, `/authenticate${event.url.search}`);
+			// Redirect back to the original authenticate URL (with client_id etc.) if available
+			const loginUrl = event.cookies.get('auth_login_url') || '/authenticate';
+			throw redirect(302, loginUrl);
 		}
 
 		event.locals.token = getToken(event.cookies);

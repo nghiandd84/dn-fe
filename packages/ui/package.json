@@ -4,8 +4,10 @@
 	"private": true,
 	"type": "module",
 	"exports": {
+		".": "./src/lib/index.ts",
 		"./CrudTable.svelte": "./src/lib/CrudTable.svelte",
 		"./ConfirmModal.svelte": "./src/lib/ConfirmModal.svelte",
+		"./SidebarFooter.svelte": "./src/lib/SidebarFooter.svelte",
 		"./types": "./src/lib/types.ts",
 		"./fingerprint": "./src/lib/fingerprint.ts",
 		"./session": "./src/lib/session.ts",

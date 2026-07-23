@@ -27,6 +27,36 @@
 	let showDetail = $state(false);
 	let detailItem: any = $state(null);
 
+	// ─── Inline translations ──────────────────────────────────────────────────
+	let translations: any[] = $state([]);
+	let translationsLoading = $state(false);
+
+	async function loadTranslations(itemId: string) {
+		translationsLoading = true;
+		const allRows: any[] = [];
+		let currentPage = 1;
+		let totalPages = 1;
+		do {
+			const res = await fetch(
+				`/api/lookup/lookup-types/${typeCode}/items/${itemId}/translations?page=${currentPage}&page_size=20`,
+				{ headers: { 'X-Client-Fingerprint': get(fingerprint) } }
+			);
+			const json = await res.json();
+			allRows.push(...(json.data?.result || []));
+			totalPages = json.data?.total_page || 1;
+			currentPage++;
+		} while (currentPage <= totalPages);
+		translations = allRows;
+		translationsLoading = false;
+	}
+
+	function openDetail(item: any) {
+		detailItem = item;
+		showDetail = true;
+		translations = [];
+		loadTranslations(item.id);
+	}
+
 	function boolDisplay(v: any): string {
 		return v === true ? '✓' : v === false ? '✗' : '—';
 	}
@@ -172,7 +202,7 @@
 						<td>{boolDisplay(item.is_active)}</td>
 						<td>{boolDisplay(item.is_default)}</td>
 						<td class="actions">
-							<button class="btn btn-sm btn-info" onclick={() => { detailItem = item; showDetail = true; }}>{$LL.crud_table.view()}</button>
+							<button class="btn btn-sm btn-info" onclick={() => openDetail(item)}>{$LL.crud_table.view()}</button>
 							<button class="btn btn-sm" onclick={() => openEdit(item)}>{$LL.crud_table.edit()}</button>
 							<a href="/admin/lookup-types/{typeCode}/items/{item.id}/translations" class="btn btn-sm btn-secondary">{$LL.lookup_items_page.view_translations()}</a>
 							<button class="btn btn-sm btn-danger" onclick={() => requestDelete(item.id)}>{$LL.crud_table.delete()}</button>
@@ -191,44 +221,120 @@
 </div>
 
 {#if showModal}
-	<div class="modal-overlay" onclick={() => showModal = false} role="presentation">
+	<div class="modal-overlay" role="presentation">
 		<!-- svelte-ignore a11y_interactive_supports_focus -->
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<div class="modal" onclick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" tabindex="-1">
-			<h3>{editingItem ? $LL.crud_table.edit_title({ resource: 'item' }) : $LL.crud_table.create_title({ resource: 'item' })}</h3>
+		<div class="modal form-modal" onclick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" tabindex="-1">
+
+			<div class="detail-header">
+				<div class="detail-title-row">
+					<h3 class="detail-name">
+						{editingItem ? $LL.crud_table.edit_title({ resource: 'item' }) : $LL.crud_table.create_title({ resource: 'item' })}
+					</h3>
+				</div>
+			</div>
+
 			<form onsubmit={(e) => { e.preventDefault(); handleSave(); }}>
-				<div class="form-group">
-					<label for="code">{$LL.lookup_items_page.col_code()}</label>
-					<input id="code" type="text" required bind:value={formData.code} />
+				<div class="detail-sections">
+
+					<section class="detail-section">
+						<h4 class="section-title">General</h4>
+						<div class="form-grid">
+							<div class="form-cell">
+								<label class="cell-label" for="code">{$LL.lookup_items_page.col_code()} <span class="required">*</span></label>
+								<input id="code" class="cell-input" type="text" required bind:value={formData.code} placeholder="e.g. USD" />
+							</div>
+							<div class="form-cell">
+								<label class="cell-label" for="sort_order">{$LL.lookup_items_page.col_sort_order()}</label>
+								<input id="sort_order" class="cell-input" type="number" bind:value={formData.sort_order} placeholder="0" />
+							</div>
+							<div class="form-cell full-width">
+								<label class="cell-label" for="name">{$LL.lookup_items_page.col_name()} <span class="required">*</span></label>
+								<input id="name" class="cell-input" type="text" required bind:value={formData.name} placeholder="Display name" />
+							</div>
+							<div class="form-cell full-width">
+								<label class="cell-label" for="url">URL</label>
+								<input id="url" class="cell-input" type="text" bind:value={formData.url} placeholder="https://..." />
+							</div>
+						</div>
+					</section>
+
+					<section class="detail-section">
+						<h4 class="section-title">Flags</h4>
+						<div class="form-grid">
+							<div class="form-cell toggle-cell">
+								<span class="cell-label">{$LL.lookup_items_page.col_active()}</span>
+								<label class="toggle">
+									<input type="checkbox" bind:checked={formData.is_active} />
+									<span class="toggle-options">
+										<span class="toggle-opt toggle-opt-no">{$LL.crud_table.no()}</span>
+										<span class="toggle-opt toggle-opt-yes">{$LL.crud_table.yes()}</span>
+									</span>
+								</label>
+							</div>
+							<div class="form-cell toggle-cell">
+								<span class="cell-label">{$LL.lookup_items_page.col_is_default()}</span>
+								<label class="toggle">
+									<input type="checkbox" bind:checked={formData.is_default} />
+									<span class="toggle-options">
+										<span class="toggle-opt toggle-opt-no">{$LL.crud_table.no()}</span>
+										<span class="toggle-opt toggle-opt-yes">{$LL.crud_table.yes()}</span>
+									</span>
+								</label>
+							</div>
+						</div>
+					</section>
+
+					<section class="detail-section">
+						<div class="section-title-row">
+							<h4 class="section-title">Meta</h4>
+							<button type="button" class="add-meta-btn" onclick={() => {
+								if (!formData.meta) formData.meta = {};
+								formData.meta = { ...formData.meta, '': '' };
+							}}>+ Add field</button>
+						</div>
+						{#if formData.meta && Object.keys(formData.meta).length > 0}
+							<div class="meta-editor">
+								{#each Object.entries(formData.meta) as [key, value], i}
+									<div class="meta-row-edit">
+										<input
+											class="meta-key-input"
+											type="text"
+											placeholder="key"
+											value={key}
+											oninput={(e) => {
+												const newKey = (e.target as HTMLInputElement).value;
+												const entries = Object.entries(formData.meta);
+												entries[i] = [newKey, value];
+												formData.meta = Object.fromEntries(entries);
+											}}
+										/>
+										<span class="meta-sep">:</span>
+										<input
+											class="meta-val-input"
+											type="text"
+											placeholder="value"
+											value={String(value)}
+											oninput={(e) => {
+												const entries = Object.entries(formData.meta);
+												entries[i] = [key, (e.target as HTMLInputElement).value];
+												formData.meta = Object.fromEntries(entries);
+											}}
+										/>
+										<button type="button" class="meta-remove-btn" onclick={() => {
+											const entries = Object.entries(formData.meta).filter((_, idx) => idx !== i);
+											formData.meta = Object.fromEntries(entries);
+										}}>✕</button>
+									</div>
+								{/each}
+							</div>
+						{:else}
+							<p class="meta-empty">No metadata. Click "+ Add field" to add.</p>
+						{/if}
+					</section>
+
 				</div>
-				<div class="form-group">
-					<label for="name">{$LL.lookup_items_page.col_name()}</label>
-					<input id="name" type="text" required bind:value={formData.name} />
-				</div>
-				<div class="form-group">
-					<label for="sort_order">{$LL.lookup_items_page.col_sort_order()}</label>
-					<input id="sort_order" type="number" bind:value={formData.sort_order} />
-				</div>
-				<div class="form-group form-group-checkbox">
-					<label>{$LL.lookup_items_page.col_active()}</label>
-					<label class="toggle">
-						<input type="checkbox" bind:checked={formData.is_active} />
-						<span class="toggle-options">
-							<span class="toggle-opt toggle-opt-no">{$LL.crud_table.no()}</span>
-							<span class="toggle-opt toggle-opt-yes">{$LL.crud_table.yes()}</span>
-						</span>
-					</label>
-				</div>
-				<div class="form-group form-group-checkbox">
-					<label>{$LL.lookup_items_page.col_is_default()}</label>
-					<label class="toggle">
-						<input type="checkbox" bind:checked={formData.is_default} />
-						<span class="toggle-options">
-							<span class="toggle-opt toggle-opt-no">{$LL.crud_table.no()}</span>
-							<span class="toggle-opt toggle-opt-yes">{$LL.crud_table.yes()}</span>
-						</span>
-					</label>
-				</div>
+
 				<div class="modal-actions">
 					<button type="button" class="btn" onclick={() => showModal = false}>{$LL.crud_table.cancel()}</button>
 					<button type="submit" class="btn btn-primary">{$LL.crud_table.save()}</button>
@@ -239,26 +345,109 @@
 {/if}
 
 {#if showDetail && detailItem}
-	<div class="modal-overlay" onclick={() => showDetail = false} role="presentation">
+	<div class="modal-overlay" role="presentation">
 		<!-- svelte-ignore a11y_interactive_supports_focus -->
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<div class="modal" onclick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" tabindex="-1">
-			<h3>{$LL.crud_table.detail_title()}</h3>
-			<dl class="detail-list">
-				<div class="detail-row"><dt>ID</dt><dd class="mono">{detailItem.id}</dd></div>
-				<div class="detail-row"><dt>{$LL.lookup_items_page.col_code()}</dt><dd><span class="code-badge">{detailItem.code}</span></dd></div>
-				<div class="detail-row"><dt>{$LL.lookup_items_page.col_name()}</dt><dd>{detailItem.name}</dd></div>
-				<div class="detail-row"><dt>{$LL.lookup_items_page.col_sort_order()}</dt><dd>{detailItem.sort_order ?? 0}</dd></div>
-				<div class="detail-row"><dt>{$LL.lookup_items_page.col_active()}</dt><dd>{boolDisplay(detailItem.is_active)}</dd></div>
-				<div class="detail-row"><dt>{$LL.lookup_items_page.col_is_default()}</dt><dd>{boolDisplay(detailItem.is_default)}</dd></div>
-				<div class="detail-row"><dt>URL</dt><dd class="mono">{detailItem.url || '—'}</dd></div>
-				<div class="detail-row"><dt>Meta</dt><dd class="mono">{JSON.stringify(detailItem.meta) || '—'}</dd></div>
-				<div class="detail-row"><dt>Tenants</dt><dd>{detailItem.tenants?.join(', ') || '—'}</dd></div>
-				<div class="detail-row">
-					<dt>{$LL.lookup_items_page.view_translations()}</dt>
-					<dd><a href="/admin/lookup-types/{typeCode}/items/{detailItem.id}/translations" class="btn-link">{$LL.lookup_items_page.view_translations()} →</a></dd>
+		<div class="modal detail-modal" onclick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" tabindex="-1">
+			<div class="detail-header">
+				<div class="detail-title-row">
+					<span class="code-badge code-badge-lg">{detailItem.code}</span>
+					<h3 class="detail-name">{detailItem.name}</h3>
+					<a
+						href="/admin/lookup-types/{typeCode}/items/{detailItem.id}/translations"
+						class="translations-btn"
+					>
+						🌐 {$LL.lookup_items_page.view_translations()}
+					</a>
 				</div>
-			</dl>
+				<div class="detail-badges">
+					<span class="status-badge" class:active={detailItem.is_active} class:inactive={!detailItem.is_active}>
+						{detailItem.is_active ? '✓ Active' : '✗ Inactive'}
+					</span>
+					{#if detailItem.is_default}
+						<span class="default-badge">★ Default</span>
+					{/if}
+				</div>
+			</div>
+
+			<div class="detail-sections">
+				<section class="detail-section">
+					<h4 class="section-title">General</h4>
+					<div class="detail-grid">
+						<div class="detail-cell">
+							<span class="cell-label">ID</span>
+							<span class="cell-value mono">{detailItem.id}</span>
+						</div>
+						<div class="detail-cell">
+							<span class="cell-label">{$LL.lookup_items_page.col_sort_order()}</span>
+							<span class="cell-value">{detailItem.sort_order ?? 0}</span>
+						</div>
+						{#if detailItem.url}
+							<div class="detail-cell full-width">
+								<span class="cell-label">URL</span>
+								<span class="cell-value mono">{detailItem.url}</span>
+							</div>
+						{/if}
+						{#if detailItem.tenants?.length}
+							<div class="detail-cell full-width">
+								<span class="cell-label">Tenants</span>
+								<div class="tag-list">
+									{#each detailItem.tenants as t}
+										<span class="tag">{t}</span>
+									{/each}
+								</div>
+							</div>
+						{/if}
+					</div>
+				</section>
+
+				{#if detailItem.meta && Object.keys(detailItem.meta).length > 0}
+					<section class="detail-section">
+						<h4 class="section-title">Meta</h4>
+						<div class="meta-grid">
+							{#each Object.entries(detailItem.meta) as [key, value]}
+								<div class="detail-cell">
+									<span class="cell-label">{key}</span>
+									<span class="cell-value mono">{typeof value === 'object' ? JSON.stringify(value) : String(value)}</span>
+								</div>
+							{/each}
+						</div>
+					</section>
+				{/if}
+
+				<section class="detail-section">
+					<h4 class="section-title">Timestamps</h4>
+					<div class="detail-grid">
+						<div class="detail-cell">
+							<span class="cell-label">Created</span>
+							<span class="cell-value mono">{detailItem.created_at ?? '—'}</span>
+						</div>
+						<div class="detail-cell">
+							<span class="cell-label">Updated</span>
+							<span class="cell-value mono">{detailItem.updated_at ?? '—'}</span>
+						</div>
+					</div>
+				</section>
+
+				<section class="detail-section translations-section">
+						<h4 class="section-title">Translations</h4>
+						{#if translationsLoading}
+							<p class="trans-loading">Loading…</p>
+						{:else if translations.length === 0}
+							<p class="trans-empty">No translations found.</p>
+						{:else}
+							<div class="trans-list">
+								{#each translations as t}
+									<div class="trans-row">
+										<span class="locale-badge">{t.locale}</span>
+										<span class="trans-name">{t.name}</span>
+									</div>
+								{/each}
+							</div>
+						{/if}
+					</section>
+			</div>
+
 			<div class="modal-actions">
 				<button class="btn" onclick={() => showDetail = false}>{$LL.crud_table.close()}</button>
 			</div>
@@ -307,7 +496,7 @@
 	.form-group-checkbox { display: flex; align-items: center; gap: 0.75rem; }
 	.form-group-checkbox label { margin-bottom: 0; }
 	.form-group input { width: 100%; padding: 0.4rem; border: 1px solid #ddd; border-radius: 4px; }
-	.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
+	.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid #e5e7eb; }
 	.toggle { display: inline-flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; }
 	.toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
 	.toggle-options { display: inline-flex; border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden; font-size: 0.82rem; font-weight: 600; }
@@ -320,6 +509,62 @@
 	dt { font-weight: 600; font-size: 0.85rem; color: #555; }
 	dd { font-size: 0.9rem; color: #111; word-break: break-all; margin: 0; }
 	.mono { font-family: monospace; font-size: 0.8rem; }
-	.btn-link { color: #4f46e5; font-weight: 600; font-size: 0.85rem; }
 	.row-deleting { background: #fee2e2 !important; opacity: 0.6; }
+
+	/* ── Form modal ── */
+	.form-modal { min-width: 480px; max-width: 620px; width: max-content; padding: 0; overflow: hidden; }
+	.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+	.form-cell { background: #f9fafb; border: 1px solid #f3f4f6; border-radius: 6px; padding: 0.4rem 0.6rem; display: flex; flex-direction: column; gap: 0.25rem; }
+	.form-cell.full-width { grid-column: 1 / -1; }
+	.form-cell.toggle-cell { flex-direction: row; align-items: center; justify-content: space-between; }
+	.cell-input { border: none; background: transparent; font-size: 0.875rem; color: #111827; outline: none; width: 100%; padding: 0.1rem 0; }
+	.cell-input:focus { border-bottom: 1px solid #4f46e5; }
+	.cell-input::placeholder { color: #d1d5db; }
+	.required { color: #ef4444; }
+	.section-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem; }
+	.add-meta-btn { font-size: 0.75rem; font-weight: 600; color: #4f46e5; background: #ede9fe; border: 1px solid #ddd6fe; border-radius: 4px; padding: 0.15rem 0.5rem; cursor: pointer; }
+	.add-meta-btn:hover { background: #ddd6fe; }
+	.meta-editor { display: flex; flex-direction: column; gap: 0.35rem; }
+	.meta-row-edit { display: flex; align-items: center; gap: 0.4rem; background: #f9fafb; border: 1px solid #f3f4f6; border-radius: 6px; padding: 0.3rem 0.6rem; }
+	.meta-key-input { font-size: 0.82rem; font-family: monospace; color: #6d28d9; border: none; background: transparent; outline: none; width: 120px; font-weight: 600; }
+	.meta-sep { color: #9ca3af; font-weight: 700; }
+	.meta-val-input { font-size: 0.82rem; font-family: monospace; color: #111827; border: none; background: transparent; outline: none; flex: 1; }
+	.meta-remove-btn { font-size: 0.75rem; color: #9ca3af; background: none; border: none; cursor: pointer; padding: 0 0.2rem; line-height: 1; }
+	.meta-remove-btn:hover { color: #ef4444; }
+	.meta-empty { font-size: 0.82rem; color: #9ca3af; margin: 0; padding: 0.5rem 0; }
+
+	/* ── Detail modal ── */
+	.detail-modal { min-width: 480px; max-width: 680px; width: max-content; padding: 0; overflow: hidden; }
+	.detail-header { padding: 1.25rem 1.5rem 1rem; background: #f8faff; border-bottom: 1px solid #e5e7eb; }
+	.detail-title-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+	.code-badge-lg { font-size: 0.9rem; padding: 0.2rem 0.6rem; }
+	.detail-name { font-size: 1.1rem; font-weight: 700; color: #111827; margin: 0; flex: 1; }
+	.translations-btn { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.75rem; background: #4f46e5; color: #fff; border-radius: 6px; font-size: 0.8rem; font-weight: 600; text-decoration: none; white-space: nowrap; margin-left: auto; border: none; cursor: pointer; }
+	.translations-btn:hover { background: #4338ca; }
+	.translations-btn:hover { background: #4338ca; }
+	.detail-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+	.status-badge { display: inline-flex; align-items: center; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+	.status-badge.active { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+	.status-badge.inactive { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+	.default-badge { display: inline-flex; align-items: center; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; background: #fef9c3; color: #854d0e; border: 1px solid #fde68a; }
+	.detail-sections { padding: 0.75rem 1.5rem 0.5rem; display: flex; flex-direction: column; gap: 1rem; }
+	.detail-section { display: flex; flex-direction: column; gap: 0.5rem; }
+	.section-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; margin: 0 0 0.25rem; }
+	.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+	.meta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem; }
+	.detail-cell { background: #f9fafb; border: 1px solid #f3f4f6; border-radius: 6px; padding: 0.4rem 0.6rem; display: flex; flex-direction: column; gap: 0.15rem; }
+	.full-width { grid-column: 1 / -1; }
+	.cell-label { font-size: 0.7rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; }
+	.cell-value { font-size: 0.85rem; color: #111827; word-break: break-all; }
+	.tag-list { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.15rem; }
+	.tag { background: #ede9fe; color: #5b21b6; border: 1px solid #ddd6fe; border-radius: 4px; padding: 0.1rem 0.4rem; font-size: 0.78rem; font-weight: 500; }
+
+	/* ── Inline translations panel ── */
+	.translations-section { border-top: 1px solid #e5e7eb; padding-top: 0.75rem; }
+	.trans-list { display: flex; flex-direction: column; gap: 0.3rem; }
+	.trans-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem 0.6rem; background: #f9fafb; border: 1px solid #f3f4f6; border-radius: 6px; }
+	.trans-name { font-size: 0.875rem; color: #111827; }
+	.trans-loading { font-size: 0.82rem; color: #9ca3af; margin: 0; }
+	.trans-empty { font-size: 0.82rem; color: #9ca3af; margin: 0; }
+	.btn-link { color: #4f46e5; font-weight: 600; font-size: 0.85rem; }
 </style>

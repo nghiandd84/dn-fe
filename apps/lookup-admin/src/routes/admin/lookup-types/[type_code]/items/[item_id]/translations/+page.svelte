@@ -7,6 +7,37 @@
 	let { data } = $props();
 	const typeCode = data.typeCode;
 	const itemId = data.itemId;
+	const itemCode = data.itemCode;
+	const itemName = data.itemName;
+	const backHref = data.from === 'items'
+		? '/admin/items'
+		: `/admin/lookup-types/${data.typeCode}/items`;
+
+	const LOCALES = [
+		{ value: 'en-US', label: 'en-US — English (US)' },
+		{ value: 'en-GB', label: 'en-GB — English (UK)' },
+		{ value: 'vi-VN', label: 'vi-VN — Vietnamese' },
+		{ value: 'zh-CN', label: 'zh-CN — Chinese (Simplified)' },
+		{ value: 'zh-TW', label: 'zh-TW — Chinese (Traditional)' },
+		{ value: 'ja-JP', label: 'ja-JP — Japanese' },
+		{ value: 'ko-KR', label: 'ko-KR — Korean' },
+		{ value: 'fr-FR', label: 'fr-FR — French' },
+		{ value: 'de-DE', label: 'de-DE — German' },
+		{ value: 'es-ES', label: 'es-ES — Spanish (Spain)' },
+		{ value: 'es-MX', label: 'es-MX — Spanish (Mexico)' },
+		{ value: 'pt-BR', label: 'pt-BR — Portuguese (Brazil)' },
+		{ value: 'pt-PT', label: 'pt-PT — Portuguese (Portugal)' },
+		{ value: 'it-IT', label: 'it-IT — Italian' },
+		{ value: 'nl-NL', label: 'nl-NL — Dutch' },
+		{ value: 'pl-PL', label: 'pl-PL — Polish' },
+		{ value: 'ru-RU', label: 'ru-RU — Russian' },
+		{ value: 'ar-SA', label: 'ar-SA — Arabic (Saudi Arabia)' },
+		{ value: 'th-TH', label: 'th-TH — Thai' },
+		{ value: 'id-ID', label: 'id-ID — Indonesian' },
+		{ value: 'ms-MY', label: 'ms-MY — Malay' },
+		{ value: 'tr-TR', label: 'tr-TR — Turkish' },
+		{ value: 'hi-IN', label: 'hi-IN — Hindi' },
+	];
 
 	// ─── Table state ─────────────────────────────────────────────────────────
 	let items: any[] = $state([]);
@@ -89,9 +120,16 @@
 </script>
 
 <div class="page-header">
-	<a href="/admin/lookup-types/{typeCode}/items" class="back-link">{$LL.lookup_translations_page.back()}</a>
-	<h1>{$LL.lookup_translations_page.title()} — <span class="item-id-badge">{itemId}</span></h1>
-	<p class="sub-label">{$LL.lookup_translations_page.item_label()}: <span class="type-code">{typeCode}</span></p>
+	<a href={backHref} class="back-link">{$LL.lookup_translations_page.back()}</a>
+	<h1>{$LL.lookup_translations_page.title()}</h1>
+	<div class="item-meta">
+		<span class="meta-chip type-chip">{typeCode}</span>
+		<span class="meta-sep">›</span>
+		<span class="meta-chip code-chip">{itemCode || itemId}</span>
+		{#if itemName}
+			<span class="item-name">{itemName}</span>
+		{/if}
+	</div>
 </div>
 
 <div class="crud-table">
@@ -139,7 +177,7 @@
 </div>
 
 {#if showModal}
-	<div class="modal-overlay" onclick={() => showModal = false} role="presentation">
+	<div class="modal-overlay" role="presentation">
 		<!-- svelte-ignore a11y_interactive_supports_focus -->
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<div class="modal" onclick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" tabindex="-1">
@@ -147,11 +185,22 @@
 			<form onsubmit={(e) => { e.preventDefault(); handleSave(); }}>
 				<div class="form-group">
 					<label for="locale">{$LL.lookup_translations_page.col_locale()}</label>
-					<input id="locale" type="text" required placeholder="e.g. en-US, vi-VN" bind:value={formData.locale} />
+					{#if editingItem}
+						<div class="locale-readonly">
+							<span class="locale-badge">{formData.locale}</span>
+						</div>
+					{:else}
+						<select id="locale" required bind:value={formData.locale} class="locale-select">
+							<option value="" disabled selected>{$LL.crud_table.select_placeholder()}</option>
+							{#each LOCALES as loc}
+								<option value={loc.value}>{loc.label}</option>
+							{/each}
+						</select>
+					{/if}
 				</div>
 				<div class="form-group">
-					<label for="name">{$LL.lookup_translations_page.col_name()}</label>
-					<input id="name" type="text" required bind:value={formData.name} />
+					<label for="tname">{$LL.lookup_translations_page.col_name()}</label>
+					<input id="tname" type="text" required bind:value={formData.name} placeholder="Translated name" />
 				</div>
 				<div class="modal-actions">
 					<button type="button" class="btn" onclick={() => showModal = false}>{$LL.crud_table.cancel()}</button>
@@ -173,10 +222,13 @@
 <style>
 	.page-header { margin-bottom: 1.5rem; }
 	.back-link { font-size: 0.85rem; color: #6b7280; display: inline-block; margin-bottom: 0.4rem; }
-	h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.2rem; }
-	.sub-label { font-size: 0.85rem; color: #6b7280; margin-top: 0.25rem; }
-	.item-id-badge { font-family: monospace; font-size: 0.9rem; background: #f0f9ff; color: #0369a1; padding: 0.1rem 0.4rem; border-radius: 4px; border: 1px solid #bae6fd; }
-	.type-code { font-family: monospace; font-weight: 600; color: #4f46e5; }
+	h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.4rem; }
+	.item-meta { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+	.meta-chip { font-family: monospace; font-size: 0.82rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 4px; }
+	.type-chip { background: #ede9fe; color: #5b21b6; border: 1px solid #ddd6fe; }
+	.code-chip { background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; }
+	.meta-sep { color: #d1d5db; font-size: 0.9rem; }
+	.item-name { font-size: 0.9rem; color: #374151; font-weight: 500; }
 	.crud-table { width: 100%; }
 	.toolbar { margin-bottom: 1rem; }
 	table { width: 100%; border-collapse: collapse; }
@@ -198,4 +250,6 @@
 	.form-group input { width: 100%; padding: 0.4rem; border: 1px solid #ddd; border-radius: 4px; }
 	.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
 	.row-deleting { background: #fee2e2 !important; opacity: 0.6; }
+	.locale-select { width: 100%; padding: 0.4rem; border: 1px solid #ddd; border-radius: 4px; font-size: 0.875rem; background: #fff; }
+	.locale-readonly { padding: 0.3rem 0; }
 </style>
