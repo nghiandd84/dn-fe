@@ -4,6 +4,7 @@
 	import { get } from 'svelte/store';
 	import { LL } from '$i18n/i18n-util';
 	import ConfirmModal from './ConfirmModal.svelte';
+	import { toast } from './toast.js';
 
 	let {
 		resource,
@@ -60,6 +61,8 @@
 	let remoteOptionsCache: Record<string, { value: string; label: string }[]> = $state({});
 	let showDetail = $state(false);
 	let detailItem: any = $state(null);
+	let saveError = $state<string | null>(null);
+	let saving = $state(false);
 
 	function getNestedValue(obj: any, path: string): any {
 		return path.split('.').reduce((cur, key) => cur?.[key], obj);
@@ -101,14 +104,38 @@
 			? `${apiPrefix}/${resource}/${editingItem.id}`
 			: `${apiPrefix}/${resource}`;
 		const method = editingItem ? 'PATCH' : 'POST';
-		await fetch(url, {
-			method,
-			headers: { 'Content-Type': 'application/json', 'X-Client-Fingerprint': fp },
-			body: JSON.stringify(formData)
-		});
+		saving = true;
+		saveError = null;
+		try {
+			const res = await fetch(url, {
+				method,
+				headers: { 'Content-Type': 'application/json', 'X-Client-Fingerprint': fp },
+				body: JSON.stringify(formData)
+			});
+			const json = await res.json();
+			if (!res.ok || json?.data?.ok === false) {
+				const msg = json?.data?.details
+					|| json?.data?.error_type
+					|| json?.message
+					|| `Error ${res.status}`;
+				const errMsg = typeof msg === 'string' ? msg : JSON.stringify(msg);
+				saveError = errMsg;
+				toast.error(errMsg);
+				return;
+			}
+			toast.success(editingItem ? `${resource} updated` : `${resource} created`);
+		} catch (e: any) {
+			const errMsg = e?.message ?? 'Network error';
+			saveError = errMsg;
+			toast.error(errMsg);
+			return;
+		} finally {
+			saving = false;
+		}
 		showModal = false;
 		editingItem = null;
 		formData = {};
+		saveError = null;
 		await fetchData();
 	}
 
@@ -126,10 +153,21 @@
 		if (!deletingId) return;
 		const id = deletingId;
 		// keep deletingId set so the row stays highlighted during the request
-		await fetch(`${apiPrefix}/${resource}/${id}`, {
-			method: 'DELETE',
-			headers: { 'X-Client-Fingerprint': get(fingerprint) }
-		});
+		try {
+			const res = await fetch(`${apiPrefix}/${resource}/${id}`, {
+				method: 'DELETE',
+				headers: { 'X-Client-Fingerprint': get(fingerprint) }
+			});
+			if (!res.ok) {
+				const json = await res.json().catch(() => ({}));
+				const msg = json?.data?.details || json?.data?.error_type || `Error ${res.status}`;
+				toast.error(typeof msg === 'string' ? msg : JSON.stringify(msg));
+			} else {
+				toast.success(`${resource} deleted`);
+			}
+		} catch (e: any) {
+			toast.error(e?.message ?? 'Network error');
+		}
 		deletingId = null;
 		await fetchData();
 	}
@@ -142,6 +180,7 @@
 	function openCreate() {
 		editingItem = null;
 		formData = {};
+		saveError = null;
 		loadRemoteOptions();
 		onCreateOpen?.(formData);
 		showModal = true;
@@ -150,6 +189,7 @@
 	function openEdit(item: any) {
 		editingItem = item;
 		formData = { ...item };
+		saveError = null;
 		loadRemoteOptions();
 		onEdit?.(item, formData);
 		showModal = true;
@@ -356,9 +396,12 @@
 						{@render editSnippet(editingItem, formData)}
 					</div>
 				{/if}
+				{#if saveError}
+					<div class="save-error" role="alert">{saveError}</div>
+				{/if}
 				<div class="modal-actions">
 					<button type="button" class="btn" onclick={() => showModal = false}>{$LL.crud_table.cancel()}</button>
-					<button type="submit" class="btn btn-primary">{$LL.crud_table.save()}</button>
+					<button type="submit" class="btn btn-primary" disabled={saving}>{saving ? '…' : $LL.crud_table.save()}</button>
 				</div>
 			</form>
 		</div>
@@ -421,6 +464,7 @@
 	.form-group-checkbox label { margin-bottom: 0; }
 	.form-group input, .form-group select { width: 100%; padding: 0.4rem; border: 1px solid #ddd; border-radius: 4px; }
 	.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
+	.save-error { background: #fef2f2; border: 1px solid #fca5a5; color: #b91c1c; border-radius: 4px; padding: 0.5rem 0.75rem; font-size: 0.85rem; margin-top: 0.75rem; word-break: break-word; }
 	/* Toggle switch */
 	.toggle { display: inline-flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; }
 	.toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
