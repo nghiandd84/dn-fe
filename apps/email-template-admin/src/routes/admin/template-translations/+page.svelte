@@ -33,10 +33,10 @@
 	apiPrefix="/api/email-template"
 	columns={[
 		{ key: 'id', label: $LL.template_translations_page.col_id(), sortable: true, hideInTable: true },
-		{ key: 'email_template.name', label: $LL.template_translations_page.col_template_id(), filterable: true, operators: ['li', 'eq', 'sw'], format: (_v, row) => row?.email_template?.name ?? row?.template_id ?? '—' },
+		{ key: 'email_template[name]', label: $LL.template_translations_page.col_template_id(), filterable: true, operators: ['li', 'eq', 'sw'], format: (_v, row) => row?.email_template?.name ?? row?.template_id ?? '—' },
 		{ key: 'language_code', label: $LL.template_translations_page.col_language_code(), sortable: true, filterable: true, operators: ['eq', 'li'] },
 		{ key: 'subject', label: $LL.template_translations_page.col_subject(), sortable: true, filterable: true, operators: ['eq', 'li', 'sw'] },
-		{ key: 'body', label: $LL.template_translations_page.col_body(), format: truncateBody },
+		{ key: 'body', label: $LL.template_translations_page.col_body(), format: truncateBody, hideInTable: true },
 		{ key: 'version_name', label: $LL.template_translations_page.col_version_name(), sortable: true, filterable: true, operators: ['eq', 'li'] },
 		{ key: 'user_email', label: 'User Email', format: (v) => v ?? '—' },
 		{ key: 'created_at', label: $LL.template_translations_page.col_created_at(), hideInTable: true },

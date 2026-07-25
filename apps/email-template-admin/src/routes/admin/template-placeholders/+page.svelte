@@ -11,7 +11,7 @@
 	apiPrefix="/api/email-template"
 	columns={[
 		{ key: 'id', label: $LL.template_placeholders_page.col_id(), sortable: true, hideInTable: true },
-		{ key: 'email_template.name', label: $LL.template_placeholders_page.col_template_id(), filterable: true, operators: ['li', 'eq', 'sw'], format: (_v, row) => row?.email_template?.name ?? row?.template_id ?? '—' },
+		{ key: 'email_template[name]', label: $LL.template_placeholders_page.col_template_id(), filterable: true, operators: ['li', 'eq', 'sw'], format: (_v, row) => row?.email_template?.name ?? row?.template_id ?? '—' },
 		{ key: 'placeholder_key', label: $LL.template_placeholders_page.col_placeholder_key(), sortable: true, filterable: true, operators: ['eq', 'li', 'sw'] },
 		{ key: 'description', label: $LL.template_placeholders_page.col_description(), format: (v) => v ?? '—' },
 		{ key: 'example_value', label: $LL.template_placeholders_page.col_example_value(), format: (v) => v ?? '—' },

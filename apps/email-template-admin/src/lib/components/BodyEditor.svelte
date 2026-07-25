@@ -1,4 +1,12 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte';
+	import { EditorView, keymap, lineNumbers, highlightActiveLine } from '@codemirror/view';
+	import { EditorState } from '@codemirror/state';
+	import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
+	import { html } from '@codemirror/lang-html';
+	import { oneDark } from '@codemirror/theme-one-dark';
+	import { bracketMatching, foldGutter, foldKeymap } from '@codemirror/language';
+	import { autocompletion, completionKeymap } from '@codemirror/autocomplete';
 	import { fingerprint } from '$lib/fingerprint';
 	import { get } from 'svelte/store';
 
@@ -19,17 +27,98 @@
 		required?: boolean;
 	} = $props();
 
-	// Coerce undefined to empty string — Svelte 5 rejects bind:value={undefined}
-	// when the prop has a fallback default
+	// Coerce undefined to empty string
 	$effect(() => {
 		if ((value as any) === undefined) value = '';
 	});
 
-	// ── Mode: plain text vs HTML preview ────────────────────────────────────
-	let mode = $state<'text' | 'preview'>('text');
+	// ── Mode: code editor vs HTML preview ───────────────────────────────────
+	let mode = $state<'code' | 'preview'>('code');
 
-	// ── Textarea ref for cursor-based insertion ──────────────────────────────
-	let textarea: HTMLTextAreaElement | null = $state(null);
+	// ── CodeMirror setup ────────────────────────────────────────────────────
+	let editorContainer: HTMLDivElement | null = $state(null);
+	let editorView: EditorView | null = null;
+	let isUpdatingFromProp = false;
+
+	function createEditor(container: HTMLDivElement, initialValue: string) {
+		const updateListener = EditorView.updateListener.of((update) => {
+			if (update.docChanged && !isUpdatingFromProp) {
+				value = update.state.doc.toString();
+			}
+		});
+
+		const state = EditorState.create({
+			doc: initialValue,
+			extensions: [
+				lineNumbers(),
+				highlightActiveLine(),
+				history(),
+				foldGutter(),
+				bracketMatching(),
+				autocompletion(),
+				html(),
+				oneDark,
+				keymap.of([
+					indentWithTab,
+					...defaultKeymap,
+					...historyKeymap,
+					...foldKeymap,
+					...completionKeymap,
+				]),
+				updateListener,
+				EditorView.theme({
+					'&': { borderRadius: '0 4px 4px 4px', overflow: 'hidden' },
+					'.cm-scroller': { minHeight: '220px', maxHeight: '480px', overflow: 'auto', fontFamily: "'Fira Code', 'Courier New', monospace", fontSize: '0.85rem' },
+				}),
+			],
+		});
+
+		editorView = new EditorView({ state, parent: container });
+	}
+
+	// Mount/destroy the editor when the container div appears (code mode)
+	$effect(() => {
+		if (mode === 'code' && editorContainer && !editorView) {
+			createEditor(editorContainer, value ?? '');
+		}
+		if (mode !== 'code' && editorView) {
+			editorView.destroy();
+			editorView = null;
+		}
+	});
+
+	// Keep editor in sync when value changes externally (e.g. parent resets form)
+	$effect(() => {
+		if (!editorView) return;
+		const current = editorView.state.doc.toString();
+		if (current !== value) {
+			isUpdatingFromProp = true;
+			editorView.dispatch({
+				changes: { from: 0, to: current.length, insert: value ?? '' }
+			});
+			isUpdatingFromProp = false;
+		}
+	});
+
+	onDestroy(() => {
+		editorView?.destroy();
+		editorView = null;
+	});
+
+	// ── Insert placeholder at cursor ─────────────────────────────────────────
+	function insertPlaceholder(key: string) {
+		const token = `{{${key}}}`;
+		if (editorView) {
+			const { from, to } = editorView.state.selection.main;
+			editorView.dispatch({
+				changes: { from, to, insert: token },
+				selection: { anchor: from + token.length }
+			});
+			editorView.focus();
+		} else {
+			value = (value ?? '') + token;
+		}
+	}
 
 	// ── Placeholders ─────────────────────────────────────────────────────────
 	let placeholders = $state<Placeholder[]>([]);
@@ -66,24 +155,6 @@
 			placeholdersLoading = false;
 		}
 	}
-
-	// ── Insert placeholder at cursor position ────────────────────────────────
-	function insertPlaceholder(key: string) {
-		const token = `{{${key}}}`;
-		if (!textarea) {
-			value = (value ?? '') + token;
-			return;
-		}
-		const start = textarea.selectionStart ?? value.length;
-		const end = textarea.selectionEnd ?? value.length;
-		value = value.slice(0, start) + token + value.slice(end);
-		// Restore focus and move cursor after the inserted token
-		requestAnimationFrame(() => {
-			textarea?.focus();
-			const pos = start + token.length;
-			textarea?.setSelectionRange(pos, pos);
-		});
-	}
 </script>
 
 <div class="body-editor">
@@ -92,9 +163,9 @@
 		<button
 			type="button"
 			class="tab-btn"
-			class:active={mode === 'text'}
-			onclick={() => (mode = 'text')}
-		>✏️ Edit</button>
+			class:active={mode === 'code'}
+			onclick={() => (mode = 'code')}
+		>&#60;/&#62; HTML</button>
 		<button
 			type="button"
 			class="tab-btn"
@@ -131,20 +202,16 @@
 		<div class="placeholder-hint">Select a template above to see available placeholders.</div>
 	{/if}
 
-	<!-- Editor / Preview -->
-	{#if mode === 'text'}
-		<textarea
-			bind:this={textarea}
-			bind:value
-			{required}
-			rows="10"
-			class="body-textarea"
-			placeholder="Enter plain text or HTML…"
-		></textarea>
+	<!-- CodeMirror editor -->
+	{#if mode === 'code'}
+		<div class="cm-wrapper" bind:this={editorContainer}></div>
+		<!-- Hidden input to satisfy browser `required` validation -->
+		{#if required}
+			<input type="text" tabindex="-1" aria-hidden="true" class="required-guard" value={value ?? ''} {required} />
+		{/if}
 	{:else}
 		<div class="body-preview">
 			{#if value?.trim()}
-				<!-- Render as HTML so the preview shows styled output -->
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html value}
 			{:else}
@@ -176,9 +243,9 @@
 		color: #6b7280;
 	}
 	.tab-btn.active {
-		background: #fff;
-		border-bottom-color: #fff;
-		color: #4f46e5;
+		background: #282c34;
+		border-bottom-color: #282c34;
+		color: #abb2bf;
 		font-weight: 600;
 	}
 
@@ -218,34 +285,28 @@
 		transition: background 0.12s;
 		white-space: nowrap;
 	}
-	.chip:hover {
-		background: #c7d2fe;
-	}
+	.chip:hover { background: #c7d2fe; }
 	.chip-required {
 		background: #fef3c7;
 		border-color: #fbbf24;
 		color: #92400e;
 	}
-	.chip-required:hover {
-		background: #fde68a;
+	.chip-required:hover { background: #fde68a; }
+
+	/* CodeMirror wrapper */
+	.cm-wrapper {
+		border-radius: 0 4px 4px 4px;
+		overflow: hidden;
+		border: 1px solid #3e4451;
 	}
 
-	/* Textarea */
-	.body-textarea {
-		width: 100%;
-		padding: 0.5rem;
-		border: 1px solid #d1d5db;
-		border-radius: 0 4px 4px 4px;
-		font-size: 0.875rem;
-		font-family: 'Courier New', monospace;
-		line-height: 1.5;
-		resize: vertical;
-		box-sizing: border-box;
-		outline: none;
-	}
-	.body-textarea:focus {
-		border-color: #4f46e5;
-		box-shadow: 0 0 0 2px #e0e7ff;
+	/* Hidden required guard */
+	.required-guard {
+		position: absolute;
+		width: 0;
+		height: 0;
+		opacity: 0;
+		pointer-events: none;
 	}
 
 	/* Preview */
