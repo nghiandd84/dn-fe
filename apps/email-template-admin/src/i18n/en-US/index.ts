@@ -59,7 +59,14 @@ const en_US: BaseTranslation = {
 		col_key: 'Key',
 		col_description: 'Description',
 		col_is_active: 'Active',
-		col_user_id: 'User ID'
+		col_user_id: 'User ID',
+		manage: 'Manage'
+	},
+	email_template_detail_layout: {
+		tab_placeholders: 'Placeholders',
+		tab_translations: 'Translations',
+		back: '← Back to Templates',
+		not_found: 'Template not found'
 	},
 	template_placeholders_page: {
 		title: 'Template Placeholders',

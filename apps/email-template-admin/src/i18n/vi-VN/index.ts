@@ -59,7 +59,14 @@ const vi_VN: Translation = {
 		col_key: 'Khóa',
 		col_description: 'Mô tả',
 		col_is_active: 'Kích hoạt',
-		col_user_id: 'ID Người dùng'
+		col_user_id: 'ID Người dùng',
+		manage: 'Quản lý'
+	},
+	email_template_detail_layout: {
+		tab_placeholders: 'Biến mẫu',
+		tab_translations: 'Bản dịch',
+		back: '← Quay lại Mẫu Email',
+		not_found: 'Không tìm thấy mẫu'
 	},
 	template_placeholders_page: {
 		title: 'Biến mẫu',

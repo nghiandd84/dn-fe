@@ -1,6 +1,11 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import { LL } from '$i18n/i18n-util';
+	import { goto } from '$app/navigation';
+
+	function handleDetail(item: any) {
+		goto(`/admin/email-templates/${item.id}/placeholders`);
+	}
 </script>
 
 <h1>{$LL.email_templates_page.title()}</h1>
@@ -19,6 +24,7 @@
 	]}
 	formFields={[]}
 	actions={{ create: true, edit: true, delete: true, detail: true }}
+	onDetail={handleDetail}
 >
 	{#snippet editSnippet(editingItem, formData)}
 		{#if editingItem?.user_email}

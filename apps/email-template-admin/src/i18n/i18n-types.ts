@@ -65,6 +65,13 @@ export type Translation = {
 		col_description: string;
 		col_is_active: string;
 		col_user_id: string;
+		manage: string;
+	};
+	email_template_detail_layout: {
+		tab_placeholders: string;
+		tab_translations: string;
+		back: string;
+		not_found: string;
 	};
 	template_placeholders_page: {
 		title: string;
@@ -180,6 +187,13 @@ export type TranslationFunctions = {
 		col_description: () => LocalizedString;
 		col_is_active: () => LocalizedString;
 		col_user_id: () => LocalizedString;
+		manage: () => LocalizedString;
+	};
+	email_template_detail_layout: {
+		tab_placeholders: () => LocalizedString;
+		tab_translations: () => LocalizedString;
+		back: () => LocalizedString;
+		not_found: () => LocalizedString;
 	};
 	template_placeholders_page: {
 		title: () => LocalizedString;
