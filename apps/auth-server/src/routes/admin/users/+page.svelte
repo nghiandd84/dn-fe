@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
-	import { LANGUAGE_OPTIONS } from '@dn-fe/ui';
+	import { LANGUAGE_OPTIONS, maskToActions } from '@dn-fe/ui';
 	import { fingerprint } from '$lib/fingerprint';
 	import { get } from 'svelte/store';
 	import { LL } from '$i18n/i18n-util';
@@ -49,7 +49,24 @@
 		searchTimer = setTimeout(() => fetchAvailable(searchAvailable), 300);
 	}
 
-	// ── Role permission expansion ─────────────────────────────────────────────
+	// ── Assign key modal state ────────────────────────────────────────────────
+	let expandedRoleId = $state<string | null>(null);
+	let rolePermissions = $state<Record<string, any[]>>({});
+	let loadingRolePerms = $state<Record<string, boolean>>({});
+
+	async function togglePermissions(roleId: string) {
+		if (expandedRoleId === roleId) { expandedRoleId = null; return; }
+		expandedRoleId = roleId;
+		if (rolePermissions[roleId]) return;
+		loadingRolePerms = { ...loadingRolePerms, [roleId]: true };
+		const res = await fetch(`/api/admin/roles/${roleId}/permissions`, {
+			headers: { 'X-Client-Fingerprint': get(fingerprint) }
+		});
+		const json = await res.json();
+		rolePermissions = { ...rolePermissions, [roleId]: json?.data?.result ?? [] };
+		loadingRolePerms = { ...loadingRolePerms, [roleId]: false };
+	}
+
 	let assigningRole = $state<any | null>(null);
 	let assignKey = $state('');
 
@@ -154,18 +171,48 @@
 						{:else}
 							{#each filteredAssigned as role (role.id)}
 								<li class="role-item">
-									<div class="role-info">
-										<span class="role-name">{role.name}</span>
-										{#if role.key}
-											<span class="role-key">{role.key}</span>
-										{/if}
+									<div class="role-row">
+										<div class="role-info">
+											<span class="role-name">{role.name}</span>
+											{#if role.key}
+												<span class="role-key">{role.key}</span>
+											{/if}
+										</div>
+										<button
+											type="button"
+											class="btn-perm"
+											class:active={expandedRoleId === role.id}
+											onclick={() => togglePermissions(role.id)}
+											title="View permissions"
+										>…</button>
+										<button
+											type="button"
+											class="btn-unassign"
+											onclick={() => unassignRole(role.id)}
+											title="Unassign"
+										>✕</button>
 									</div>
-									<button
-										type="button"
-										class="btn-unassign"
-										onclick={() => unassignRole(role.id)}
-										title="Unassign"
-									>✕</button>
+									{#if expandedRoleId === role.id}
+										<div class="perm-inline">
+											{#if loadingRolePerms[role.id]}
+												<span class="perm-inline-msg">Loading…</span>
+											{:else if !rolePermissions[role.id]?.length}
+												<span class="perm-inline-msg">No permissions</span>
+											{:else}
+												{#each rolePermissions[role.id] as perm (perm.id)}
+													<div class="perm-row">
+														<span class="perm-resource">{perm.resource}</span>
+														<span class="perm-actions">
+															{#each maskToActions(perm.mask ?? 0) as action}
+																<span class="perm-badge perm-badge--{action.toLowerCase()}">{action}</span>
+															{/each}
+															<span class="perm-raw">({perm.mask})</span>
+														</span>
+													</div>
+												{/each}
+											{/if}
+										</div>
+									{/if}
 								</li>
 							{/each}
 						{/if}
@@ -192,18 +239,20 @@
 						{:else}
 							{#each availableRoles as role (role.id)}
 								<li class="role-item">
-									<div class="role-info">
-										<span class="role-name">{role.name}</span>
-										{#if role.description}
-											<span class="role-desc">{role.description}</span>
-										{/if}
+									<div class="role-row">
+										<div class="role-info">
+											<span class="role-name">{role.name}</span>
+											{#if role.description}
+												<span class="role-desc">{role.description}</span>
+											{/if}
+										</div>
+										<button
+											type="button"
+											class="btn-assign"
+											onclick={() => openAssignModal(role)}
+											title="Assign"
+										>＋</button>
 									</div>
-									<button
-										type="button"
-										class="btn-assign"
-										onclick={() => openAssignModal(role)}
-										title="Assign"
-									>＋</button>
 								</li>
 							{/each}
 						{/if}
@@ -262,13 +311,16 @@
 	.role-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.25rem; max-height: 260px; overflow-y: auto; }
 	.role-item {
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 0.5rem;
-		padding: 0.35rem 0.6rem;
+		flex-direction: column;
 		background: #f9fafb;
 		border: 1px solid #e5e7eb;
 		border-radius: 6px;
+	}
+	.role-row {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.35rem 0.6rem;
 	}
 	.role-info { display: flex; flex-direction: column; gap: 0.1rem; flex: 1; min-width: 0; }
 	.role-name { font-size: 0.85rem; font-weight: 600; color: #1e293b; truncate: ellipsis; overflow: hidden; white-space: nowrap; }
@@ -282,6 +334,43 @@
 	}
 	.role-desc { font-size: 0.75rem; color: #6b7280; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 	.role-empty { font-size: 0.82rem; color: #9ca3af; padding: 0.4rem 0.2rem; }
+
+	.btn-perm {
+		flex-shrink: 0;
+		background: none;
+		border: 1px solid #d1d5db;
+		color: #6b7280;
+		border-radius: 4px;
+		width: 1.5rem;
+		height: 1.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.85rem;
+		cursor: pointer;
+		line-height: 1;
+	}
+	.btn-perm:hover, .btn-perm.active { background: #ede9fe; color: #5b21b6; border-color: #c4b5fd; }
+
+	.perm-inline {
+		border-top: 1px solid #e5e7eb;
+		background: #fff;
+		padding: 0.35rem 0.6rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+	}
+	.perm-inline-msg { font-size: 0.75rem; color: #9ca3af; }
+	.perm-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+	.perm-resource { font-family: monospace; font-size: 0.75rem; color: #1e293b; flex-shrink: 0; }
+	.perm-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.2rem; }
+	.perm-badge { font-size: 0.62rem; font-weight: 700; border-radius: 3px; padding: 0.05rem 0.3rem; white-space: nowrap; }
+	.perm-badge--read   { background: #dbeafe; color: #1d4ed8; }
+	.perm-badge--create { background: #dcfce7; color: #15803d; }
+	.perm-badge--update { background: #fef9c3; color: #a16207; }
+	.perm-badge--delete { background: #fee2e2; color: #b91c1c; }
+	.perm-badge--admin  { background: #f3e8ff; color: #7e22ce; }
+	.perm-raw { font-size: 0.68rem; color: #9ca3af; font-family: monospace; }
 
 	.btn-unassign {
 		flex-shrink: 0;
