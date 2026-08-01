@@ -6,3 +6,4 @@ export { default as SidebarFooter } from './SidebarFooter.svelte';
 export { default as Toaster } from './Toaster.svelte';
 export { toast, toasts } from './toast.js';
 export type { Toast, ToastType } from './toast.js';
+export { LANGUAGE_OPTIONS } from './languages.js';

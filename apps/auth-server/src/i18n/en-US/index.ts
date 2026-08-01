@@ -139,6 +139,27 @@ const en_US: BaseTranslation = {
 		created_at: 'Created',
 		updated_at: 'Updated'
 	},
+	users_page: {
+		title: 'Users',
+		col_id: 'ID',
+		col_email: 'Email',
+		col_language: 'Language',
+		col_roles: 'Roles',
+		detail_title: 'User Details',
+		roles_section: 'Roles',
+		assigned: 'Assigned',
+		available: 'Available',
+		search_placeholder: 'Search…',
+		none: 'None',
+		loading: 'Loading…',
+		unassign_confirm: 'Remove this role from the user?',
+		assign_role_title: 'Assign Role',
+		key_label: 'Key',
+		key_optional: '(optional)',
+		key_placeholder: 'e.g. admin, editor…',
+		assign: 'Assign',
+		cancel: 'Cancel'
+	},
 	dashboard: {
 		title: 'Dashboard',
 		badge: 'Auth Admin',

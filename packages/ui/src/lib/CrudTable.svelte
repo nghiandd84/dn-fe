@@ -264,15 +264,30 @@
 							<option value={op.value}>{op.label}</option>
 						{/each}
 					</select>
-					<input
-						class="filter-val"
-						type="text"
-						placeholder={$LL.crud_table.filter_value_placeholder()}
-						value={filters[col.key]?.value ?? ''}
-						oninput={(e) => {
-							filters[col.key] = { op: filters[col.key]?.op ?? 'li', value: (e.target as HTMLInputElement).value };
-						}}
-					/>
+					{#if col.filterOptions}
+						<select
+							class="filter-val"
+							value={filters[col.key]?.value ?? ''}
+							onchange={(e) => {
+								filters[col.key] = { op: filters[col.key]?.op ?? 'eq', value: (e.target as HTMLSelectElement).value };
+							}}
+						>
+							<option value="">{$LL.crud_table.select_placeholder()}</option>
+							{#each col.filterOptions as opt}
+								<option value={opt.value}>{opt.label}</option>
+							{/each}
+						</select>
+					{:else}
+						<input
+							class="filter-val"
+							type="text"
+							placeholder={$LL.crud_table.filter_value_placeholder()}
+							value={filters[col.key]?.value ?? ''}
+							oninput={(e) => {
+								filters[col.key] = { op: filters[col.key]?.op ?? 'li', value: (e.target as HTMLInputElement).value };
+							}}
+						/>
+					{/if}
 				</div>
 			{/each}
 			{#if tableColumns.some(c => c.filterable)}

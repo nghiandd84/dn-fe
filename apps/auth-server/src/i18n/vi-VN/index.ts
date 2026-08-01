@@ -139,6 +139,27 @@ const vi_VN: Translation = {
 		created_at: 'Ngày tạo',
 		updated_at: 'Cập nhật'
 	},
+	users_page: {
+		title: 'Người dùng',
+		col_id: 'ID',
+		col_email: 'Email',
+		col_language: 'Ngôn ngữ',
+		col_roles: 'Vai trò',
+		detail_title: 'Chi tiết người dùng',
+		roles_section: 'Vai trò',
+		assigned: 'Đã gán',
+		available: 'Có sẵn',
+		search_placeholder: 'Tìm kiếm…',
+		none: 'Không có',
+		loading: 'Đang tải…',
+		unassign_confirm: 'Xóa vai trò này khỏi người dùng?',
+		assign_role_title: 'Gán vai trò',
+		key_label: 'Khóa',
+		key_optional: '(tùy chọn)',
+		key_placeholder: 'vd: admin, editor…',
+		assign: 'Gán',
+		cancel: 'Hủy'
+	},
 	dashboard: {
 		title: 'Tổng quan',
 		badge: 'Quản trị Auth',

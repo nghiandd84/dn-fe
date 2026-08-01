@@ -66,6 +66,27 @@ export type Translation = {
 		col_mask: string;
 		col_description: string;
 	};
+	users_page: {
+		title: string;
+		col_id: string;
+		col_email: string;
+		col_language: string;
+		col_roles: string;
+		detail_title: string;
+		roles_section: string;
+		assigned: string;
+		available: string;
+		search_placeholder: string;
+		none: string;
+		loading: string;
+		unassign_confirm: string;
+		assign_role_title: string;
+		key_label: string;
+		key_optional: string;
+		key_placeholder: string;
+		assign: string;
+		cancel: string;
+	};
 	admin_panel: {
 		title: string;
 		nav: {
@@ -184,6 +205,27 @@ export type TranslationFunctions = {
 		col_resource: () => LocalizedString;
 		col_mask: () => LocalizedString;
 		col_description: () => LocalizedString;
+	};
+	users_page: {
+		title: () => LocalizedString;
+		col_id: () => LocalizedString;
+		col_email: () => LocalizedString;
+		col_language: () => LocalizedString;
+		col_roles: () => LocalizedString;
+		detail_title: () => LocalizedString;
+		roles_section: () => LocalizedString;
+		assigned: () => LocalizedString;
+		available: () => LocalizedString;
+		search_placeholder: () => LocalizedString;
+		none: () => LocalizedString;
+		loading: () => LocalizedString;
+		unassign_confirm: () => LocalizedString;
+		assign_role_title: () => LocalizedString;
+		key_label: () => LocalizedString;
+		key_optional: () => LocalizedString;
+		key_placeholder: () => LocalizedString;
+		assign: () => LocalizedString;
+		cancel: () => LocalizedString;
 	};
 	admin_panel: {
 		title: () => LocalizedString;

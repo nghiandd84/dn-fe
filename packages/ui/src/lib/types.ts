@@ -9,6 +9,8 @@ export interface Column {
 	format?: (value: any, row: any) => string;
 	/** When true, the column is shown in the detail view but hidden from the table. */
 	hideInTable?: boolean;
+	/** When provided, the filter renders a <select> instead of a text input. */
+	filterOptions?: { value: string; label: string }[];
 }
 
 export interface FormField {

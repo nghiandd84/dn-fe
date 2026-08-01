@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import ProfileSearchInput from '$lib/components/ProfileSearchInput.svelte';
+	import { LANGUAGE_OPTIONS } from '@dn-fe/ui';
 	import { LL } from '$i18n/i18n-util';
 
 	function boolFormat(v: any): string {
@@ -43,8 +44,9 @@
 		<span class="filter-label">{$LL.user_preferences_page.col_language()}</span>
 		<select class="filter-select" bind:value={languageFilter}>
 			<option value="">All</option>
-			<option value="en-US">English (en-US)</option>
-			<option value="vi-VN">Tiếng Việt (vi-VN)</option>
+			{#each LANGUAGE_OPTIONS as opt}
+				<option value={opt.value}>{opt.label}</option>
+			{/each}
 		</select>
 	</div>
 	<div class="filter-item">
@@ -98,8 +100,9 @@
 			<label class="field-label" for="up-language">{$LL.user_preferences_page.col_language()} <span class="required">*</span></label>
 			<select id="up-language" required bind:value={formData.language}>
 				<option value="">-- Select --</option>
-				<option value="en-US">English (en-US)</option>
-				<option value="vi-VN">Tiếng Việt (vi-VN)</option>
+				{#each LANGUAGE_OPTIONS as opt}
+					<option value={opt.value}>{opt.label}</option>
+				{/each}
 			</select>
 		</div>
 		<div class="form-group">

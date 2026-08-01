@@ -19,6 +19,8 @@
 		"build:event": "npm run build --workspace=apps/event-admin",
 		"dev:translation": "npm run dev --workspace=apps/translation-admin",
 		"build:translation": "npm run build --workspace=apps/translation-admin",
+		"dev:booking": "npm run dev --workspace=apps/booking-admin",
+		"build:booking": "npm run build --workspace=apps/booking-admin",
 		"dev:all": "npm run dev --workspaces --if-present",
 		"build:all": "npm run build --workspaces --if-present",
 		"check:all": "npm run check --workspaces --if-present"
