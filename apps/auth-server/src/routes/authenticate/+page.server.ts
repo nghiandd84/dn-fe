@@ -1,5 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { api } from '$lib/api';
+import { cookiePrefix } from '@dn-fe/ui/session';
 
 export async function load({ url, cookies }) {
 	const clientId = url.searchParams.get('client_id') || '';
@@ -26,7 +27,8 @@ export async function load({ url, cookies }) {
 	// Save the original authenticate URL so logout can redirect back to it
 	if (clientId) {
 		const authUrl = url.pathname + url.search;
-		cookies.set('auth_login_url', authUrl, {
+		const prefix = cookiePrefix(url);
+		cookies.set(`${prefix}login_url`, authUrl, {
 			path: '/',
 			httpOnly: true,
 			sameSite: 'lax',

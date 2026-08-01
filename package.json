@@ -15,6 +15,10 @@
 		"build:profile": "npm run build --workspace=apps/profile-admin",
 		"dev:email-template": "npm run dev --workspace=apps/email-template-admin",
 		"build:email-template": "npm run build --workspace=apps/email-template-admin",
+		"dev:event": "npm run dev --workspace=apps/event-admin",
+		"build:event": "npm run build --workspace=apps/event-admin",
+		"dev:translation": "npm run dev --workspace=apps/translation-admin",
+		"build:translation": "npm run build --workspace=apps/translation-admin",
 		"dev:all": "npm run dev --workspaces --if-present",
 		"build:all": "npm run build --workspaces --if-present",
 		"check:all": "npm run check --workspaces --if-present"

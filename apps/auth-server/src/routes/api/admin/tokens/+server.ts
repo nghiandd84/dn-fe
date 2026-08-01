@@ -5,7 +5,7 @@ import { getToken } from '$lib/session';
 
 export const GET: RequestHandler = async ({ url, cookies, request }) => {
 	const res = await api('/tokens', {
-		token: getToken(cookies),
+		token: getToken(cookies, url),
 		fingerprint: request.headers.get('x-client-fingerprint') || undefined,
 		params: url.searchParams,
 		origin: url.origin

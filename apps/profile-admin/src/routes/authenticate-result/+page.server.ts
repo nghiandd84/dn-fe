@@ -4,6 +4,7 @@ import { AUTH_CLIENT_ID } from '$env/static/private';
 import { PUBLIC_BASE_URL } from '$env/static/public';
 import { authApi } from '$lib/api';
 import { handleAuthResult, type Permission } from '@dn-fe/ui/auth-result';
+import { cookiePrefix } from '@dn-fe/ui/session';
 
 const PROFILE_RESOURCE_MAP: Record<string, string> = {
 	'PROFILE:PROFILE': 'profiles',
@@ -11,13 +12,14 @@ const PROFILE_RESOURCE_MAP: Record<string, string> = {
 	'PROFILE:SOCIAL_LINK': 'social-links',
 };
 
-function onPermissions(permissions: Permission[], cookies: Cookies, clientId: string) {
+function onPermissions(permissions: Permission[], cookies: Cookies, clientId: string, port: string | URL) {
+	const prefix = cookiePrefix(port);
 	const profileResources = permissions
 		.filter((p) => p.resource.startsWith('PROFILE:'))
 		.map((p) => PROFILE_RESOURCE_MAP[p.resource])
 		.filter(Boolean);
 	if (profileResources.length > 0) {
-		cookies.set('profile_resources', JSON.stringify(profileResources), {
+		cookies.set(`${prefix}resources`, JSON.stringify(profileResources), {
 			path: '/',
 			httpOnly: true,
 			sameSite: 'lax',
@@ -25,7 +27,7 @@ function onPermissions(permissions: Permission[], cookies: Cookies, clientId: st
 			maxAge: 60 * 60 * 24 * 7
 		});
 		if (clientId) {
-			cookies.set('profile_client_id', clientId, {
+			cookies.set(`${prefix}client_id`, clientId, {
 				path: '/',
 				httpOnly: true,
 				sameSite: 'lax',
@@ -43,7 +45,8 @@ export async function load({ url, cookies }) {
 		cookies,
 		url,
 		origin: PUBLIC_BASE_URL,
-		onPermissions,
+		onPermissions: (permissions, cookies, clientId) =>
+			onPermissions(permissions, cookies, clientId, url),
 		defaultClientId: AUTH_CLIENT_ID
 	});
 }

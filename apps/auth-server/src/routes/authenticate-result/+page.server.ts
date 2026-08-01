@@ -2,6 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import type { Cookies } from '@sveltejs/kit';
 import { api } from '$lib/api';
 import { handleAuthResult, type Permission } from '@dn-fe/ui/auth-result';
+import { cookiePrefix } from '@dn-fe/ui/session';
 
 const AUTH_RESOURCE_MAP: Record<string, string> = {
 	'AUTH:USER': 'users',
@@ -14,14 +15,15 @@ const AUTH_RESOURCE_MAP: Record<string, string> = {
 	'AUTH:AUTH_CODE': 'auth-codes',
 };
 
-function onPermissions(permissions: Permission[], cookies: Cookies, clientId: string) {
+function onPermissions(permissions: Permission[], cookies: Cookies, clientId: string, port: string | URL) {
+	const prefix = cookiePrefix(port);
 	const authResources = permissions
 		.filter((p) => p.resource.startsWith('AUTH:'))
 		.map((p) => AUTH_RESOURCE_MAP[p.resource])
 		.filter(Boolean);
 
 	if (authResources.length > 0) {
-		cookies.set('auth_resources', JSON.stringify(authResources), {
+		cookies.set(`${prefix}resources`, JSON.stringify(authResources), {
 			path: '/',
 			httpOnly: true,
 			sameSite: 'lax',
@@ -29,7 +31,7 @@ function onPermissions(permissions: Permission[], cookies: Cookies, clientId: st
 			maxAge: 60 * 60 * 24 * 7
 		});
 		if (clientId) {
-			cookies.set('auth_client_id', clientId, {
+			cookies.set(`${prefix}client_id`, clientId, {
 				path: '/',
 				httpOnly: true,
 				sameSite: 'lax',
@@ -47,6 +49,7 @@ export async function load({ url, cookies, request }) {
 		cookies,
 		url,
 		origin: url.origin,
-		onPermissions
+		onPermissions: (permissions, cookies, clientId) =>
+			onPermissions(permissions, cookies, clientId, url)
 	});
 }

@@ -5,7 +5,7 @@ import { getToken } from '$lib/session';
 
 export const GET: RequestHandler = async ({ params, cookies, request, url }) => {
 	const res = await api(`/scopes/${params.id}`, {
-		token: getToken(cookies),
+		token: getToken(cookies, url),
 		fingerprint: request.headers.get('x-client-fingerprint') || undefined,
 		origin: url.origin
 	});
@@ -17,7 +17,7 @@ export const PATCH: RequestHandler = async ({ params, request, cookies, url }) =
 	const res = await api(`/scopes/${params.id}`, {
 		method: 'PATCH',
 		body,
-		token: getToken(cookies),
+		token: getToken(cookies, url),
 		fingerprint: request.headers.get('x-client-fingerprint') || undefined,
 		origin: url.origin
 	});
@@ -27,7 +27,7 @@ export const PATCH: RequestHandler = async ({ params, request, cookies, url }) =
 export const DELETE: RequestHandler = async ({ params, cookies, request, url }) => {
 	const res = await api(`/scopes/${params.id}`, {
 		method: 'DELETE',
-		token: getToken(cookies),
+		token: getToken(cookies, url),
 		fingerprint: request.headers.get('x-client-fingerprint') || undefined,
 		origin: url.origin
 	});

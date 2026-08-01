@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import type { Cookies } from '@sveltejs/kit';
-import { setToken } from './session.js';
+import { setToken, clearToken, cookiePrefix } from './session.js';
 import type { ApiFn } from './api.js';
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -21,15 +21,27 @@ export interface AuthResultData {
 
 // ── Token helpers ────────────────────────────────────────────────────────────
 
-export function saveTokens(cookies: Cookies, access_token: string, refresh_token: string) {
-	setToken(cookies, access_token);
-	cookies.set('refresh_token', refresh_token, {
+export function saveTokens(
+	cookies: Cookies,
+	access_token: string,
+	refresh_token: string,
+	port: string | URL = ''
+) {
+	const prefix = cookiePrefix(port);
+	setToken(cookies, access_token, port);
+	cookies.set(`${prefix}refresh_token`, refresh_token, {
 		path: '/',
 		httpOnly: true,
 		sameSite: 'lax',
 		secure: false,
 		maxAge: 60 * 60 * 24 * 30
 	});
+}
+
+export function clearTokens(cookies: Cookies, port: string | URL = '') {
+	const prefix = cookiePrefix(port);
+	clearToken(cookies, port);
+	cookies.delete(`${prefix}refresh_token`, { path: '/' });
 }
 
 // ── Token exchange ───────────────────────────────────────────────────────────
@@ -117,10 +129,14 @@ export async function handleAuthResult(opts: AuthResultOptions): Promise<AuthRes
 	const { api, cookies, url, origin, onPermissions, defaultClientId = '' } = opts;
 	console.log(opts);
 
+	// Use the request's port to scope all cookie reads/writes to this app instance
+	const port = url;
+
 	const clientId = url.searchParams.get('client_id') || defaultClientId;
 	const authCode = url.searchParams.get('auth_code');
-	const existingAccessToken = cookies.get('auth_token');
-	const existingRefreshToken = cookies.get('refresh_token');
+	const prefix = cookiePrefix(port);
+	const existingAccessToken = cookies.get(`${prefix}auth_token`);
+	const existingRefreshToken = cookies.get(`${prefix}refresh_token`);
 
 	// 1. auth_code in URL — exchange it (one-time, highest priority)
 	if (authCode) {
@@ -131,7 +147,7 @@ export async function handleAuthResult(opts: AuthResultOptions): Promise<AuthRes
 		}
 
 		const { access_token, refresh_token } = res.data.data;
-		saveTokens(cookies, access_token, refresh_token);
+		saveTokens(cookies, access_token, refresh_token, port);
 
 		const permissions = await fetchPermissions(api, access_token, origin);
 		onPermissions(permissions, cookies, clientId);
@@ -151,13 +167,13 @@ export async function handleAuthResult(opts: AuthResultOptions): Promise<AuthRes
 
 		if (res.status === 200) {
 			const { access_token, refresh_token } = res.data.data;
-			saveTokens(cookies, access_token, refresh_token);
+			saveTokens(cookies, access_token, refresh_token, port);
 			const permissions = await fetchPermissions(api, access_token, origin);
 			onPermissions(permissions, cookies, clientId);
 			return { error: null, access_token, refresh_token, permissions };
 		}
 
-		cookies.delete('refresh_token', { path: '/' });
+		cookies.delete(`${prefix}refresh_token`, { path: '/' });
 	}
 
 	// 4. Nothing available

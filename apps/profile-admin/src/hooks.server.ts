@@ -24,7 +24,7 @@ function resolveLocale(acceptLang: string | null): string {
 }
 
 async function verifyUser(event: Parameters<Handle>[0]['event']) {
-	const token = getToken(event.cookies);
+	const token = getToken(event.cookies, event.url);
 	if (!token) return null;
 
 	const cached = getCachedUser(token);
@@ -84,7 +84,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			throw redirect(302, buildAuthenticateUrl());
 		}
 
-		event.locals.token = getToken(event.cookies)!;
+		event.locals.token = getToken(event.cookies, event.url)!;
 		event.locals.user = user;
 	}
 

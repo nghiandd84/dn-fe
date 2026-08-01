@@ -8,7 +8,7 @@ export const POST: RequestHandler = async ({ params, request, cookies, url }) =>
 	const res = await api(`/roles/${params.id}/unassign-permissions`, {
 		method: 'POST',
 		body,
-		token: getToken(cookies),
+		token: getToken(cookies, url),
 		fingerprint: request.headers.get('x-client-fingerprint') || undefined,
 		origin: url.origin
 	});

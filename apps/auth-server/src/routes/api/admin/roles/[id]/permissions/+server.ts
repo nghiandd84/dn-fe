@@ -5,7 +5,7 @@ import { getToken } from '$lib/session';
 
 export const GET: RequestHandler = async ({ params, cookies, request, url }) => {
 	const res = await api(`/roles/${params.id}/permissions`, {
-		token: getToken(cookies),
+		token: getToken(cookies, url),
 		fingerprint: request.headers.get('x-client-fingerprint') || undefined,
 		origin: url.origin
 	});

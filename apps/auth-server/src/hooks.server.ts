@@ -3,6 +3,7 @@ import { json, redirect } from '@sveltejs/kit';
 import { api } from '$lib/api';
 import { getToken } from '$lib/session';
 import { getCachedUser, setCachedUser, evictCachedUser } from '$lib/verify-cache';
+import { cookiePrefix } from '@dn-fe/ui/session';
 
 const SUPPORTED_LOCALES = ['en-US', 'vi-VN'];
 const DEFAULT_LOCALE = 'en-US';
@@ -21,7 +22,7 @@ function resolveLocale(acceptLang: string | null): string {
 }
 
 async function verifyUser(event: Parameters<Handle>[0]['event']) {
-	const token = getToken(event.cookies);
+	const token = getToken(event.cookies, event.url);
 	if (!token) return null;
 
 	const cached = getCachedUser(token);
@@ -63,11 +64,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 				return json({ status: 401, data: { error_type: 'unauthorized' } }, { status: 401 });
 			}
 			// Redirect back to the original authenticate URL (with client_id etc.) if available
-			const loginUrl = event.cookies.get('auth_login_url') || '/authenticate';
+			const prefix = cookiePrefix(event.url);
+			const loginUrl = event.cookies.get(`${prefix}login_url`) || '/authenticate';
 			throw redirect(302, loginUrl);
 		}
 
-		event.locals.token = getToken(event.cookies);
+		event.locals.token = getToken(event.cookies, event.url);
 		event.locals.user = user;
 	}
 

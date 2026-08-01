@@ -4,6 +4,7 @@ import { AUTH_CLIENT_ID } from '$env/static/private';
 import { PUBLIC_BASE_URL } from '$env/static/public';
 import { authApi } from '$lib/api';
 import { handleAuthResult, type Permission } from '@dn-fe/ui/auth-result';
+import { cookiePrefix } from '@dn-fe/ui/session';
 
 const EMAIL_TEMPLATE_RESOURCE_MAP: Record<string, string> = {
 	'EMAIL_TEMPLATE:EMAIL_TEMPLATE': 'email-templates',
@@ -11,13 +12,14 @@ const EMAIL_TEMPLATE_RESOURCE_MAP: Record<string, string> = {
 	'EMAIL_TEMPLATE:TEMPLATE_PLACEHOLDER': 'template-translations'
 };
 
-function onPermissions(permissions: Permission[], cookies: Cookies, clientId: string) {
+function onPermissions(permissions: Permission[], cookies: Cookies, clientId: string, port: string | URL) {
+	const prefix = cookiePrefix(port);
 	const emailTemplateResources = permissions
 		.filter((p) => p.resource.startsWith('EMAIL_TEMPLATE:'))
 		.map((p) => EMAIL_TEMPLATE_RESOURCE_MAP[p.resource])
 		.filter(Boolean);
 	if (emailTemplateResources.length > 0) {
-		cookies.set('email_template_resources', JSON.stringify(emailTemplateResources), {
+		cookies.set(`${prefix}resources`, JSON.stringify(emailTemplateResources), {
 			path: '/',
 			httpOnly: true,
 			sameSite: 'lax',
@@ -25,7 +27,7 @@ function onPermissions(permissions: Permission[], cookies: Cookies, clientId: st
 			maxAge: 60 * 60 * 24 * 7
 		});
 		if (clientId) {
-			cookies.set('email_template_client_id', clientId, {
+			cookies.set(`${prefix}client_id`, clientId, {
 				path: '/',
 				httpOnly: true,
 				sameSite: 'lax',
@@ -43,7 +45,8 @@ export async function load({ url, cookies }) {
 		cookies,
 		url,
 		origin: PUBLIC_BASE_URL,
-		onPermissions,
+		onPermissions: (permissions, cookies, clientId) =>
+			onPermissions(permissions, cookies, clientId, url),
 		defaultClientId: AUTH_CLIENT_ID
 	});
 }

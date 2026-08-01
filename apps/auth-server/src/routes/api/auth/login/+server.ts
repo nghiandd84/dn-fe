@@ -15,7 +15,7 @@ export const POST: RequestHandler = async ({ request, cookies, url }) => {
 	});
 
 	if (res.status === 200) {
-		setToken(cookies, res.data.data.id_token);
+		setToken(cookies, res.data.data.id_token, url);
 	}
 
 	return json(res.data, { status: res.status });
