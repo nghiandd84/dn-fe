@@ -30,19 +30,27 @@ export const GET: RequestHandler = async ({ url, cookies, request }) => {
 			const rolesRes = await api('/roles', {
 				token,
 				fingerprint,
-				params: new URLSearchParams({ id: `in|${roleIds.join(',')}`, page_size: '100' }),
+				params: new URLSearchParams({
+					id: `in|${roleIds.join(',')}`,
+					page_size: '100',
+					includes: 'client[name]'
+				}),
 				origin: url.origin
 			});
 
 			const roles: any[] = rolesRes.data?.data?.result ?? [];
-			const roleMap = new Map(roles.map((r: any) => [r.id, r.name]));
+			const roleMap = new Map(roles.map((r: any) => [r.id, {
+				name: r.name,
+				client_name: r.client?.name ?? ''
+			}]));
 
-			// Merge role name into each access
+			// Merge role name and client name into each access
 			for (const user of users) {
 				if (Array.isArray(user.accesses)) {
 					user.accesses = user.accesses.map((a: any) => ({
 						...a,
-						role_name: roleMap.get(a.role_id) ?? ''
+						role_name: roleMap.get(a.role_id)?.name ?? '',
+						client_name: roleMap.get(a.role_id)?.client_name ?? ''
 					}));
 				}
 			}

@@ -21,6 +21,7 @@
 			id: a.role_id,
 			name: a.role_name || a.role_id,
 			key: a.key,
+			client_name: a.client_name ?? '',
 			access_id: a.id
 		}));
 		searchAssigned = '';
@@ -121,8 +122,9 @@
 		if (!Array.isArray(accesses) || accesses.length === 0) return '—';
 		return accesses
 			.map((a: any) => {
-				const label = a.role_name || a.key || a.role_id?.slice(0, 8) + '…';
-				return `<span style="display:inline-block;background:#ede9fe;color:#5b21b6;border-radius:99px;padding:0.1rem 0.55rem;font-size:0.75rem;font-weight:600;margin:0.1rem;">${label}</span>`;
+				const role = a.role_name || a.role_id?.slice(0, 8) + '…';
+				const client = a.client_name ? `<span style="font-size:0.65rem;color:#6b7280;margin-left:0.2rem;">(${a.client_name})</span>` : '';
+				return `<span style="display:inline-flex;align-items:center;background:#ede9fe;color:#5b21b6;border-radius:99px;padding:0.1rem 0.55rem;font-size:0.75rem;font-weight:600;margin:0.1rem;">${role}${client}</span>`;
 			})
 			.join('');
 	}
@@ -174,9 +176,14 @@
 									<div class="role-row">
 										<div class="role-info">
 											<span class="role-name">{role.name}</span>
-											{#if role.key}
-												<span class="role-key">{role.key}</span>
-											{/if}
+											<div class="role-meta">
+												{#if role.key}
+													<span class="role-key">{role.key}</span>
+												{/if}
+												{#if role.client_name}
+													<span class="role-client">{role.client_name}</span>
+												{/if}
+											</div>
 										</div>
 										<button
 											type="button"
@@ -328,6 +335,15 @@
 		font-size: 0.72rem;
 		color: #0369a1;
 		background: #e0f2fe;
+		border-radius: 99px;
+		padding: 0.05rem 0.45rem;
+		width: fit-content;
+	}
+	.role-meta { display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: center; }
+	.role-client {
+		font-size: 0.72rem;
+		color: #6b7280;
+		background: #f3f4f6;
 		border-radius: 99px;
 		padding: 0.05rem 0.45rem;
 		width: fit-content;

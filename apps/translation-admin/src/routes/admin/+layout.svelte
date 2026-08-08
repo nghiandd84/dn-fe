@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { LL, setLocale, locale } from '$i18n/i18n-util';
 	import type { Locales } from '$i18n/i18n-util';
+	import { page } from '$app/stores';
 	import { SidebarFooter } from '@dn-fe/ui';
 	import '@dn-fe/ui/styles/admin-layout.css';
 	import '@dn-fe/ui/styles/meta-detail.css';
@@ -23,12 +24,24 @@
 		allNavItems.filter((item) => !item.resource || translationResources.includes(item.resource))
 	);
 
+	const pageTitle = $derived(() => {
+		const path = $page.url.pathname;
+		const match = allNavItems.slice().reverse().find((item) =>
+			item.href === '/admin' ? path === '/admin' : path.startsWith(item.href)
+		);
+		return match?.label ?? $LL.admin_panel.nav.dashboard();
+	});
+
 	async function handleLogout() {
 		const res = await fetch('/admin/logout', { method: 'POST' });
 		const body = await res.json();
 		window.location.href = body?.data?.redirect || '/authenticate';
 	}
 </script>
+
+<svelte:head>
+	<title>{$LL.admin_panel.title()} - {pageTitle()}</title>
+</svelte:head>
 
 <div class="admin-layout">
 	<aside class="sidebar">

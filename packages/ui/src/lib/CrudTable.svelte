@@ -17,7 +17,8 @@
 		onDetail,
 		editSnippet,
 		onEdit,
-		onCreateOpen
+		onCreateOpen,
+		onCreateSuccess
 	}: {
 		resource: string;
 		/** API route prefix, e.g. '/api/admin' or '/api/lookup'. Default: '/api/admin' */
@@ -31,6 +32,7 @@
 		editSnippet?: import('svelte').Snippet<[any, Record<string, any>]>;
 		onEdit?: (item: any, formData: Record<string, any>) => void;
 		onCreateOpen?: (formData: Record<string, any>) => void;
+		onCreateSuccess?: (data: any) => void;
 	} = $props();
 
 	let items: any[] = $state([]);
@@ -124,6 +126,9 @@
 				return;
 			}
 			toast.success(editingItem ? `${resource} updated` : `${resource} created`);
+			if (!editingItem) {
+				onCreateSuccess?.(json.data);
+			}
 		} catch (e: any) {
 			const errMsg = e?.message ?? 'Network error';
 			saveError = errMsg;
