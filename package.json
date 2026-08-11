@@ -25,6 +25,14 @@
 		"build:url-shortener": "npm run build --workspace=apps/url-shortener-admin",
 		"dev:all": "npm run dev --workspaces --if-present",
 		"build:all": "npm run build --workspaces --if-present",
-		"check:all": "npm run check --workspaces --if-present"
+		"check:all": "npm run check --workspaces --if-present",
+		"start:auth": "npm run start --workspace=apps/auth-server",
+		"start:lookup": "npm run start --workspace=apps/lookup-admin",
+		"start:profile": "npm run start --workspace=apps/profile-admin",
+		"start:email-template": "npm run start --workspace=apps/email-template-admin",
+		"start:event": "npm run start --workspace=apps/event-admin",
+		"start:translation": "npm run start --workspace=apps/translation-admin",
+		"start:booking": "npm run start --workspace=apps/booking-admin",
+		"start:url-shortener": "npm run start --workspace=apps/url-shortener-admin"
 	}
 }
