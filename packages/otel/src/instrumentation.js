@@ -3,7 +3,7 @@
 //
 // Required env vars:
 //   OTEL_SERVICE_NAME               - service name (e.g. "url-shortener-admin")
-//   OTEL_EXPORTER_OTLP_ENDPOINT     - base endpoint (e.g. "http://localhost:5080/api/default")
+//   OTEL_EXPORTER_OTLP_ENDPOINT     - base endpoint (e.g. "http://localhost:5080/api/ms-fe")
 //   OTEL_EXPORTER_OTLP_HEADERS      - headers as "Key=Value,Key2=Value2"
 //
 // Optional env vars:
@@ -16,12 +16,11 @@ import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { BatchLogRecordProcessor } from '@opentelemetry/sdk-logs';
-import { SeverityNumber } from '@opentelemetry/api-logs';
-import { logs } from '@opentelemetry/api-logs';
+import { logs, SeverityNumber } from '@opentelemetry/api-logs';
 
 // Respect OTEL_SDK_DISABLED standard env var
 if (process.env.OTEL_SDK_DISABLED === 'true') {
-	console.log('[otel] SDK disabled via OTEL_SDK_DISABLED=true');
+	process.stdout.write('[otel] SDK disabled via OTEL_SDK_DISABLED=true\n');
 } else {
 	const serviceName = process.env.OTEL_SERVICE_NAME || 'sveltekit-app';
 	const endpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:5080/api/default';
@@ -53,15 +52,15 @@ if (process.env.OTEL_SDK_DISABLED === 'true') {
 			}),
 			exportIntervalMillis: 60_000,
 		}),
-		logRecordProcessor: new BatchLogRecordProcessor(
-			new OTLPLogExporter({
+		// BatchLogRecordProcessor takes { exporter } options object (not the exporter directly)
+		logRecordProcessor: new BatchLogRecordProcessor({
+			exporter: new OTLPLogExporter({
 				url: `${endpoint}/v1/logs`,
 				headers,
-			})
-		),
+			}),
+		}),
 		instrumentations: [
 			getNodeAutoInstrumentations({
-				// Reduce noise — disable fs instrumentation (very chatty)
 				'@opentelemetry/instrumentation-fs': { enabled: false },
 			}),
 		],
@@ -83,9 +82,7 @@ if (process.env.OTEL_SDK_DISABLED === 'true') {
 	for (const [method, severity] of Object.entries(SEVERITY)) {
 		const original = console[method].bind(console);
 		console[method] = (...args) => {
-			// Still print to stdout so local terminal output is preserved
-			original(...args);
-			// Emit as OTEL log record
+			// original(...args);
 			logger.emit({
 				severityNumber: severity.number,
 				severityText: severity.text,
