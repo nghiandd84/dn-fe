@@ -1,7 +1,11 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
-	import { MASK_BITS, maskToActions } from '$lib/components/types';
+	import { MASK_BITS, maskToActions, maskToCrudActions } from '$lib/components/types';
 	import { LL } from '$i18n/i18n-util';
+
+	let { data } = $props();
+
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['permissions'] ?? 0));
 
 	function maskFormat(v: any): string {
 		if (v == null) return '—';
@@ -47,7 +51,7 @@
 		{ key: 'resource', label: 'Resource', type: 'text', required: true },
 		{ key: 'description', label: 'Description', type: 'text' },
 	]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	actions={actions}
 	onEdit={(item, formData) => initMask(item.mask, formData)}
 	onCreateOpen={(formData) => initMask(null, formData)}
 >

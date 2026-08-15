@@ -1,7 +1,11 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import ProfileSearchInput from '$lib/components/ProfileSearchInput.svelte';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
 	import { LL } from '$i18n/i18n-util';
+
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['social-links'] ?? 0));
 
 	// Profile filter for the table
 	let profileIdFilter = $state('');
@@ -37,7 +41,7 @@
 		{ key: 'url', label: $LL.social_links_page.col_url(), sortable: true },
 	]}
 	formFields={[]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	{actions}
 >
 	{#snippet editSnippet(editingItem, formData)}
 		<!-- Profile ID: search on create, readonly on edit -->

@@ -1,6 +1,10 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
 	import { LL } from '$i18n/i18n-util';
+
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['translation-keys'] ?? 0));
 </script>
 
 <h1>{$LL.translation_keys_page.title()}</h1>
@@ -31,7 +35,7 @@
 		}
 	]}
 	formFields={[]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	{actions}
 >
 	{#snippet editSnippet(editingItem, formData)}
 		<div class="form-group">

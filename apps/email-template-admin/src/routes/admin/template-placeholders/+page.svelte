@@ -1,7 +1,11 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import EmailTemplateSearchInput from '$lib/components/EmailTemplateSearchInput.svelte';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
 	import { LL } from '$i18n/i18n-util';
+
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['template-placeholders'] ?? 0));
 </script>
 
 <h1>{$LL.template_placeholders_page.title()}</h1>
@@ -21,7 +25,7 @@
 		{ key: 'updated_at', label: $LL.template_placeholders_page.col_updated_at(), hideInTable: true },
 	]}
 	formFields={[]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	actions={actions}
 >
 	{#snippet editSnippet(editingItem, formData)}
 		{#if editingItem?.user_email}

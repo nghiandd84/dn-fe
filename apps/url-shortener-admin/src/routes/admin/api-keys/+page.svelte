@@ -1,6 +1,10 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import { LL } from '$i18n/i18n-util';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
+
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['api-keys'] ?? 0));
 
 	function formatDate(v: string | null): string {
 		if (!v) return '—';
@@ -83,7 +87,7 @@
 	formFields={[
 		{ key: 'name', label: $LL.api_keys_page.col_name(), type: 'text', required: true }
 	]}
-	actions={{ create: true, edit: false, delete: true, detail: true }}
+	{actions}
 	onCreateSuccess={handleCreateSuccess}
 >
 	{#snippet detailSnippet(item)}

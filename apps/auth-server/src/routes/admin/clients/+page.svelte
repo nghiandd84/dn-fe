@@ -1,5 +1,10 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
+	import { maskToCrudActions } from '$lib/components/types';
+
+	let { data } = $props();
+
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['clients'] ?? 0));
 
 	let copied = $state(false);
 
@@ -27,7 +32,7 @@
 		{ key: 'redirect_uris', label: 'Redirect URIs', type: 'tags' },
 		{ key: 'allowed_grants', label: 'Allowed Grants', type: 'tags' },
 	]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	{actions}
 >
 	{#snippet detailSnippet(client)}
 		<dl class="detail-list">

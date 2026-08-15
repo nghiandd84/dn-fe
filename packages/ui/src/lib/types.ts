@@ -46,3 +46,34 @@ export const MASK_BITS = [
 export function maskToActions(mask: number): string[] {
 	return MASK_BITS.filter(b => (mask & b.bit) !== 0).map(b => b.label);
 }
+
+/**
+ * Converts a permission mask integer into a CrudActions object.
+ * Permissions are cumulative — each level implies all lower levels:
+ *
+ *   Read   (1)  → detail
+ *   Create (2)  → detail + create
+ *   Update (4)  → detail + create + edit
+ *   Delete (8)  → detail + create + edit + delete
+ *   Admin  (16) → detail + create + edit + delete
+ */
+export function maskToCrudActions(mask: number): CrudActions {
+	const canRead   = (mask & 1)  !== 0;
+	const canCreate = (mask & 2)  !== 0;
+	const canUpdate = (mask & 4)  !== 0;
+	const canDelete = (mask & 8)  !== 0;
+	const isAdmin   = (mask & 16) !== 0;
+
+	// Each level cascades upward: having Create implies Read, etc.
+	const hasDelete = canDelete || isAdmin;
+	const hasUpdate = canUpdate || hasDelete;
+	const hasCreate = canCreate || hasUpdate;
+	const hasRead   = canRead   || hasCreate;
+
+	return {
+		detail: hasRead,
+		create: hasCreate,
+		edit:   hasUpdate,
+		delete: hasDelete,
+	};
+}

@@ -1,7 +1,11 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
 	import { LL } from '$i18n/i18n-util';
 	import { goto } from '$app/navigation';
+
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['projects'] ?? 0));
 
 	const LOCALE_OPTIONS = [
 		{ value: 'en', label: 'English (en)' },
@@ -67,7 +71,7 @@
 		}
 	]}
 	formFields={[]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	{actions}
 	onDetail={handleDetail}
 >
 	{#snippet editSnippet(editingItem, formData)}

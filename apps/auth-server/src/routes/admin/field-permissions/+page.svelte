@@ -1,8 +1,13 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
+	import { maskToCrudActions } from '$lib/components/types';
 	import { fingerprint } from '$lib/fingerprint';
 	import { get } from 'svelte/store';
 	import { LL } from '$i18n/i18n-util';
+
+	let { data } = $props();
+
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['field-permissions'] ?? 0));
 
 	// Action constants
 	const ACTION_READ   = 1;
@@ -156,7 +161,7 @@
 			required: true
 		},
 	]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	{actions}
 	onEdit={(item, formData) => initForm(item, formData)}
 	onCreateOpen={(formData) => initForm(null, formData)}
 >

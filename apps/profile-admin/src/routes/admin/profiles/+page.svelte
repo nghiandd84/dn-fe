@@ -1,7 +1,11 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import UserSearchInput from '$lib/components/UserSearchInput.svelte';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
 	import { LL } from '$i18n/i18n-util';
+
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['profiles'] ?? 0));
 
 	function truncateBio(bio: string): string {
 		if (!bio) return '—';
@@ -45,7 +49,7 @@
 		{ key: 'location', label: $LL.profiles_page.col_location(), sortable: true, filterable: true, operators: ['eq', 'li'] },
 	]}
 	formFields={[]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	{actions}
 >
 	{#snippet editSnippet(editingItem, formData)}
 		<!-- User ID first -->

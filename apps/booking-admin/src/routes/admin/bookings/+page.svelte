@@ -1,6 +1,10 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import { LL } from '$i18n/i18n-util';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
+	
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['bookings'] ?? 0));
 
 	const STATUS_OPTIONS = [
 		{ value: 'PENDING', label: 'PENDING' },
@@ -84,7 +88,7 @@
 		}
 	]}
 	formFields={[]}
-	actions={{ create: false, edit: true, delete: true, detail: true }}
+	{actions}
 >
 	{#snippet editSnippet(editingItem, formData)}
 		<div class="form-group">

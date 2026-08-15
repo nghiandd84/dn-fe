@@ -2,7 +2,11 @@
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import EmailTemplateSearchInput from '$lib/components/EmailTemplateSearchInput.svelte';
 	import BodyEditor from '$lib/components/BodyEditor.svelte';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
 	import { LL } from '$i18n/i18n-util';
+
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['template-translations'] ?? 0));
 
 	function truncateBody(body: string): string {
 		if (!body) return '—';
@@ -43,7 +47,7 @@
 		{ key: 'updated_at', label: $LL.template_translations_page.col_updated_at(), hideInTable: true },
 	]}
 	formFields={[]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	actions={actions}
 >
 	{#snippet editSnippet(editingItem, formData)}
 		{#if editingItem?.user_email}

@@ -2,10 +2,14 @@
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import ConfirmModal from '@dn-fe/ui/ConfirmModal.svelte';
 	import CreatePermissionModal from '$lib/components/CreatePermissionModal.svelte';
-	import { MASK_BITS, maskToActions } from '$lib/components/types';
+	import { MASK_BITS, maskToActions, maskToCrudActions } from '$lib/components/types';
 	import { fingerprint } from '$lib/fingerprint';
 	import { get } from 'svelte/store';
 	import { LL } from '$i18n/i18n-util';
+
+	let { data } = $props();
+
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['roles'] ?? 0));
 
 	// ── Confirm dialog state ──────────────────────────────────────────────────
 	let confirmOpen = $state(false);
@@ -141,7 +145,7 @@
 		},
 		{ key: 'is_default', label: 'Is Default', type: 'checkbox' },
 	]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	{actions}
 	{onDetail}
 	{onEdit}
 >

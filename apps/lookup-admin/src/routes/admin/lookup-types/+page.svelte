@@ -1,6 +1,10 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import { LL } from '$i18n/i18n-util';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
+
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['lookup-types'] ?? 0));
 
 	function boolFormat(v: any): string {
 		if (v === true || v === 'true') return '<span style="color:#15803d;font-weight:600">✓</span>';
@@ -27,7 +31,7 @@
 		{ key: 'description', label: $LL.lookup_types_page.col_description(), type: 'text' },
 		{ key: 'is_active', label: $LL.lookup_types_page.col_active(), type: 'checkbox' },
 	]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	{actions}
 >
 	{#snippet detailSnippet(item)}
 		<div class="type-detail">

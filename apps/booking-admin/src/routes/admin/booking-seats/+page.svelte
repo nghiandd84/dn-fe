@@ -1,6 +1,10 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import { LL } from '$i18n/i18n-util';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
+	
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['booking-seats'] ?? 0));
 
 	function formatDate(v: string | null): string {
 		if (!v) return '—';
@@ -43,7 +47,7 @@
 		}
 	]}
 	formFields={[]}
-	actions={{ create: false, edit: false, delete: false, detail: true }}
+	{actions}
 >
 	{#snippet detailSnippet(item)}
 		<div class="meta-detail">

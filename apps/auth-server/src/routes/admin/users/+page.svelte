@@ -1,9 +1,14 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import { LANGUAGE_OPTIONS, maskToActions } from '@dn-fe/ui';
+	import { maskToCrudActions } from '$lib/components/types';
 	import { fingerprint } from '$lib/fingerprint';
 	import { get } from 'svelte/store';
 	import { LL } from '$i18n/i18n-util';
+
+	let { data } = $props();
+
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['users'] ?? 0));
 
 	// ── Role management state ─────────────────────────────────────────────────
 	let activeUserId = $state<string | null>(null);
@@ -139,7 +144,7 @@
 		{ key: 'language', label: $LL.users_page.col_language(), filterable: true, operators: ['eq', 'neq'], filterOptions: LANGUAGE_OPTIONS },
 		{ key: 'accesses', label: $LL.users_page.col_roles(), sortable: false, format: formatAccesses },
 	]}
-	actions={{ delete: true, detail: true }}
+	{actions}
 	{onDetail}
 >
 	{#snippet detailSnippet(user)}

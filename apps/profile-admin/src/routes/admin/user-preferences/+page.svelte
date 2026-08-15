@@ -1,8 +1,12 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import ProfileSearchInput from '$lib/components/ProfileSearchInput.svelte';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
 	import { LANGUAGE_OPTIONS } from '@dn-fe/ui';
 	import { LL } from '$i18n/i18n-util';
+
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['user-preferences'] ?? 0));
 
 	function boolFormat(v: any): string {
 		if (v === true || v === 'true') return '<span style="color:#15803d;font-weight:600">✓</span>';
@@ -73,7 +77,7 @@
 		{ key: 'notifications_enabled', label: $LL.user_preferences_page.col_notifications_enabled(), format: boolFormat },
 	]}
 	formFields={[]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	{actions}
 	onEdit={(item) => { notificationsEnabled = item.notifications_enabled ?? false; }}
 	onCreateOpen={() => { notificationsEnabled = false; }}
 >

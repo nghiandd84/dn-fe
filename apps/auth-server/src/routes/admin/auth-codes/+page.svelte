@@ -1,5 +1,10 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
+	import { maskToCrudActions } from '$lib/components/types';
+
+	let { data } = $props();
+
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['auth-codes'] ?? 0));
 </script>
 
 <h1>Auth Codes</h1>
@@ -17,5 +22,5 @@
 		{ key: 'redirect_uri', label: 'Redirect URI', type: 'text' },
 		{ key: 'scopes', label: 'Scopes', type: 'tags' },
 	]}
-	actions={{ create: true, delete: true, detail: true }}
+	{actions}
 />

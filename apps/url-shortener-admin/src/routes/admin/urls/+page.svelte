@@ -1,6 +1,10 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import { LL } from '$i18n/i18n-util';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
+
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['urls'] ?? 0));
 
 	function formatDate(v: string | null): string {
 		if (!v) return '—';
@@ -86,7 +90,7 @@
 		{ key: 'title', label: $LL.urls_page.col_title(), type: 'text', required: false },
 		{ key: 'expires_at', label: $LL.urls_page.col_expires_at(), type: 'datetime-local', required: false }
 	]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	{actions}
 >
 	{#snippet editSnippet(editingItem, formData)}
 		<div class="form-group">

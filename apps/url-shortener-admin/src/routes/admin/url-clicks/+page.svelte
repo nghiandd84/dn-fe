@@ -2,9 +2,13 @@
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
 	import { LL } from '$i18n/i18n-util';
 	import { page } from '$app/stores';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
 
 	// Support ?url_id=xxx to pre-filter clicks for a specific URL
 	const preselectedUrlId = $derived($page.url.searchParams.get('url_id') || '');
+
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['url-clicks'] ?? 0));
 
 	let urlIdFilter = $state(preselectedUrlId);
 
@@ -78,7 +82,7 @@
 			}
 		]}
 		formFields={[]}
-		actions={{ create: false, edit: false, delete: false, detail: true }}
+		{actions}
 	>
 		{#snippet detailSnippet(item)}
 			<div class="meta-detail">
@@ -151,7 +155,7 @@
 			}
 		]}
 		formFields={[]}
-		actions={{ create: false, edit: false, delete: false, detail: false }}
+		{actions}
 	>
 		{#snippet rowActionsSnippet(item)}
 			<a href="/admin/url-clicks?url_id={item.id}" class="view-btn">📊 View Clicks</a>

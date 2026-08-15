@@ -1,7 +1,11 @@
 <script lang="ts">
 	import CrudTable from '@dn-fe/ui/CrudTable.svelte';
+	import { maskToCrudActions } from '@dn-fe/ui/types';
 	import { LL } from '$i18n/i18n-util';
 	import { goto } from '$app/navigation';
+
+	let { data } = $props();
+	const actions = $derived(maskToCrudActions((data as any).authMasks?.['email-templates'] ?? 0));
 
 	function handleDetail(item: any) {
 		goto(`/admin/email-templates/${item.id}/placeholders`);
@@ -23,7 +27,7 @@
 		{ key: 'user_id', label: $LL.email_templates_page.col_user_id(), hideInTable: true },
 	]}
 	formFields={[]}
-	actions={{ create: true, edit: true, delete: true, detail: true }}
+	actions={actions}
 	onDetail={handleDetail}
 >
 	{#snippet editSnippet(editingItem, formData)}
