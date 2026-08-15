@@ -5,13 +5,13 @@
 	import ConfirmModal from '@dn-fe/ui/ConfirmModal.svelte';
 
 	let { data } = $props();
-	const typeCode = data.typeCode;
-	const itemId = data.itemId;
-	const itemCode = data.itemCode;
-	const itemName = data.itemName;
-	const backHref = data.from === 'items'
+	const typeCode = $derived(data.typeCode);
+	const itemId = $derived(data.itemId);
+	const itemCode = $derived(data.itemCode);
+	const itemName = $derived(data.itemName);
+	const backHref = $derived(data.from === 'items'
 		? '/admin/items'
-		: `/admin/lookup-types/${data.typeCode}/items`;
+		: `/admin/lookup-types/${data.typeCode}/items`);
 
 	const LOCALES = [
 		{ value: 'en-US', label: 'en-US — English (US)' },

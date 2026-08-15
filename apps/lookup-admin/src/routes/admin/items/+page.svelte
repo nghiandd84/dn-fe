@@ -5,7 +5,7 @@
 	import ConfirmModal from '@dn-fe/ui/ConfirmModal.svelte';
 
 	let { data } = $props();
-	const lookupTypes: { code: string; name: string }[] = data.lookupTypes || [];
+	const lookupTypes = $derived<{ code: string; name: string }[]>(data.lookupTypes || []);
 
 	// ─── Table state ──────────────────────────────────────────────────────────
 	let items: any[] = $state([]);

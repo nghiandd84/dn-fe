@@ -47,8 +47,8 @@
 		<!-- Profile ID: search on create, readonly on edit -->
 		{#if editingItem}
 			<div class="form-group">
-				<label class="field-label">{$LL.social_links_page.col_profile_id()}</label>
-				<input type="text" class="readonly-input" value={editingItem.profile_name ?? formData.profile_id ?? ''} readonly />
+				<label class="field-label" for="edit-profile-id">{$LL.social_links_page.col_profile_id()}</label>
+				<input id="edit-profile-id" type="text" class="readonly-input" value={editingItem.profile_name ?? formData.profile_id ?? ''} readonly />
 			</div>
 		{:else}
 			<div class="form-group">

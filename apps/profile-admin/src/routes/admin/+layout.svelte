@@ -10,7 +10,7 @@
 
 	let { children, data } = $props();
 
-	const lookupResources: string[] = data.lookupResources || [];
+	const lookupResources = $derived<string[]>(data.lookupResources || []);
 
 	const allNavItems = $derived([
 		{ href: '/admin', label: $LL.admin_panel.nav.dashboard(), resource: null },

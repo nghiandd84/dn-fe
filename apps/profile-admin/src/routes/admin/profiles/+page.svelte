@@ -55,13 +55,13 @@
 		<!-- User ID first -->
 		{#if editingItem}
 			<div class="form-group">
-				<label class="field-label">{$LL.profiles_page.col_user_id()}</label>
-				<input type="text" class="readonly-input" value={formData.user_id ?? ''} readonly />
+				<label class="field-label" for="edit-user-id">{$LL.profiles_page.col_user_id()}</label>
+				<input id="edit-user-id" type="text" class="readonly-input" value={formData.user_id ?? ''} readonly />
 			</div>
 			{#if editingItem.user_email}
 				<div class="form-group">
-					<label class="field-label">User Email</label>
-					<input type="text" class="readonly-input" value={editingItem.user_email} readonly />
+					<label class="field-label" for="edit-user-email">User Email</label>
+					<input id="edit-user-email" type="text" class="readonly-input" value={editingItem.user_email} readonly />
 				</div>
 			{/if}
 		{:else}

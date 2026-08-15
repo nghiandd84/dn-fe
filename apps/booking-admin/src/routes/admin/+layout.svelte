@@ -10,7 +10,7 @@
 
 	let { children, data } = $props();
 
-	const bookingResources: string[] = data.bookingResources || [];
+	const bookingResources = $derived<string[]>(data.bookingResources || []);
 
 	const allNavItems = $derived([
 		{ href: '/admin', label: $LL.admin_panel.nav.dashboard(), resource: null },

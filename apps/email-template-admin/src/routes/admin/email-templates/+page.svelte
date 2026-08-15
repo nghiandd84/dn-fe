@@ -33,8 +33,8 @@
 	{#snippet editSnippet(editingItem, formData)}
 		{#if editingItem?.user_email}
 			<div class="form-group">
-				<label class="field-label">User Email</label>
-				<input type="text" class="readonly-input" value={editingItem.user_email} readonly />
+				<label class="field-label" for="email-tpl-user-email">User Email</label>
+				<input id="email-tpl-user-email" type="text" class="readonly-input" value={editingItem.user_email} readonly />
 			</div>
 		{/if}
 		<div class="form-group">

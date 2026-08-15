@@ -5,12 +5,10 @@
 	import { maskToCrudActions } from '@dn-fe/ui/types';
 
 	// Support ?url_id=xxx to pre-filter clicks for a specific URL
-	const preselectedUrlId = $derived($page.url.searchParams.get('url_id') || '');
+	let urlIdFilter = $state($page.url.searchParams.get('url_id') || '');
 
 	let { data } = $props();
 	const actions = $derived(maskToCrudActions((data as any).authMasks?.['url-clicks'] ?? 0));
-
-	let urlIdFilter = $state(preselectedUrlId);
 
 	function formatDate(v: string | null): string {
 		if (!v) return '—';

@@ -52,8 +52,8 @@
 	{#snippet editSnippet(editingItem, formData)}
 		{#if editingItem?.user_email}
 			<div class="form-group">
-				<label class="field-label">User Email</label>
-				<input type="text" class="readonly-input" value={editingItem.user_email} readonly />
+				<label class="field-label" for="tpl-tr-user-email">User Email</label>
+				<input id="tpl-tr-user-email" type="text" class="readonly-input" value={editingItem.user_email} readonly />
 			</div>
 		{/if}
 		<div class="form-group">
@@ -127,9 +127,7 @@
 	}
 	.required { color: #dc2626; }
 	.form-group input[type="text"],
-	.form-group input[type="number"],
-	.form-group select,
-	.form-group textarea {
+	.form-group select {
 		width: 100%;
 		padding: 0.4rem;
 		border: 1px solid #ddd;
@@ -137,7 +135,6 @@
 		font-size: 0.9rem;
 		box-sizing: border-box;
 	}
-	.form-group textarea { resize: vertical; }
 	.readonly-input {
 		width: 100%;
 		padding: 0.4rem;

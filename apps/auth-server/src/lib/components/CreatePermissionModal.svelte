@@ -48,17 +48,17 @@
 		<h3 class="dialog-title">{$LL.crud_table.create_title({ resource: 'permission' })}</h3>
 
 		<div class="form-group">
-			<label>{$LL.roles_page.new_permission_resource()}</label>
+			<span class="form-label">{$LL.roles_page.new_permission_resource()}</span>
 			<input type="text" bind:value={resource} placeholder="e.g. users:read" />
 		</div>
 
 		<div class="form-group">
-			<label>{$LL.roles_page.new_permission_description()}</label>
+			<span class="form-label">{$LL.roles_page.new_permission_description()}</span>
 			<input type="text" bind:value={description} placeholder="Optional" />
 		</div>
 
 		<div class="form-group">
-			<label>{$LL.permissions_page.mask_label()}</label>
+			<span class="form-label">{$LL.permissions_page.mask_label()}</span>
 			<div class="mask-bits">
 				{#each MASK_BITS as { bit, label }}
 					<label class="bit-option" class:bit-active={(mask & bit) !== 0}>
@@ -90,7 +90,7 @@
 	.dialog { background: #fff; border-radius: 10px; padding: 1.5rem 1.75rem; min-width: 420px; max-width: 90vw; box-shadow: 0 8px 32px rgba(0,0,0,0.18); display: flex; flex-direction: column; gap: 0.9rem; }
 	.dialog-title { margin: 0; font-size: 1rem; font-weight: 700; color: #111; }
 	.form-group { display: flex; flex-direction: column; gap: 0.3rem; }
-	.form-group label { font-size: 0.82rem; font-weight: 600; color: #374151; }
+	.form-group label, .form-group .form-label { font-size: 0.82rem; font-weight: 600; color: #374151; }
 	.form-group input { padding: 0.4rem 0.6rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.85rem; outline: none; }
 	.form-group input:focus { border-color: #4f46e5; }
 	.mask-bits { display: flex; gap: 0.35rem; flex-wrap: wrap; }

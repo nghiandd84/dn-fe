@@ -10,7 +10,7 @@
 
 	let { children, data } = $props();
 
-	const emailTemplateResources: string[] = data.emailTemplateResources || [];
+	const emailTemplateResources = $derived<string[]>(data.emailTemplateResources || []);
 
 	const allNavItems = $derived([
 		{ href: '/admin', label: $LL.admin_panel.nav.dashboard(), resource: null },

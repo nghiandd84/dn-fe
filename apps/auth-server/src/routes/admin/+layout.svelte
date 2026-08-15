@@ -12,7 +12,7 @@
 
 	let { data, children } = $props();
 
-	const authResources: string[] = data.authResources || [];
+	const authResources = $derived<string[]>(data.authResources || []);
 
 	const allNavItems = $derived([
 		{ href: '/admin', label: $LL.admin_panel.nav.dashboard(), resource: null },

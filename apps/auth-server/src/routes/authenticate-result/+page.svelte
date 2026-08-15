@@ -20,16 +20,16 @@
 			<div class="icon success-icon">✓</div>
 			<h1>{$LL.authenticate_result.title_success()}</h1>
 			<div class="token-block">
-				<label>{$LL.authenticate_result.access_token()}</label>
+				<span class="token-label">{$LL.authenticate_result.access_token()}</span>
 				<code>{access_token}</code>
 			</div>
 			<div class="token-block">
-				<label>{$LL.authenticate_result.refresh_token()}</label>
+				<span class="token-label">{$LL.authenticate_result.refresh_token()}</span>
 				<code>{refresh_token}</code>
 			</div>
 			{#if permissions?.length}
 			<div class="permissions">
-				<label>{$LL.authenticate_result.permissions()}</label>
+				<span class="token-label">{$LL.authenticate_result.permissions()}</span>
 				<table>
 					<thead>
 						<tr>
@@ -60,10 +60,9 @@
 	.error-title { color: #dc2626; }
 	.error-msg { color: #555; }
 	.token-block { text-align: left; margin-bottom: 1rem; }
-	.token-block label { display: block; font-weight: 600; font-size: 0.8rem; color: #555; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
+	.token-label { display: block; font-weight: 600; font-size: 0.8rem; color: #555; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
 	.token-block code { display: block; background: #f3f4f6; padding: 0.6rem; border-radius: 4px; font-size: 0.75rem; word-break: break-all; color: #1f2937; }
 	.permissions { text-align: left; margin-top: 1.5rem; }
-	.permissions label { display: block; font-weight: 600; font-size: 0.8rem; color: #555; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
 	table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
 	th, td { padding: 0.4rem 0.6rem; border: 1px solid #e5e7eb; text-align: left; }
 	th { background: #f3f4f6; font-weight: 600; }

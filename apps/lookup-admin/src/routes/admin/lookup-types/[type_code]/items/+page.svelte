@@ -5,7 +5,7 @@
 	import ConfirmModal from '@dn-fe/ui/ConfirmModal.svelte';
 
 	let { data } = $props();
-	const typeCode = data.typeCode;
+	const typeCode = $derived(data.typeCode);
 
 	// ─── Table state ─────────────────────────────────────────────────────────
 	let items: any[] = $state([]);
@@ -491,11 +491,6 @@
 	.code-badge { background: #f0f9ff; color: #0369a1; font-family: monospace; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 4px; border: 1px solid #bae6fd; font-size: 0.82rem; }
 	.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
 	.modal { background: #fff; padding: 1.5rem; border-radius: 8px; min-width: 420px; max-width: 90vw; }
-	.form-group { margin-bottom: 0.8rem; }
-	.form-group label { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; }
-	.form-group-checkbox { display: flex; align-items: center; gap: 0.75rem; }
-	.form-group-checkbox label { margin-bottom: 0; }
-	.form-group input { width: 100%; padding: 0.4rem; border: 1px solid #ddd; border-radius: 4px; }
 	.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid #e5e7eb; }
 	.toggle { display: inline-flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; }
 	.toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
@@ -503,11 +498,6 @@
 	.toggle-opt { padding: 0.2rem 0.65rem; color: #9ca3af; background: #f9fafb; transition: background 0.15s, color 0.15s; }
 	.toggle input:not(:checked) ~ .toggle-options .toggle-opt-no { background: #4f46e5; color: #fff; }
 	.toggle input:checked ~ .toggle-options .toggle-opt-yes { background: #4f46e5; color: #fff; }
-	.detail-list { display: grid; gap: 0; margin: 0; }
-	.detail-row { display: grid; grid-template-columns: 120px 1fr; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid #eee; }
-	.detail-row:last-child { border-bottom: none; }
-	dt { font-weight: 600; font-size: 0.85rem; color: #555; }
-	dd { font-size: 0.9rem; color: #111; word-break: break-all; margin: 0; }
 	.mono { font-family: monospace; font-size: 0.8rem; }
 	.row-deleting { background: #fee2e2 !important; opacity: 0.6; }
 
@@ -566,5 +556,4 @@
 	.trans-name { font-size: 0.875rem; color: #111827; }
 	.trans-loading { font-size: 0.82rem; color: #9ca3af; margin: 0; }
 	.trans-empty { font-size: 0.82rem; color: #9ca3af; margin: 0; }
-	.btn-link { color: #4f46e5; font-weight: 600; font-size: 0.85rem; }
 </style>

@@ -10,7 +10,7 @@
 
 	let { children, data } = $props();
 
-	const eventResources: string[] = data.eventResources || [];
+	const eventResources = $derived<string[]>(data.eventResources || []);
 
 	const allNavItems = $derived([
 		{ href: '/admin', label: $LL.admin_panel.nav.dashboard(), resource: null },

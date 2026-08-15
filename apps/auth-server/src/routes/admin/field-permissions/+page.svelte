@@ -168,7 +168,7 @@
 	{#snippet editSnippet(_item, formData)}
 		<!-- Action selector -->
 		<div class="fp-field-row">
-			<label class="fp-label">{$LL.field_permissions_page.col_action()} *</label>
+			<span class="fp-label">{$LL.field_permissions_page.col_action()} *</span>
 			<div class="fp-action-group">
 				<label
 					class="fp-action-opt"
@@ -201,7 +201,7 @@
 
 		<!-- Fields tag editor -->
 		<div class="fp-field-row fp-field-row--top">
-			<label class="fp-label">{$LL.field_permissions_page.col_fields()}</label>
+			<span class="fp-label">{$LL.field_permissions_page.col_fields()}</span>
 			<div class="fp-tags-editor">
 				<div class="fp-tags">
 					{#if currentFields.length === 0}

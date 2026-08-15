@@ -10,7 +10,7 @@
 
 	let { children, data } = $props();
 
-	const urlShortenerResources: string[] = data.urlShortenerResources || [];
+	const urlShortenerResources = $derived<string[]>(data.urlShortenerResources || []);
 
 	const allNavItems = $derived([
 		{ href: '/admin', label: $LL.admin_panel.nav.dashboard(), resource: null },
