@@ -162,49 +162,13 @@
 {/if}
 
 <style>
-	h1 { margin-bottom: 1rem; }
-
-	.filter-bar {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-		background: #f0f9ff;
-		border: 1px solid #bae6fd;
-		border-radius: 6px;
-		padding: 0.6rem 1rem;
-		margin-bottom: 1rem;
-		font-size: 0.88rem;
-	}
-	.clear-filter {
-		color: #0ea5e9;
-		text-decoration: none;
-		font-weight: 500;
-		margin-left: auto;
-	}
+	/* URL clicks page — unique filter bar and view button */
+	.filter-bar { display: flex; align-items: center; gap: 1rem; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; padding: 0.6rem 1rem; margin-bottom: 1rem; font-size: 0.88rem; }
+	.clear-filter { color: #0ea5e9; text-decoration: none; font-weight: 500; margin-left: auto; }
 	.clear-filter:hover { text-decoration: underline; }
-
-	.no-filter {
-		background: #fffbeb;
-		border: 1px solid #fde68a;
-		border-radius: 6px;
-		padding: 0.75rem 1rem;
-		margin-bottom: 1rem;
-		font-size: 0.88rem;
-		color: #92400e;
-	}
+	.no-filter { background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 0.88rem; color: #92400e; }
 	.no-filter a { color: #0ea5e9; }
-
-	.view-btn {
-		display: inline-block;
-		padding: 0.25rem 0.6rem;
-		background: #0ea5e9;
-		color: #fff;
-		border-radius: 4px;
-		font-size: 0.78rem;
-		text-decoration: none;
-		white-space: nowrap;
-	}
+	.view-btn { display: inline-block; padding: 0.25rem 0.6rem; background: #0ea5e9; color: #fff; border-radius: 4px; font-size: 0.78rem; text-decoration: none; white-space: nowrap; }
 	.view-btn:hover { background: #0284c7; }
-
 	.small { font-size: 0.78rem; }
 </style>

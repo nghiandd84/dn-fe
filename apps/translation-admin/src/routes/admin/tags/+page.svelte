@@ -48,33 +48,5 @@
 	{/snippet}
 </CrudTable>
 
-<style>
-	h1 {
-		margin-bottom: 1rem;
-	}
-	.form-group {
-		margin-bottom: 0.8rem;
-	}
-	.field-label {
-		display: block;
-		margin-bottom: 0.3rem;
-		font-weight: 500;
-		font-size: 0.85rem;
-	}
-	.required {
-		color: #dc2626;
-	}
-	.form-group input[type='text'] {
-		width: 100%;
-		padding: 0.4rem;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 0.9rem;
-		box-sizing: border-box;
-	}
-	.mono {
-		font-family: monospace;
-		font-size: 0.85rem;
-		word-break: break-all;
-	}
-</style>
+
+

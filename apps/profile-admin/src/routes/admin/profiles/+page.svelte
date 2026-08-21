@@ -117,59 +117,8 @@
 </CrudTable>
 
 <style>
-	:global(.profile-detail) {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		min-width: 340px;
-	}
-
-	.user-filter-bar {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		margin-bottom: 0.75rem;
-		background: #f8f9fa;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		padding: 0.35rem 0.6rem;
-		width: fit-content;
-	}
-	.user-filter-bar .filter-label {
-		font-size: 0.78rem;
-		color: #555;
-		white-space: nowrap;
-	}
-	.user-filter-input {
-		min-width: 260px;
-	}
-
-	.form-group {
-		margin-bottom: 0.8rem;
-	}
-	.field-label {
-		display: block;
-		margin-bottom: 0.3rem;
-		font-weight: 500;
-		font-size: 0.85rem;
-	}
-	.required { color: #dc2626; }
-	.form-group input {
-		width: 100%;
-		padding: 0.4rem;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 0.9rem;
-		box-sizing: border-box;
-	}
-	.readonly-input {
-		width: 100%;
-		padding: 0.4rem;
-		border: 1px solid #e5e7eb;
-		border-radius: 4px;
-		background: #f9fafb;
-		color: #6b7280;
-		font-size: 0.9rem;
-		cursor: not-allowed;
-	}
+	/* Profile-specific filter bar */
+	.user-filter-bar { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px; padding: 0.35rem 0.6rem; width: fit-content; }
+	.user-filter-bar .filter-label { font-size: 0.78rem; color: #555; white-space: nowrap; }
+	.user-filter-input { min-width: 260px; }
 </style>

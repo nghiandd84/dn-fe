@@ -1,0 +1,56 @@
+/* ── Modal / overlay ── shared across all admin apps ── */
+
+.modal-overlay,
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal,
+.dialog {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem 1.75rem;
+  min-width: 320px;
+  max-width: 90vw;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modal-title,
+.dialog-title { margin: 0; font-size: 1rem; font-weight: 700; color: #111; }
+
+/* Modal action buttons row */
+.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.25rem; }
+
+.btn-cancel {
+  padding: 0.4rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+  color: #374151;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.btn-cancel:hover { background: #f3f4f6; }
+
+.btn-confirm {
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #4f46e5;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-confirm:hover { background: #4338ca; }
+.btn-confirm:disabled { opacity: 0.5; cursor: not-allowed; }

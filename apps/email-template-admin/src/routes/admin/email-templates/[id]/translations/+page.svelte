@@ -101,42 +101,9 @@
 </CrudTable>
 
 <style>
-	.form-group { margin-bottom: 0.8rem; }
-	.field-label { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; }
-	.required { color: #dc2626; }
-	.form-group input[type="text"],
-	.form-group select {
-		width: 100%;
-		padding: 0.4rem;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 0.9rem;
-		box-sizing: border-box;
-	}
-	.readonly-input {
-		width: 100%;
-		padding: 0.4rem;
-		border: 1px solid #e5e7eb;
-		border-radius: 4px;
-		background: #f9fafb;
-		color: #6b7280;
-		font-size: 0.9rem;
-		cursor: not-allowed;
-		box-sizing: border-box;
-	}
+<style>
+	/* Body display in detail view — unique to translations */
 	:global(.translation-detail) { min-width: 400px; max-width: 600px; }
 	.body-row { flex-direction: column; align-items: flex-start !important; gap: 0.25rem; }
-	.body-content {
-		font-size: 0.82rem;
-		background: #f8f9fa;
-		border: 1px solid #e5e7eb;
-		border-radius: 4px;
-		padding: 0.5rem;
-		white-space: pre-wrap;
-		word-break: break-word;
-		max-height: 300px;
-		overflow-y: auto;
-		width: 100%;
-		line-height: 1.6;
-	}
+	.body-content { font-size: 0.82rem; background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 4px; padding: 0.5rem; white-space: pre-wrap; word-break: break-word; max-height: 300px; overflow-y: auto; width: 100%; line-height: 1.6; }
 </style>

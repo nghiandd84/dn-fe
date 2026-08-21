@@ -167,24 +167,8 @@
 </CrudTable>
 
 <style>
-	h1 { margin-bottom: 1rem; }
-	.form-group { margin-bottom: 0.8rem; }
-	.field-label { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; }
-	.form-group select {
-		width: 100%;
-		padding: 0.4rem;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 0.9rem;
-		box-sizing: border-box;
-	}
-	.status-badge {
-		display: inline-block;
-		padding: 0.2rem 0.6rem;
-		border-radius: 999px;
-		font-size: 0.78rem;
-		font-weight: 600;
-	}
+	/* Status badge — booking-specific color coding */
+	.status-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
 	.status-pending   { background: #fef9c3; color: #92400e; }
 	.status-confirmed { background: #dcfce7; color: #15803d; }
 	.status-cancelled { background: #fee2e2; color: #dc2626; }

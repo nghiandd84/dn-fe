@@ -180,54 +180,9 @@
 </CrudTable>
 
 <style>
-	h1 {
-		margin-bottom: 1rem;
-	}
-	.form-group {
-		margin-bottom: 0.8rem;
-	}
-	.field-label {
-		display: block;
-		margin-bottom: 0.3rem;
-		font-weight: 500;
-		font-size: 0.85rem;
-	}
-	.required {
-		color: #dc2626;
-	}
-	.form-group input[type='text'],
-	.form-group input[type='number'],
-	.form-group textarea,
-	.form-group select {
-		width: 100%;
-		padding: 0.4rem;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 0.9rem;
-		box-sizing: border-box;
-	}
-	.mono {
-		font-family: monospace;
-		font-size: 0.85rem;
-		word-break: break-all;
-	}
-	.status-badge {
-		display: inline-block;
-		padding: 0.2rem 0.6rem;
-		border-radius: 999px;
-		font-size: 0.78rem;
-		font-weight: 600;
-	}
-	.status-draft {
-		background: #fef3c7;
-		color: #92400e;
-	}
-	.status-published {
-		background: #dcfce7;
-		color: #15803d;
-	}
-	.status-archived {
-		background: #f3f4f6;
-		color: #374151;
-	}
+	/* Translation version status badge colors */
+	.status-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
+	.status-draft     { background: #fef3c7; color: #92400e; }
+	.status-published { background: #dcfce7; color: #15803d; }
+	.status-archived  { background: #f3f4f6; color: #374151; }
 </style>

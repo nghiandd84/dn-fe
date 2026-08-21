@@ -150,84 +150,24 @@
 </CrudTable>
 
 <style>
-	:global(.user-preference-detail) {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		min-width: 340px;
-	}
-	:global(.lang-badge) {
-		background: #f3e8ff;
-		color: #5b21b6;
-		font-family: monospace;
-		font-weight: 600;
-		padding: 0.1rem 0.5rem;
-		border-radius: 4px;
-		border: 1px solid #e9d5ff;
-		font-size: 0.82rem;
-	}
-	:global(.theme-badge) {
-		background: #fef3c7;
-		color: #854d0e;
-		font-family: monospace;
-		font-weight: 600;
-		padding: 0.1rem 0.5rem;
-		border-radius: 4px;
-		border: 1px solid #fde68a;
-		font-size: 0.82rem;
-	}
+	/* User-preferences — unique badges, filter bar, and toggle */
+	:global(.lang-badge) { background: #f3e8ff; color: #5b21b6; font-family: monospace; font-weight: 600; padding: 0.1rem 0.5rem; border-radius: 4px; border: 1px solid #e9d5ff; font-size: 0.82rem; }
+	:global(.theme-badge) { background: #fef3c7; color: #854d0e; font-family: monospace; font-weight: 600; padding: 0.1rem 0.5rem; border-radius: 4px; border: 1px solid #fde68a; font-size: 0.82rem; }
 
-	.filter-bar {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		flex-wrap: wrap;
-		margin-bottom: 0.75rem;
-		background: #f8f9fa;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		padding: 0.35rem 0.6rem;
-	}
-	.filter-item {
-		display: flex;
-		align-items: center;
-		gap: 0.35rem;
-	}
+	.filter-bar { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.75rem; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px; padding: 0.35rem 0.6rem; }
+	.filter-item { display: flex; align-items: center; gap: 0.35rem; }
 	.filter-label { font-size: 0.78rem; color: #555; white-space: nowrap; }
-	.filter-select {
-		padding: 0.25rem 0.4rem;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 0.82rem;
-		background: #fff;
-		cursor: pointer;
-	}
+	.filter-select { padding: 0.25rem 0.4rem; border: 1px solid #ddd; border-radius: 4px; font-size: 0.82rem; background: #fff; cursor: pointer; }
 	.profile-filter-input { min-width: 220px; }
 
-	.form-group { margin-bottom: 0.8rem; }
 	.form-group-checkbox { display: flex; align-items: center; gap: 0.75rem; }
 	.form-group-checkbox .field-label { margin-bottom: 0; }
-	.field-label { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; }
-	.required { color: #dc2626; }
-	.form-group input[type="text"], .form-group select {
-		width: 100%;
-		padding: 0.4rem;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 0.9rem;
-		box-sizing: border-box;
-	}
-	.readonly-input {
-		background: #f9fafb;
-		color: #6b7280;
-		cursor: not-allowed;
-		border-color: #e5e7eb;
-	}
+
 	/* Toggle switch */
 	.toggle { display: inline-flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; }
 	.toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
 	.toggle-options { display: inline-flex; border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden; font-size: 0.82rem; font-weight: 600; }
-	.toggle-opt { padding: 0.2rem 0.65rem; color: #9ca3af; background: #f9fafb; transition: background 0.15s, color 0.15s; }
+	.toggle-opt { padding: 0.2rem 0.65rem; color: #9ca3af; background: #f9fafb; }
 	.toggle input:not(:checked) ~ .toggle-options .toggle-opt-no  { background: #4f46e5; color: #fff; }
 	.toggle input:checked       ~ .toggle-options .toggle-opt-yes { background: #4f46e5; color: #fff; }
 </style>

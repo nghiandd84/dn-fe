@@ -121,67 +121,18 @@
 </CrudTable>
 
 <style>
-	h1 { margin-bottom: 1rem; }
-
-	.key-banner {
-		background: #f0fdf4;
-		border: 1px solid #86efac;
-		border-radius: 8px;
-		padding: 1rem 1.25rem;
-		margin-bottom: 1.25rem;
-	}
-	.key-banner-header {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 0.5rem;
-	}
+	/* API Key banner — shown once after key creation */
+	.key-banner { background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+	.key-banner-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
 	.key-banner-title { font-weight: 600; font-size: 0.95rem; color: #15803d; }
-	.key-banner-close {
-		background: none;
-		border: none;
-		font-size: 1.2rem;
-		cursor: pointer;
-		color: #6b7280;
-		padding: 0 0.25rem;
-	}
+	.key-banner-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #6b7280; padding: 0 0.25rem; }
 	.key-banner-note { font-size: 0.82rem; color: #6b7280; margin: 0 0 0.75rem; }
-	.key-value {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		background: #fff;
-		border: 1px solid #d1fae5;
-		border-radius: 6px;
-		padding: 0.5rem 0.75rem;
-	}
-	.key-value code {
-		font-family: monospace;
-		font-size: 0.85rem;
-		word-break: break-all;
-		flex: 1;
-		color: #1f2937;
-	}
-	.copy-btn {
-		background: #0ea5e9;
-		color: #fff;
-		border: none;
-		border-radius: 4px;
-		padding: 0.3rem 0.6rem;
-		font-size: 0.8rem;
-		cursor: pointer;
-		white-space: nowrap;
-		flex-shrink: 0;
-	}
+	.key-value { display: flex; align-items: center; gap: 0.75rem; background: #fff; border: 1px solid #d1fae5; border-radius: 6px; padding: 0.5rem 0.75rem; }
+	.key-value code { font-family: monospace; font-size: 0.85rem; word-break: break-all; flex: 1; color: #1f2937; }
+	.copy-btn { background: #0ea5e9; color: #fff; border: none; border-radius: 4px; padding: 0.3rem 0.6rem; font-size: 0.8rem; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
 	.copy-btn:hover { background: #0284c7; }
 
-	.action-badge {
-		display: inline-block;
-		padding: 0.2rem 0.6rem;
-		border-radius: 999px;
-		font-size: 0.78rem;
-		font-weight: 600;
-	}
+	.action-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
 	.action-active  { background: #dcfce7; color: #15803d; }
 	.action-revoked { background: #fee2e2; color: #dc2626; }
 </style>

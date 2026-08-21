@@ -20,7 +20,10 @@
 		"./styles/auth-page.css": "./src/lib/styles/auth-page.css",
 		"./styles/meta-detail.css": "./src/lib/styles/meta-detail.css",
 		"./styles/action-badges.css": "./src/lib/styles/action-badges.css",
-		"./styles/search-bar.css": "./src/lib/styles/search-bar.css"
+		"./styles/search-bar.css": "./src/lib/styles/search-bar.css",
+		"./styles/form.css": "./src/lib/styles/form.css",
+		"./styles/modal.css": "./src/lib/styles/modal.css",
+		"./styles/dashboard.css": "./src/lib/styles/dashboard.css"
 	},
 	"svelte": "./src/lib/index.ts",
 	"peerDependencies": {

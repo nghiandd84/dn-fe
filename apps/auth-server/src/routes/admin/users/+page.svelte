@@ -279,7 +279,7 @@
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_interactive_supports_focus -->
 	<div class="modal-overlay" onclick={closeAssignModal} role="presentation">
-		<div class="assign-modal" onclick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
+		<div class="modal assign-modal" onclick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
 			<h3 class="modal-title">{$LL.users_page.assign_role_title()}</h3>
 			<p class="modal-role-name">{assigningRole.name}</p>
 			<div class="modal-field">
@@ -301,86 +301,27 @@
 {/if}
 
 <style>
+	/* Users page — unique layout styles */
 	.user-detail { display: flex; flex-direction: column; gap: 0.6rem; min-width: 580px; max-width: 780px; }
-	.section-title { margin: 0.25rem 0 0.5rem; font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
-	.badge { background: #e5e7eb; color: #374151; border-radius: 99px; padding: 0.1rem 0.55rem; font-size: 0.75rem; font-weight: 600; }
 
 	.role-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 	.role-panel { display: flex; flex-direction: column; gap: 0.4rem; }
 
-	.panel-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
-	.panel-title { font-size: 0.82rem; font-weight: 600; color: #374151; white-space: nowrap; }
-	.search-input {
-		flex: 1;
-		padding: 0.25rem 0.5rem;
-		border: 1px solid #d1d5db;
-		border-radius: 5px;
-		font-size: 0.82rem;
-		outline: none;
-	}
-	.search-input:focus { border-color: #6366f1; }
-
 	.role-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.25rem; max-height: 260px; overflow-y: auto; }
-	.role-item {
-		display: flex;
-		flex-direction: column;
-		background: #f9fafb;
-		border: 1px solid #e5e7eb;
-		border-radius: 6px;
-	}
-	.role-row {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.35rem 0.6rem;
-	}
+	.role-item { display: flex; flex-direction: column; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; }
+	.role-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.6rem; }
 	.role-info { display: flex; flex-direction: column; gap: 0.1rem; flex: 1; min-width: 0; }
-	.role-name { font-size: 0.85rem; font-weight: 600; color: #1e293b; truncate: ellipsis; overflow: hidden; white-space: nowrap; }
-	.role-key {
-		font-size: 0.72rem;
-		color: #0369a1;
-		background: #e0f2fe;
-		border-radius: 99px;
-		padding: 0.05rem 0.45rem;
-		width: fit-content;
-	}
+	.role-name { font-size: 0.85rem; font-weight: 600; color: #1e293b; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+	.role-key { font-size: 0.72rem; color: #0369a1; background: #e0f2fe; border-radius: 99px; padding: 0.05rem 0.45rem; width: fit-content; }
 	.role-meta { display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: center; }
-	.role-client {
-		font-size: 0.72rem;
-		color: #6b7280;
-		background: #f3f4f6;
-		border-radius: 99px;
-		padding: 0.05rem 0.45rem;
-		width: fit-content;
-	}
+	.role-client { font-size: 0.72rem; color: #6b7280; background: #f3f4f6; border-radius: 99px; padding: 0.05rem 0.45rem; width: fit-content; }
 	.role-desc { font-size: 0.75rem; color: #6b7280; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 	.role-empty { font-size: 0.82rem; color: #9ca3af; padding: 0.4rem 0.2rem; }
 
-	.btn-perm {
-		flex-shrink: 0;
-		background: none;
-		border: 1px solid #d1d5db;
-		color: #6b7280;
-		border-radius: 4px;
-		width: 1.5rem;
-		height: 1.5rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 0.85rem;
-		cursor: pointer;
-		line-height: 1;
-	}
+	.btn-perm { flex-shrink: 0; background: none; border: 1px solid #d1d5db; color: #6b7280; border-radius: 4px; width: 1.5rem; height: 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; cursor: pointer; line-height: 1; }
 	.btn-perm:hover, .btn-perm.active { background: #ede9fe; color: #5b21b6; border-color: #c4b5fd; }
 
-	.perm-inline {
-		border-top: 1px solid #e5e7eb;
-		background: #fff;
-		padding: 0.35rem 0.6rem;
-		display: flex;
-		flex-direction: column;
-		gap: 0.2rem;
-	}
+	.perm-inline { border-top: 1px solid #e5e7eb; background: #fff; padding: 0.35rem 0.6rem; display: flex; flex-direction: column; gap: 0.2rem; }
 	.perm-inline-msg { font-size: 0.75rem; color: #9ca3af; }
 	.perm-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
 	.perm-resource { font-family: monospace; font-size: 0.75rem; color: #1e293b; flex-shrink: 0; }
@@ -393,108 +334,14 @@
 	.perm-badge--admin  { background: #f3e8ff; color: #7e22ce; }
 	.perm-raw { font-size: 0.68rem; color: #9ca3af; font-family: monospace; }
 
-	.btn-unassign {
-		flex-shrink: 0;
-		background: none;
-		border: 1px solid #fca5a5;
-		color: #dc2626;
-		border-radius: 4px;
-		width: 1.5rem;
-		height: 1.5rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 0.75rem;
-		cursor: pointer;
-		line-height: 1;
-	}
-	.btn-unassign:hover { background: #fee2e2; }
-
-	.btn-assign {
-		flex-shrink: 0;
-		background: none;
-		border: 1px solid #6ee7b7;
-		color: #059669;
-		border-radius: 4px;
-		width: 1.5rem;
-		height: 1.5rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 1rem;
-		cursor: pointer;
-		line-height: 1;
-	}
-	.btn-assign:hover { background: #d1fae5; }
-
-	.mono { font-family: monospace; }
-
-	/* Assign key modal */
-	.modal-overlay {
-		position: fixed;
-		inset: 0;
-		background: rgba(0,0,0,0.35);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		z-index: 1000;
-	}
-	.assign-modal {
-		background: #fff;
-		border-radius: 10px;
-		padding: 1.5rem;
-		min-width: 320px;
-		max-width: 400px;
-		width: 100%;
-		box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-		display: flex;
-		flex-direction: column;
-		gap: 0.75rem;
-	}
-	.modal-title { margin: 0; font-size: 1rem; font-weight: 700; }
-	.modal-role-name {
-		margin: 0;
-		font-size: 0.88rem;
-		font-weight: 600;
-		color: #5b21b6;
-		background: #ede9fe;
-		border-radius: 6px;
-		padding: 0.3rem 0.7rem;
-		width: fit-content;
-	}
+	/* Assign key modal — extra fields beyond modal.css base */
+	.assign-modal { min-width: 320px; max-width: 400px; }
+	.modal-role-name { margin: 0; font-size: 0.88rem; font-weight: 600; color: #5b21b6; background: #ede9fe; border-radius: 6px; padding: 0.3rem 0.7rem; width: fit-content; }
 	.modal-field { display: flex; flex-direction: column; gap: 0.3rem; }
 	.modal-field label { font-size: 0.85rem; font-weight: 500; }
 	.optional { font-weight: 400; color: #9ca3af; font-size: 0.8rem; }
-	.modal-field input {
-		padding: 0.45rem 0.6rem;
-		border: 1px solid #d1d5db;
-		border-radius: 6px;
-		font-size: 0.9rem;
-		outline: none;
-	}
+	.modal-field input { padding: 0.45rem 0.6rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.9rem; outline: none; }
 	.modal-field input:focus { border-color: #6366f1; box-shadow: 0 0 0 2px #e0e7ff; }
-	.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.25rem; }
-	.btn-cancel {
-		padding: 0.4rem 1rem;
-		border: 1px solid #d1d5db;
-		border-radius: 6px;
-		background: #fff;
-		color: #374151;
-		font-size: 0.875rem;
-		cursor: pointer;
-	}
-	.btn-cancel:hover { background: #f3f4f6; }
-	.btn-confirm {
-		padding: 0.4rem 1rem;
-		border: none;
-		border-radius: 6px;
-		background: #6366f1;
-		color: #fff;
-		font-size: 0.875rem;
-		font-weight: 600;
-		cursor: pointer;
-	}
-	.btn-confirm:hover { background: #4f46e5; }
 </style>
 
 

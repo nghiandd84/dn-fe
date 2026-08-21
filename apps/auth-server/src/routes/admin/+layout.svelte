@@ -9,6 +9,8 @@
 	import '@dn-fe/ui/styles/meta-detail.css';
 	import '@dn-fe/ui/styles/action-badges.css';
 	import '@dn-fe/ui/styles/search-bar.css';
+	import '@dn-fe/ui/styles/form.css';
+	import '@dn-fe/ui/styles/modal.css';
 
 	let { data, children } = $props();
 

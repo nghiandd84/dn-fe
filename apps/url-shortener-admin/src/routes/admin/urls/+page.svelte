@@ -164,26 +164,9 @@
 </CrudTable>
 
 <style>
-	h1 { margin-bottom: 1rem; }
-	.form-group { margin-bottom: 0.8rem; }
-	.field-label { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; }
-	.form-group input,
-	.form-group select {
-		width: 100%;
-		padding: 0.4rem;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 0.9rem;
-		box-sizing: border-box;
-	}
-	.action-badge {
-		display: inline-block;
-		padding: 0.2rem 0.6rem;
-		border-radius: 999px;
-		font-size: 0.78rem;
-		font-weight: 600;
-	}
-	.action-active  { background: #dcfce7; color: #15803d; }
+	/* URL-specific status badges and link */
+	.action-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
+	.action-active   { background: #dcfce7; color: #15803d; }
 	.action-inactive { background: #fee2e2; color: #dc2626; }
 	.view-clicks-link { color: #0ea5e9; text-decoration: none; font-size: 0.85rem; }
 	.view-clicks-link:hover { text-decoration: underline; }

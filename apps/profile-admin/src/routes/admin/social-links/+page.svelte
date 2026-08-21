@@ -91,56 +91,10 @@
 </CrudTable>
 
 <style>
-	:global(.social-link-detail) {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		min-width: 340px;
-	}
-	:global(.platform-badge) {
-		background: #dbeafe;
-		color: #0c4a6e;
-		font-family: monospace;
-		font-weight: 600;
-		padding: 0.1rem 0.5rem;
-		border-radius: 4px;
-		border: 1px solid #bae6fd;
-		font-size: 0.82rem;
-	}
+	/* Social-links — unique filter bar and platform badge */
+	:global(.platform-badge) { background: #dbeafe; color: #0c4a6e; font-family: monospace; font-weight: 600; padding: 0.1rem 0.5rem; border-radius: 4px; border: 1px solid #bae6fd; font-size: 0.82rem; }
 
-	.profile-filter-bar {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		margin-bottom: 0.75rem;
-		background: #f8f9fa;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		padding: 0.35rem 0.6rem;
-		width: fit-content;
-	}
-	.profile-filter-bar .filter-label {
-		font-size: 0.78rem;
-		color: #555;
-		white-space: nowrap;
-	}
+	.profile-filter-bar { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px; padding: 0.35rem 0.6rem; width: fit-content; }
+	.profile-filter-bar .filter-label { font-size: 0.78rem; color: #555; white-space: nowrap; }
 	.profile-filter-input { min-width: 260px; }
-
-	.form-group { margin-bottom: 0.8rem; }
-	.field-label { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; }
-	.required { color: #dc2626; }
-	.form-group input, .form-group select {
-		width: 100%;
-		padding: 0.4rem;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 0.9rem;
-		box-sizing: border-box;
-	}
-	.readonly-input {
-		background: #f9fafb;
-		color: #6b7280;
-		cursor: not-allowed;
-		border-color: #e5e7eb;
-	}
 </style>

@@ -65,29 +65,5 @@
 	{/snippet}
 </CrudTable>
 
-<style>
-	.form-group { margin-bottom: 0.8rem; }
-	.field-label { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; }
-	.required { color: #dc2626; }
-	.form-group input[type="text"],
-	.form-group textarea {
-		width: 100%;
-		padding: 0.4rem;
-		border: 1px solid #ddd;
-		border-radius: 4px;
-		font-size: 0.9rem;
-		box-sizing: border-box;
-	}
-	.form-group textarea { resize: vertical; }
-	.readonly-input {
-		width: 100%;
-		padding: 0.4rem;
-		border: 1px solid #e5e7eb;
-		border-radius: 4px;
-		background: #f9fafb;
-		color: #6b7280;
-		font-size: 0.9rem;
-		cursor: not-allowed;
-		box-sizing: border-box;
-	}
-</style>
+
+

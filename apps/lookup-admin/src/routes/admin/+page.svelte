@@ -24,11 +24,11 @@
 </div>
 
 <style>
+	/* lookup-admin dashboard — custom card layout (not stats grid pattern) */
 	.dashboard { max-width: 960px; }
 	.header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; }
 	.header h1 { font-size: 1.6rem; font-weight: 700; color: #111; }
 	.description { margin-top: 0.4rem; color: #6b7280; font-size: 0.9rem; }
-	.badge { background: #4f46e5; color: #fff; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
 	.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
 	.card { display: flex; align-items: center; gap: 1rem; padding: 1.25rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; text-decoration: none; color: inherit; transition: box-shadow 0.15s, border-color 0.15s; }
 	.card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-color: #4f46e5; text-decoration: none; }

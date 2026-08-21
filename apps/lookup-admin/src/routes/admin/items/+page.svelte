@@ -398,9 +398,6 @@
 	.btn-info { background: #0ea5e9; color: #fff; border-color: #0ea5e9; }
 	.type-badge { background: #ede9fe; color: #5b21b6; font-family: monospace; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 4px; border: 1px solid #ddd6fe; font-size: 0.82rem; }
 	.row-deleting { background: #fee2e2 !important; opacity: 0.6; }
-	.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
-	.modal { background: #fff; border-radius: 8px; max-width: 90vw; }
-	.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid #e5e7eb; }
 	/* Form modal */
 	.form-modal { min-width: 480px; max-width: 620px; width: max-content; padding: 0; overflow: hidden; }
 	.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
@@ -410,7 +407,6 @@
 	.cell-input { border: none; background: transparent; font-size: 0.875rem; color: #111827; outline: none; width: 100%; padding: 0.1rem 0; }
 	.cell-input:focus { border-bottom: 1px solid #4f46e5; }
 	.cell-input::placeholder { color: #d1d5db; }
-	.required { color: #ef4444; }
 	.section-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem; }
 	.add-meta-btn { font-size: 0.75rem; font-weight: 600; color: #4f46e5; background: #ede9fe; border: 1px solid #ddd6fe; border-radius: 4px; padding: 0.15rem 0.5rem; cursor: pointer; }
 	.add-meta-btn:hover { background: #ddd6fe; }
@@ -426,7 +422,7 @@
 	.toggle { display: inline-flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; }
 	.toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
 	.toggle-options { display: inline-flex; border: 1px solid #d1d5db; border-radius: 6px; overflow: hidden; font-size: 0.82rem; font-weight: 600; }
-	.toggle-opt { padding: 0.2rem 0.65rem; color: #9ca3af; background: #f9fafb; transition: background 0.15s, color 0.15s; }
+	.toggle-opt { padding: 0.2rem 0.65rem; color: #9ca3af; background: #f9fafb; }
 	.toggle input:not(:checked) ~ .toggle-options .toggle-opt-no { background: #4f46e5; color: #fff; }
 	.toggle input:checked ~ .toggle-options .toggle-opt-yes { background: #4f46e5; color: #fff; }
 	/* Detail modal */

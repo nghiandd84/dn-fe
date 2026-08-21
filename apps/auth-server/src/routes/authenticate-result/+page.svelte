@@ -51,6 +51,7 @@
 </div>
 
 <style>
+	/* Page-specific styles for the result display */
 	.page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f5f5f5; }
 	.card { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); width: 100%; max-width: 480px; text-align: center; }
 	.icon { font-size: 3rem; margin-bottom: 1rem; }

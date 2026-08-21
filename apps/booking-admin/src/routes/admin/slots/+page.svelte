@@ -28,6 +28,5 @@
 	{/snippet}
 </CrudTable>
 
-<style>
-	h1 { margin-bottom: 1rem; }
-</style>
+
+
