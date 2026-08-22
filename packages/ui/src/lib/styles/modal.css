@@ -23,7 +23,6 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
 }
 
 /* ── Mobile: full-height sheet ── */
@@ -72,7 +71,6 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
 }
 
 /* ── Size variants ─────────────────────────────────────

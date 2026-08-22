@@ -23,6 +23,8 @@
 		"build:booking": "npm run build --workspace=apps/booking-admin",
 		"dev:url-shortener": "npm run dev --workspace=apps/url-shortener-admin",
 		"build:url-shortener": "npm run build --workspace=apps/url-shortener-admin",
+		"dev:tagging": "npm run dev --workspace=apps/tagging-admin",
+		"build:tagging": "npm run build --workspace=apps/tagging-admin",
 		"dev:all": "npm run dev --workspaces --if-present",
 		"build:all": "npm run build --workspaces --if-present",
 		"check:all": "npm run check --workspaces --if-present",
@@ -33,6 +35,7 @@
 		"start:event": "npm run start --workspace=apps/event-admin",
 		"start:translation": "npm run start --workspace=apps/translation-admin",
 		"start:booking": "npm run start --workspace=apps/booking-admin",
-		"start:url-shortener": "npm run start --workspace=apps/url-shortener-admin"
+		"start:url-shortener": "npm run start --workspace=apps/url-shortener-admin",
+		"start:tagging": "npm run start --workspace=apps/tagging-admin"
 	}
 }
