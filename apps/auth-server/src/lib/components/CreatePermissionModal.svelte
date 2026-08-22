@@ -47,34 +47,36 @@
 	<div class="dialog" role="dialog" aria-modal="true" onclick={(e) => e.stopPropagation()}>
 		<h3 class="dialog-title">{$LL.crud_table.create_title({ resource: 'permission' })}</h3>
 
-		<div class="form-group">
-			<span class="form-label">{$LL.roles_page.new_permission_resource()}</span>
-			<input type="text" bind:value={resource} placeholder="e.g. users:read" />
-		</div>
-
-		<div class="form-group">
-			<span class="form-label">{$LL.roles_page.new_permission_description()}</span>
-			<input type="text" bind:value={description} placeholder="Optional" />
-		</div>
-
-		<div class="form-group">
-			<span class="form-label">{$LL.permissions_page.mask_label()}</span>
-			<div class="mask-bits">
-				{#each MASK_BITS as { bit, label }}
-					<label class="bit-option" class:bit-active={(mask & bit) !== 0}>
-						<input type="checkbox" checked={(mask & bit) !== 0}
-							onchange={(e) => toggleBit(bit, (e.target as HTMLInputElement).checked)}
-						/>
-						{label}
-					</label>
-				{/each}
+		<div class="modal-body">
+			<div class="form-group">
+				<span class="form-label">{$LL.roles_page.new_permission_resource()}</span>
+				<input type="text" bind:value={resource} placeholder="e.g. users:read" />
 			</div>
-			<span class="mask-value">{$LL.permissions_page.mask_value({ value: mask })}</span>
-		</div>
 
-		{#if error}
-			<p class="error">{error}</p>
-		{/if}
+			<div class="form-group">
+				<span class="form-label">{$LL.roles_page.new_permission_description()}</span>
+				<input type="text" bind:value={description} placeholder="Optional" />
+			</div>
+
+			<div class="form-group">
+				<span class="form-label">{$LL.permissions_page.mask_label()}</span>
+				<div class="mask-bits">
+					{#each MASK_BITS as { bit, label }}
+						<label class="bit-option" class:bit-active={(mask & bit) !== 0}>
+							<input type="checkbox" checked={(mask & bit) !== 0}
+								onchange={(e) => toggleBit(bit, (e.target as HTMLInputElement).checked)}
+							/>
+							{label}
+						</label>
+					{/each}
+				</div>
+				<span class="mask-value">{$LL.permissions_page.mask_value({ value: mask })}</span>
+			</div>
+
+			{#if error}
+				<p class="error">{error}</p>
+			{/if}
+		</div>
 
 		<div class="modal-actions">
 			<button class="btn-cancel" type="button" onclick={oncancel}>{$LL.crud_table.cancel()}</button>

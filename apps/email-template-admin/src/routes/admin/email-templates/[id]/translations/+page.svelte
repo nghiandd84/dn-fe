@@ -103,7 +103,7 @@
 <style>
 <style>
 	/* Body display in detail view — unique to translations */
-	:global(.translation-detail) { min-width: 400px; max-width: 600px; }
+	:global(.translation-detail) { min-width: 400px; }
 	.body-row { flex-direction: column; align-items: flex-start !important; gap: 0.25rem; }
 	.body-content { font-size: 0.82rem; background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 4px; padding: 0.5rem; white-space: pre-wrap; word-break: break-word; max-height: 300px; overflow-y: auto; width: 100%; line-height: 1.6; }
 </style>

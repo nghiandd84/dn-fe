@@ -16,14 +16,115 @@
   background: #fff;
   border-radius: 10px;
   padding: 1.5rem 1.75rem;
-  min-width: 320px;
-  max-width: 90vw;
+  min-width: 280px;
+  /* mobile default: nearly full-width */
+  max-width: 92vw;
   width: 100%;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
+
+/* ── Mobile: full-height sheet ── */
+@media (max-width: 479px) {
+  .modal-overlay,
+  .overlay {
+    align-items: flex-end;
+  }
+
+  .modal,
+  .dialog {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    padding: 0;
+    gap: 0;
+  }
+
+  .modal-title,
+  .dialog-title {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+  }
+
+  .modal-body {
+    padding: 1rem 1.25rem;
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .modal-actions {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 0 !important;
+    flex-shrink: 0;
+  }
+}
+
+/* ── modal-body: scrollable middle zone ── */
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Size variants ─────────────────────────────────────
+   Usage: add a size class alongside .modal / .dialog
+     <div class="dialog dialog--sm">   small
+     <div class="dialog">             medium (default)
+     <div class="dialog dialog--big"> big
+     <div class="dialog dialog--lg">  large
+──────────────────────────────────────────────────────── */
+
+/* small — confirm dialogs, simple alerts */
+.modal--sm,
+.dialog--sm {
+  min-width: 280px;
+  max-width: 92vw;
+}
+@media (min-width: 480px)  { .modal--sm, .dialog--sm { max-width: 360px; } }
+@media (min-width: 768px)  { .modal--sm, .dialog--sm { max-width: 400px; } }
+@media (min-width: 1024px) { .modal--sm, .dialog--sm { max-width: 420px; } }
+@media (min-width: 1440px) { .modal--sm, .dialog--sm { max-width: 440px; } }
+
+/* medium (default) — standard forms */
+.modal:not([class*="--"]),
+.dialog:not([class*="--"]) {
+  min-width: 320px;
+}
+@media (min-width: 480px)  { .modal:not([class*="--"]), .dialog:not([class*="--"]) { max-width: 440px; } }
+@media (min-width: 768px)  { .modal:not([class*="--"]), .dialog:not([class*="--"]) { max-width: 520px; } }
+@media (min-width: 1024px) { .modal:not([class*="--"]), .dialog:not([class*="--"]) { max-width: 560px; } }
+@media (min-width: 1440px) { .modal:not([class*="--"]), .dialog:not([class*="--"]) { max-width: 600px; } }
+
+/* big — detail views, multi-field forms */
+.modal--big,
+.dialog--big {
+  min-width: 400px;
+  max-width: 92vw;
+}
+@media (min-width: 480px)  { .modal--big, .dialog--big { max-width: 560px; } }
+@media (min-width: 768px)  { .modal--big, .dialog--big { max-width: 680px; } }
+@media (min-width: 1024px) { .modal--big, .dialog--big { max-width: 760px; } }
+@media (min-width: 1440px) { .modal--big, .dialog--big { max-width: 840px; } }
+
+/* large — wide content, tables, editors */
+.modal--lg,
+.dialog--lg {
+  min-width: 480px;
+  max-width: 92vw;
+}
+@media (min-width: 480px)  { .modal--lg, .dialog--lg { max-width: 680px; } }
+@media (min-width: 768px)  { .modal--lg, .dialog--lg { max-width: 860px; } }
+@media (min-width: 1024px) { .modal--lg, .dialog--lg { max-width: 960px; } }
+@media (min-width: 1440px) { .modal--lg, .dialog--lg { max-width: 1100px; } }
 
 .modal-title,
 .dialog-title { margin: 0; font-size: 1rem; font-weight: 700; color: #111; }

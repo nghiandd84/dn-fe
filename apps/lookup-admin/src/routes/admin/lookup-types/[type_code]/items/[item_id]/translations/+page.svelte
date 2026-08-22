@@ -244,7 +244,7 @@
 	.locale-badge { background: #f0fdf4; color: #15803d; font-family: monospace; font-weight: 600; padding: 0.1rem 0.5rem; border-radius: 4px; border: 1px solid #bbf7d0; font-size: 0.82rem; }
 	.mono { font-family: monospace; font-size: 0.8rem; color: #6b7280; }
 	.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
-	.modal { background: #fff; padding: 1.5rem; border-radius: 8px; min-width: 380px; max-width: 90vw; }
+	.modal { background: #fff; padding: 1.5rem; border-radius: 8px; min-width: 380px; }
 	.form-group { margin-bottom: 0.8rem; }
 	.form-group label { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; }
 	.form-group input { width: 100%; padding: 0.4rem; border: 1px solid #ddd; border-radius: 4px; }

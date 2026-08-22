@@ -300,6 +300,6 @@
 
 <style>
 	/* Page-specific layout */
-	.role-detail { display: flex; flex-direction: column; gap: 0.75rem; min-width: 560px; max-width: 720px; }
+	.role-detail { display: flex; flex-direction: column; gap: 0.75rem; min-width: 560px; }
 	.role-meta { display: grid; gap: 0.3rem; }
 </style>

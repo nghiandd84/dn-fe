@@ -490,7 +490,7 @@
 	.btn-sm { padding: 0.2rem 0.5rem; font-size: 0.78rem; }
 	.code-badge { background: #f0f9ff; color: #0369a1; font-family: monospace; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 4px; border: 1px solid #bae6fd; font-size: 0.82rem; }
 	.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
-	.modal { background: #fff; padding: 1.5rem; border-radius: 8px; min-width: 420px; max-width: 90vw; }
+	.modal { background: #fff; padding: 1.5rem; border-radius: 8px; min-width: 420px; }
 	.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid #e5e7eb; }
 	.toggle { display: inline-flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; }
 	.toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
@@ -502,7 +502,7 @@
 	.row-deleting { background: #fee2e2 !important; opacity: 0.6; }
 
 	/* ── Form modal ── */
-	.form-modal { min-width: 480px; max-width: 620px; width: max-content; padding: 0; overflow: hidden; }
+	.form-modal { min-width: 480px; width: max-content; padding: 0; overflow: hidden; }
 	.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
 	.form-cell { background: #f9fafb; border: 1px solid #f3f4f6; border-radius: 6px; padding: 0.4rem 0.6rem; display: flex; flex-direction: column; gap: 0.25rem; }
 	.form-cell.full-width { grid-column: 1 / -1; }
@@ -524,7 +524,7 @@
 	.meta-empty { font-size: 0.82rem; color: #9ca3af; margin: 0; padding: 0.5rem 0; }
 
 	/* ── Detail modal ── */
-	.detail-modal { min-width: 480px; max-width: 680px; width: max-content; padding: 0; overflow: hidden; }
+	.detail-modal { min-width: 480px; width: max-content; padding: 0; overflow: hidden; }
 	.detail-header { padding: 1.25rem 1.5rem 1rem; background: #f8faff; border-bottom: 1px solid #e5e7eb; }
 	.detail-title-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
 	.code-badge-lg { font-size: 0.9rem; padding: 0.2rem 0.6rem; }

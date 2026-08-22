@@ -22,7 +22,9 @@
 	<!-- svelte-ignore a11y_interactive_supports_focus -->
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div class="dialog" role="alertdialog" aria-modal="true" onclick={(e) => e.stopPropagation()}>
-		<p class="message">{message || $LL.confirm_modal.default_message()}</p>
+		<div class="modal-body">
+			<p class="message">{message || $LL.confirm_modal.default_message()}</p>
+		</div>
 		<div class="modal-actions">
 			<button class="btn-cancel" onclick={oncancel}>{cancelLabel || $LL.confirm_modal.cancel()}</button>
 			<button class="btn-confirm-danger" class:btn-danger={danger} class:btn-confirm={!danger} onclick={onconfirm}>

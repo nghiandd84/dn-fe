@@ -302,7 +302,7 @@
 
 <style>
 	/* Users page — unique layout styles */
-	.user-detail { display: flex; flex-direction: column; gap: 0.6rem; min-width: 580px; max-width: 780px; }
+	.user-detail { display: flex; flex-direction: column; gap: 0.6rem; min-width: 580px; }
 
 	.role-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 	.role-panel { display: flex; flex-direction: column; gap: 0.4rem; }
@@ -335,7 +335,7 @@
 	.perm-raw { font-size: 0.68rem; color: #9ca3af; font-family: monospace; }
 
 	/* Assign key modal — extra fields beyond modal.css base */
-	.assign-modal { min-width: 320px; max-width: 400px; }
+	.assign-modal { min-width: 320px; }
 	.modal-role-name { margin: 0; font-size: 0.88rem; font-weight: 600; color: #5b21b6; background: #ede9fe; border-radius: 6px; padding: 0.3rem 0.7rem; width: fit-content; }
 	.modal-field { display: flex; flex-direction: column; gap: 0.3rem; }
 	.modal-field label { font-size: 0.85rem; font-weight: 500; }

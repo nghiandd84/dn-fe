@@ -367,58 +367,60 @@
 		<!-- svelte-ignore a11y_interactive_supports_focus -->
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<div class="modal" class:modal-wide={!!editSnippet} onclick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" tabindex="-1">
-			<h3>{editingItem ? $LL.crud_table.edit_title({ resource }) : $LL.crud_table.create_title({ resource })}</h3>
+			<h3 class="modal-title">{editingItem ? $LL.crud_table.edit_title({ resource }) : $LL.crud_table.create_title({ resource })}</h3>
 			<form onsubmit={(e) => { e.preventDefault(); handleSave(); }}>
-				{#each formFields as field}
-					<div class="form-group" class:form-group-checkbox={field.type === 'checkbox'}>
-						<label for={field.key}>{field.label}</label>
-						{#if field.type === 'select'}
-							<select id={field.key} bind:value={formData[field.key]}>
-								{#each field.options || [] as opt}
-									<option value={opt.value}>{opt.label}</option>
-								{/each}
-							</select>
-						{:else if field.type === 'select-remote'}
-							<select id={field.key} bind:value={formData[field.key]}>
-								<option value="">{$LL.crud_table.select_placeholder()}</option>
-								{#each remoteOptionsCache[field.key] || [] as opt}
-									<option value={opt.value}>{opt.label}</option>
-								{/each}
-							</select>
-						{:else if field.type === 'checkbox'}
-							<label class="toggle">
-								<input type="checkbox" bind:checked={formData[field.key]} />
-								<span class="toggle-options">
-									<span class="toggle-opt toggle-opt-no">{$LL.crud_table.no()}</span>
-									<span class="toggle-opt toggle-opt-yes">{$LL.crud_table.yes()}</span>
-								</span>
-							</label>
-						{:else if field.type === 'tags'}
-							<input
-								id={field.key}
-								type="text"
-								placeholder={$LL.crud_table.tags_placeholder()}
-								value={Array.isArray(formData[field.key]) ? formData[field.key].join(', ') : formData[field.key] || ''}
-								oninput={(e) => { formData[field.key] = (e.target as HTMLInputElement).value.split(',').map(s => s.trim()).filter(Boolean); }}
-							/>
-						{:else}
-							<input
-								id={field.key}
-								type={field.type}
-								required={field.required}
-								bind:value={formData[field.key]}
-							/>
-						{/if}
-					</div>
-				{/each}
-				{#if editSnippet}
-					<div class="edit-snippet">
-						{@render editSnippet(editingItem, formData)}
-					</div>
-				{/if}
-				{#if saveError}
-					<div class="save-error" role="alert">{saveError}</div>
-				{/if}
+				<div class="modal-body">
+					{#each formFields as field}
+						<div class="form-group" class:form-group-checkbox={field.type === 'checkbox'}>
+							<label for={field.key}>{field.label}</label>
+							{#if field.type === 'select'}
+								<select id={field.key} bind:value={formData[field.key]}>
+									{#each field.options || [] as opt}
+										<option value={opt.value}>{opt.label}</option>
+									{/each}
+								</select>
+							{:else if field.type === 'select-remote'}
+								<select id={field.key} bind:value={formData[field.key]}>
+									<option value="">{$LL.crud_table.select_placeholder()}</option>
+									{#each remoteOptionsCache[field.key] || [] as opt}
+										<option value={opt.value}>{opt.label}</option>
+									{/each}
+								</select>
+							{:else if field.type === 'checkbox'}
+								<label class="toggle">
+									<input type="checkbox" bind:checked={formData[field.key]} />
+									<span class="toggle-options">
+										<span class="toggle-opt toggle-opt-no">{$LL.crud_table.no()}</span>
+										<span class="toggle-opt toggle-opt-yes">{$LL.crud_table.yes()}</span>
+									</span>
+								</label>
+							{:else if field.type === 'tags'}
+								<input
+									id={field.key}
+									type="text"
+									placeholder={$LL.crud_table.tags_placeholder()}
+									value={Array.isArray(formData[field.key]) ? formData[field.key].join(', ') : formData[field.key] || ''}
+									oninput={(e) => { formData[field.key] = (e.target as HTMLInputElement).value.split(',').map(s => s.trim()).filter(Boolean); }}
+								/>
+							{:else}
+								<input
+									id={field.key}
+									type={field.type}
+									required={field.required}
+									bind:value={formData[field.key]}
+								/>
+							{/if}
+						</div>
+					{/each}
+					{#if editSnippet}
+						<div class="edit-snippet">
+							{@render editSnippet(editingItem, formData)}
+						</div>
+					{/if}
+					{#if saveError}
+						<div class="save-error" role="alert">{saveError}</div>
+					{/if}
+				</div>
 				<div class="modal-actions">
 					<button type="button" class="btn" onclick={() => showModal = false}>{$LL.crud_table.cancel()}</button>
 					<button type="submit" class="btn btn-primary" disabled={saving}>{saving ? '…' : $LL.crud_table.save()}</button>
@@ -433,19 +435,21 @@
 		<!-- svelte-ignore a11y_interactive_supports_focus -->
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<div class="modal detail-modal" onclick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" tabindex="-1">
-			<h3>{$LL.crud_table.detail_title()}</h3>
-			{#if detailSnippet}
-				{@render detailSnippet(detailItem)}
-			{:else}
-				<dl class="detail-list">
-					{#each columns as col}
-						<div class="detail-row">
-							<dt>{col.label}</dt>
-							<dd>{#if col.format}{@html col.format(detailItem[col.key], detailItem)}{:else}{col.displayKey ? (getNestedValue(detailItem, col.displayKey) ?? detailItem[col.key] ?? '—') : (detailItem[col.key] ?? '—')}{/if}</dd>
-						</div>
-					{/each}
-				</dl>
-			{/if}
+			<h3 class="modal-title">{$LL.crud_table.detail_title()}</h3>
+			<div class="modal-body">
+				{#if detailSnippet}
+					{@render detailSnippet(detailItem)}
+				{:else}
+					<dl class="detail-list">
+						{#each columns as col}
+							<div class="detail-row">
+								<dt>{col.label}</dt>
+								<dd>{#if col.format}{@html col.format(detailItem[col.key], detailItem)}{:else}{col.displayKey ? (getNestedValue(detailItem, col.displayKey) ?? detailItem[col.key] ?? '—') : (detailItem[col.key] ?? '—')}{/if}</dd>
+							</div>
+						{/each}
+					</dl>
+				{/if}
+			</div>
 			<div class="modal-actions">
 				<button class="btn" onclick={() => showDetail = false}>{$LL.crud_table.close()}</button>
 			</div>
@@ -475,7 +479,7 @@
 	.btn-danger { background: #dc2626; color: #fff; border-color: #dc2626; }
 	.btn-sm { padding: 0.2rem 0.5rem; font-size: 0.8rem; }
 	.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
-	.modal { background: #fff; padding: 1.5rem; border-radius: 8px; min-width: 400px; max-width: 90vw; }
+	.modal { background: #fff; padding: 1.5rem; border-radius: 8px; min-width: 400px; }
 	.modal-wide { min-width: 700px; }
 	.edit-snippet { margin-top: 1rem; border-top: 1px solid #e5e7eb; padding-top: 1rem; }
 	.form-group { margin-bottom: 0.8rem; }
