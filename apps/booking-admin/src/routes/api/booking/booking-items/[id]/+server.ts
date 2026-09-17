@@ -3,8 +3,7 @@ import type { RequestHandler } from './$types';
 import { api } from '$lib/api';
 
 export const GET: RequestHandler = async ({ params, request, url, locals }) => {
-	const res = await api(`/bookings/${params.id}`, {
-		params: url.searchParams,
+	const res = await api(`/booking-items/${params.id}`, {
 		fingerprint: request.headers.get('x-client-fingerprint') || undefined,
 		token: locals.token,
 		origin: url.origin
@@ -14,7 +13,7 @@ export const GET: RequestHandler = async ({ params, request, url, locals }) => {
 
 export const PATCH: RequestHandler = async ({ params, request, url, locals }) => {
 	const body = await request.json();
-	const res = await api(`/bookings/${params.id}`, {
+	const res = await api(`/booking-items/${params.id}`, {
 		method: 'PATCH',
 		body,
 		fingerprint: request.headers.get('x-client-fingerprint') || undefined,
@@ -25,7 +24,7 @@ export const PATCH: RequestHandler = async ({ params, request, url, locals }) =>
 };
 
 export const DELETE: RequestHandler = async ({ params, request, url, locals }) => {
-	const res = await api(`/bookings/${params.id}`, {
+	const res = await api(`/booking-items/${params.id}`, {
 		method: 'DELETE',
 		fingerprint: request.headers.get('x-client-fingerprint') || undefined,
 		token: locals.token,

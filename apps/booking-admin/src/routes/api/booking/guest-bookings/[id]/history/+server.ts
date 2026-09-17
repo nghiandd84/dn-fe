@@ -2,8 +2,8 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { api } from '$lib/api';
 
-export const GET: RequestHandler = async ({ url, request, locals }) => {
-	const res = await api('/booking-seats', {
+export const GET: RequestHandler = async ({ params, request, url, locals }) => {
+	const res = await api(`/guest-bookings/${params.id}/history`, {
 		params: url.searchParams,
 		fingerprint: request.headers.get('x-client-fingerprint') || undefined,
 		token: locals.token,

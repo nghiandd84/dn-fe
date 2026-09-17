@@ -13,7 +13,7 @@ dn-fe/
 │   ├── email-template-admin/  # Manage email templates & placeholders
 │   ├── event-admin/           # Manage events
 │   ├── translation-admin/     # Manage i18n translations
-│   ├── booking-admin/         # Manage bookings, seats, slots
+│   ├── booking-admin/         # Manage bookings, booking items, history
 │   ├── url-shortener-admin/   # Manage short URLs
 │   └── tagging-admin/         # Manage tags, tag groups, entity tags
 └── packages/
@@ -38,7 +38,7 @@ dn-fe/
 | `profile-admin` | 5175 | Manage user profile data |
 | `email-template-admin` | 5176 | Manage email templates, placeholders, and translations |
 | `event-admin` | 5177 | Manage events |
-| `booking-admin` | 5178 | Manage bookings, booking seats, and time slots |
+| `booking-admin` | 5178 | Manage bookings, booking items, and lifecycle history |
 | `translation-admin` | 5179 | Manage i18n translation keys and values |
 | `url-shortener-admin` | 5120 | Manage short URL mappings |
 | `tagging-admin` | 5180 | Manage tag groups, tags, and entity tag associations |

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { LL, setLocale, locale } from '$i18n/i18n-util';
 	import type { Locales } from '$i18n/i18n-util';
-	import { SidebarFooter } from '@dn-fe/ui';
+	import { SidebarFooter, Toaster } from '@dn-fe/ui';
 	import { page } from '$app/stores';
 	import '@dn-fe/ui/styles/admin-layout.css';
 	import '@dn-fe/ui/styles/meta-detail.css';
@@ -18,8 +18,8 @@
 	const allNavItems = $derived([
 		{ href: '/admin', label: $LL.admin_panel.nav.dashboard(), resource: null },
 		{ href: '/admin/bookings', label: $LL.admin_panel.nav.bookings(), resource: 'bookings' },
-		{ href: '/admin/booking-seats', label: $LL.admin_panel.nav.booking_seats(), resource: 'booking-seats' },
-		{ href: '/admin/slots', label: $LL.admin_panel.nav.slots(), resource: 'slots' }
+		{ href: '/admin/booking-items', label: $LL.admin_panel.nav.booking_items(), resource: 'booking-items' },
+		{ href: '/admin/guest-bookings', label: $LL.admin_panel.nav.guest_bookings(), resource: 'bookings' }
 	]);
 
 	const navItems = $derived(
@@ -64,3 +64,5 @@
 		{@render children()}
 	</main>
 </div>
+
+<Toaster />

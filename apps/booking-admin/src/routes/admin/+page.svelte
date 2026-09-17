@@ -10,6 +10,8 @@
 		href: string;
 		icon: string;
 		color: string;
+		/** When false, the card is a link only (no count is fetched/shown). */
+		countable?: boolean;
 	};
 
 	const cards: StatCard[] = [
@@ -18,24 +20,27 @@
 			descKey: 'bookings',
 			endpoint: 'bookings',
 			href: '/admin/bookings',
+			icon: '📅',
+			color: '#4f46e5',
+			countable: true
+		},
+		{
+			labelKey: 'booking_items',
+			descKey: 'booking_items',
+			endpoint: 'booking-items',
+			href: '/admin/booking-items',
 			icon: '🎟️',
-			color: '#0ea5e9'
+			color: '#0ea5e9',
+			countable: true
 		},
 		{
-			labelKey: 'booking_seats',
-			descKey: 'booking_seats',
-			endpoint: 'booking-seats',
-			href: '/admin/booking-seats',
-			icon: '💺',
-			color: '#8b5cf6'
-		},
-		{
-			labelKey: 'slots',
-			descKey: 'slots',
-			endpoint: 'slots',
-			href: '/admin/slots',
-			icon: '🕐',
-			color: '#10b981'
+			labelKey: 'guest_bookings',
+			descKey: 'guest_bookings',
+			endpoint: 'guest-bookings',
+			href: '/admin/guest-bookings',
+			icon: '🧾',
+			color: '#f59e0b',
+			countable: true
 		}
 	];
 
@@ -58,7 +63,7 @@
 	}
 
 	$effect(() => {
-		cards.forEach((c) => fetchCount(c.endpoint));
+		cards.filter((c) => c.countable).forEach((c) => fetchCount(c.endpoint));
 	});
 
 	const now = new Date();
@@ -86,15 +91,19 @@
 				<div class="card-icon">{card.icon}</div>
 				<div class="card-body">
 					<span class="card-label">{$LL.dashboard.resources[card.labelKey]()}</span>
-					<span class="card-count">
-						{#if stat.loading}
-							<span class="count-skeleton"></span>
-						{:else if stat.error}
-							<span class="count-error">—</span>
-						{:else}
-							{stat.count ?? 0}
-						{/if}
-					</span>
+					{#if card.countable}
+						<span class="card-count">
+							{#if stat.loading}
+								<span class="count-skeleton"></span>
+							{:else if stat.error}
+								<span class="count-error">—</span>
+							{:else}
+								{stat.count ?? 0}
+							{/if}
+						</span>
+					{:else}
+						<span class="card-count card-count-lookup">{$LL.guest_bookings_page.lookup_button()}</span>
+					{/if}
 					<span class="card-desc">{$LL.dashboard.resource_desc[card.descKey]()}</span>
 				</div>
 				<div class="card-arrow">→</div>
@@ -103,5 +112,11 @@
 	</div>
 </div>
 
-
+<style>
+	.card-count-lookup {
+		font-size: 1.1rem;
+		font-weight: 600;
+		color: var(--accent, #f59e0b);
+	}
+</style>
 

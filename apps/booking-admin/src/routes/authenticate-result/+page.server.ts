@@ -8,8 +8,7 @@ import { cookiePrefix } from '@dn-fe/ui/session';
 
 const BOOKING_RESOURCE_MAP: Record<string, string> = {
 	'BOOKING:BOOKING': 'bookings',
-	'BOOKING:SEAT': 'booking-seats',
-	'BOOKING:SLOT': 'slots'
+	'BOOKING:ITEM': 'booking-items'
 };
 
 function onPermissions(permissions: Permission[], cookies: Cookies, clientId: string, port: string | URL) {

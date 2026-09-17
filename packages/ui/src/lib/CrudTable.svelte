@@ -371,16 +371,17 @@
 			<form onsubmit={(e) => { e.preventDefault(); handleSave(); }}>
 				<div class="modal-body">
 					{#each formFields as field}
+						{@const isReadonly = !!editingItem && !!field.readonlyOnEdit}
 						<div class="form-group" class:form-group-checkbox={field.type === 'checkbox'}>
 							<label for={field.key}>{field.label}</label>
 							{#if field.type === 'select'}
-								<select id={field.key} bind:value={formData[field.key]}>
+								<select id={field.key} bind:value={formData[field.key]} disabled={isReadonly}>
 									{#each field.options || [] as opt}
 										<option value={opt.value}>{opt.label}</option>
 									{/each}
 								</select>
 							{:else if field.type === 'select-remote'}
-								<select id={field.key} bind:value={formData[field.key]}>
+								<select id={field.key} bind:value={formData[field.key]} disabled={isReadonly}>
 									<option value="">{$LL.crud_table.select_placeholder()}</option>
 									{#each remoteOptionsCache[field.key] || [] as opt}
 										<option value={opt.value}>{opt.label}</option>
@@ -388,7 +389,7 @@
 								</select>
 							{:else if field.type === 'checkbox'}
 								<label class="toggle">
-									<input type="checkbox" bind:checked={formData[field.key]} />
+									<input type="checkbox" bind:checked={formData[field.key]} disabled={isReadonly} />
 									<span class="toggle-options">
 										<span class="toggle-opt toggle-opt-no">{$LL.crud_table.no()}</span>
 										<span class="toggle-opt toggle-opt-yes">{$LL.crud_table.yes()}</span>
@@ -401,6 +402,7 @@
 									placeholder={$LL.crud_table.tags_placeholder()}
 									value={Array.isArray(formData[field.key]) ? formData[field.key].join(', ') : formData[field.key] || ''}
 									oninput={(e) => { formData[field.key] = (e.target as HTMLInputElement).value.split(',').map(s => s.trim()).filter(Boolean); }}
+									disabled={isReadonly}
 								/>
 							{:else}
 								<input
@@ -408,6 +410,7 @@
 									type={field.type}
 									required={field.required}
 									bind:value={formData[field.key]}
+									disabled={isReadonly}
 								/>
 							{/if}
 						</div>
@@ -478,16 +481,22 @@
 	.btn-primary { background: #4f46e5; color: #fff; border-color: #4f46e5; }
 	.btn-danger { background: #dc2626; color: #fff; border-color: #dc2626; }
 	.btn-sm { padding: 0.2rem 0.5rem; font-size: 0.8rem; }
-	.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
-	.modal { background: #fff; padding: 1.5rem; border-radius: 8px; min-width: 400px; }
+	.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; box-sizing: border-box; }
+	.modal { background: #fff; border-radius: 8px; min-width: 400px; display: flex; flex-direction: column; max-height: 100vh; max-height: 100dvh; overflow: hidden; }
 	.modal-wide { min-width: 700px; }
+	/* Modal is a flex column: header and footer stay fixed, body scrolls. */
+	.modal > form { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+	.modal-title { flex: 0 0 auto; margin: 0; padding: 1rem 1rem 0.6rem; }
+	.modal-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 0 1rem; }
+	.modal-actions { flex: 0 0 auto; padding: 0.6rem 1rem 1rem; }
 	.edit-snippet { margin-top: 1rem; border-top: 1px solid #e5e7eb; padding-top: 1rem; }
 	.form-group { margin-bottom: 0.8rem; }
 	.form-group label { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; }
 	.form-group-checkbox { display: flex; align-items: center; gap: 0.75rem; }
 	.form-group-checkbox label { margin-bottom: 0; }
 	.form-group input, .form-group select { width: 100%; padding: 0.4rem; border: 1px solid #ddd; border-radius: 4px; }
-	.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
+	.form-group input:disabled, .form-group select:disabled { background: #f3f4f6; color: #6b7280; cursor: not-allowed; }
+	.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; }
 	.save-error { background: #fef2f2; border: 1px solid #fca5a5; color: #b91c1c; border-radius: 4px; padding: 0.5rem 0.75rem; font-size: 0.85rem; margin-top: 0.75rem; word-break: break-word; }
 	/* Toggle switch */
 	.toggle { display: inline-flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none; }

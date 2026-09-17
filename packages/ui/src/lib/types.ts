@@ -26,6 +26,11 @@ export interface FormField {
 		valueKey: string;
 		labelKey: string;
 	};
+	/**
+	 * When true, the field is shown but disabled while editing an existing record
+	 * (useful for create-only fields the update endpoint does not accept).
+	 */
+	readonlyOnEdit?: boolean;
 }
 
 export interface CrudActions {
