@@ -1,0 +1,158 @@
+/* Guest storefront layout — public-facing, follows DESIGN.md tokens.
+   Unlike the admin apps, no navy sidebar: a light header + centered column. */
+
+:root {
+	--primary: #4f46e5;
+	--primary-dark: #4338ca;
+	--primary-light: #eef2ff;
+	--surface: #ffffff;
+	--background: #f5f5f5;
+	--border: #e5e7eb;
+	--text: #1a1a1a;
+	--text-secondary: #374151;
+	--text-muted: #6b7280;
+	--error: #dc2626;
+	--error-bg: #fee2e2;
+	--success: #15803d;
+	--success-bg: #dcfce7;
+	--warning: #a16207;
+	--warning-bg: #fef9c3;
+	--info: #1d4ed8;
+	--info-bg: #dbeafe;
+}
+
+.site-header {
+	background: var(--surface);
+	border-bottom: 1px solid var(--border);
+	padding: 1rem 2rem;
+}
+.site-header .brand {
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: var(--text);
+}
+.site-header .brand:hover {
+	text-decoration: none;
+}
+
+.page {
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 2rem;
+}
+.page-narrow {
+	max-width: 560px;
+}
+
+.page-title {
+	font-size: 24px;
+	font-weight: 600;
+	line-height: 1.2;
+	margin-bottom: 1.5rem;
+}
+
+.card {
+	background: var(--surface);
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	padding: 1.5rem;
+}
+
+.btn {
+	display: inline-block;
+	border: none;
+	border-radius: 4px;
+	padding: 0.7rem 1rem;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+}
+.btn-primary {
+	background: var(--primary);
+	color: #fff;
+}
+.btn-primary:hover {
+	background: var(--primary-dark);
+	text-decoration: none;
+}
+.btn-primary:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+.btn-secondary {
+	background: var(--surface);
+	color: var(--primary);
+	border: 1px solid var(--primary);
+}
+.btn-secondary:hover {
+	background: var(--primary-light);
+	text-decoration: none;
+}
+.btn-block {
+	display: block;
+	width: 100%;
+	text-align: center;
+}
+
+.field {
+	margin-bottom: 1rem;
+}
+.field label {
+	display: block;
+	font-size: 13px;
+	font-weight: 500;
+	margin-bottom: 0.35rem;
+	color: var(--text-secondary);
+}
+.field input,
+.field select {
+	width: 100%;
+	padding: 0.6rem;
+	border: 1px solid var(--border);
+	border-radius: 4px;
+	font-size: 14px;
+}
+.field input.invalid {
+	border-color: var(--error);
+}
+
+.alert {
+	padding: 0.75rem 1rem;
+	border-radius: 4px;
+	font-size: 14px;
+	margin-bottom: 1rem;
+}
+.alert-error {
+	background: var(--error-bg);
+	color: var(--error);
+}
+.alert-success {
+	background: var(--success-bg);
+	color: var(--success);
+}
+.alert-info {
+	background: var(--info-bg);
+	color: var(--info);
+}
+.alert-warning {
+	background: var(--warning-bg);
+	color: var(--warning);
+}
+
+.status-badge {
+	display: inline-block;
+	font-size: 0.65rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	padding: 0.2rem 0.5rem;
+	border-radius: 3px;
+}
+.status-PENDING { background: var(--info-bg); color: var(--info); }
+.status-CONFIRMED { background: var(--success-bg); color: var(--success); }
+.status-PROMOTED { background: var(--success-bg); color: var(--success); }
+.status-EXPIRED { background: var(--error-bg); color: var(--error); }
+.status-PAYMENT_EXPIRED { background: var(--error-bg); color: var(--error); }
+.status-CANCELLED { background: var(--error-bg); color: var(--error); }
+
+.muted { color: var(--text-muted); font-size: 14px; }

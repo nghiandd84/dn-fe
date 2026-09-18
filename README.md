@@ -42,6 +42,7 @@ dn-fe/
 | `translation-admin` | 5179 | Manage i18n translation keys and values |
 | `url-shortener-admin` | 5120 | Manage short URL mappings |
 | `tagging-admin` | 5180 | Manage tag groups, tags, and entity tag associations |
+| `event-booking` | 5181 | Guest-facing event booking (browse, seat select, guest booking, confirm, pay) |
 
 ## Getting Started
 
