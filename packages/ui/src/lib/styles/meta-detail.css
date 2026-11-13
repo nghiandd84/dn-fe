@@ -1,0 +1,28 @@
+/* ── Detail / meta rows (used in CrudTable detail snippets) ── */
+.meta-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  align-items: center;
+}
+.meta-label { font-weight: 600; color: #555; }
+
+/* Boolean badge pair */
+.bool-badge { display: inline-flex; align-items: center; gap: 0.25rem; border-radius: 99px; padding: 0.15rem 0.6rem; font-size: 0.75rem; font-weight: 600; }
+.bool-yes { background: #dcfce7; color: #15803d; }
+.bool-no  { background: #f3f4f6; color: #9ca3af; }
+
+/* Monospace value */
+.mono { font-family: monospace; font-size: 0.8rem; color: #374151; word-break: break-all; }
+
+/* Code badge */
+.code-badge { background: #f0f9ff; color: #0369a1; font-family: monospace; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 4px; border: 1px solid #bae6fd; font-size: 0.82rem; }
+
+/* Generic link inside detail */
+.btn-link { color: #4f46e5; font-weight: 600; font-size: 0.85rem; }
+
+/* Section title (used inside panels / tabs) */
+.section-title { margin: 0; font-size: 0.95rem; font-weight: 700; color: #111; }
+
+hr { border: none; border-top: 1px solid #e5e7eb; margin: 0; }

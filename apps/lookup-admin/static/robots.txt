@@ -1,0 +1,3 @@
+# disallow all crawlers (admin tool)
+User-agent: *
+Disallow: /
